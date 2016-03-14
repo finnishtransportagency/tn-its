@@ -7,6 +7,11 @@ import java.time.Instant
 object Rosatte {
   private val base64 = Base64.getDecoder
 
+  def encodeDataSetId(issuer: UUID, start: Instant, end: Instant): String = {
+    ""
+  }
+
+
   def decodeDataSetId(id: String): (UUID, Instant, Instant) = {
     val bytes = base64.decode(id)
     val uuid = new UUID(bytesToLong(bytes.slice(0, 8)), bytesToLong(bytes.slice(8, 16)))
