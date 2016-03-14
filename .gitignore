@@ -1,0 +1,44 @@
+node_modules
+/dist
+.idea*
+*.iml
+*.swp
+tags
+target/
+.DS_Store
+logs/
+bower_components/
+
+## generic files to ignore
+*~
+*.lock
+*.DS_Store
+*.swp
+*.out
+*.class
+
+# sbt specific
+target/
+project/boot
+lib_managed/*
+project/build/target
+project/build/lib_managed
+project/build/src_managed
+project/plugins/lib_managed
+project/plugins/target
+project/plugins/src_managed
+project/plugins/project
+
+core/lib_managed
+core/target
+pubsub/lib_managed
+pubsub/target
+
+# intellij
+*.eml
+*.iml
+*.ipr
+*.iws
+.*.sw?
+.idea
+
