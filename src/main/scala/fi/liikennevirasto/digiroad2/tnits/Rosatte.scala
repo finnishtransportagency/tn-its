@@ -2,9 +2,8 @@ package fi.liikennevirasto.digiroad2.tnits
 
 import java.math.BigInteger
 import java.nio.ByteBuffer
-import java.util.{Base64, UUID}
 import java.time.Instant
-import java.time.temporal.ChronoUnit
+import java.util.{Base64, UUID}
 
 object Rosatte {
   def encodeDataSetId(issuer: UUID, start: Instant, end: Instant): String = {
@@ -29,18 +28,4 @@ object Rosatte {
 
   private def bytesToLong(bytes: Array[Byte]) =
     new BigInteger(bytes).longValueExact()
-}
-
-object TestRosatte {
-  def main(args: Array[String]) {
-    val uuid = UUID.randomUUID()
-    val start = Instant.now.minus(1, ChronoUnit.DAYS)
-    val end = Instant.now
-
-    val dataSetId = Rosatte.encodeDataSetId(uuid, start, end)
-    println(s"""Rosatte.encodeDataSetId("$uuid", $start, $end) = $dataSetId""")
-
-    val decodedValues = Rosatte.decodeDataSetId(dataSetId)
-    println(s"""Rosatte.decode("$dataSetId") = $decodedValues""")
-  }
 }
