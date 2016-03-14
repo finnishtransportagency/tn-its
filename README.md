@@ -3,10 +3,8 @@
 ## Build & Run ##
 
 ```sh
-$ cd Digiroad2_TN-ITS
-$ ./sbt
-> jetty:start
-> browse
+$ cd digiroad2-tn-its
+$ ./sbt '~;jetty:stop; jetty:start'
 ```
 
-If `browse` doesn't launch your browser, manually open [http://localhost:8080/](http://localhost:8080/) in your browser.
+Launch your browser, manually open [http://localhost:8080/RosatteDownload/download/querydatasets](http://localhost:8080/RosatteDownload/download/querydatasets) in your browser.

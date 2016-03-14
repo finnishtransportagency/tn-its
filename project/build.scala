@@ -26,6 +26,8 @@ object Digiroad2TnitsBuild extends Build {
       resolvers += "Scalaz Bintray Repo" at "http://dl.bintray.com/scalaz/releases",
       libraryDependencies ++= Seq(
         "org.scalatra" %% "scalatra" % ScalatraVersion,
+        "org.scalatra" %% "scalatra-json" % ScalatraVersion,
+        "org.json4s" %% "json4s-jackson" % "3.3.0",
         "org.scalatra" %% "scalatra-scalate" % ScalatraVersion,
         "org.scalatra" %% "scalatra-specs2" % ScalatraVersion % "test",
         "ch.qos.logback" % "logback-classic" % "1.1.5" % "runtime",
