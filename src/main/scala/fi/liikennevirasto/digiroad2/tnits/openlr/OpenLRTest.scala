@@ -24,8 +24,8 @@ object OpenLRTest {
       .buildParameter()
 
     val lines = mapDatabase.getAllLines.asScala
-    lines.foreach { line =>
-      val lineLocation = LocationFactory.createLineLocation("loc", Seq(line).asJava)
+    lines.zipWithIndex.foreach { case (line, i) =>
+      val lineLocation = LocationFactory.createLineLocation(s"loc-$i", Seq(line).asJava)
       val encoded = encoder.encodeLocation(param, lineLocation)
       val reference = encoded.getLocationReference("binary")
       val data = reference.getLocationReferenceData.asInstanceOf[ByteArray]
