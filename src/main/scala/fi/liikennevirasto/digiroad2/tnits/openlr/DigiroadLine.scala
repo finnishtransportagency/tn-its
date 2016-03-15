@@ -4,11 +4,13 @@ import java.awt.geom.{Path2D, Point2D}
 import java.util
 import java.util.Locale
 
-import DigiroadNode
+import fi.liikennevirasto.digiroad2.tnits.Point
 import openlr.map._
 
-case class DigiroadLine(id: Long, length: Int) extends Line {
-  override def getGeoCoordinateAlongLine(distanceAlong: Int): GeoCoordinates = ???
+case class DigiroadLine(id: Long, geometry: Seq[Point], length: Int) extends Line {
+  override def getGeoCoordinateAlongLine(distanceAlong: Int): GeoCoordinates = {
+    DigiroadCoordinates(calculatePointFromLinearReference(geometry, distanceAlong.toDouble).get)
+  }
 
   override def getID: Long = id
 
@@ -24,9 +26,9 @@ case class DigiroadLine(id: Long, length: Int) extends Line {
 
   override def getShapeCoordinates: util.List[GeoCoordinates] = ???
 
-  override def getStartNode: Node = DigiroadNode(this)
+  override def getStartNode: Node = DigiroadNode(geometry(0))
 
-  override def getEndNode: Node = DigiroadNode(this)
+  override def getEndNode: Node = DigiroadNode(geometry.last)
 
   override def getNames: util.Map[Locale, util.List[String]] = ???
 
@@ -37,4 +39,28 @@ case class DigiroadLine(id: Long, length: Int) extends Line {
   override def distanceToPoint(longitude: Double, latitude: Double): Int = ???
 
   override def getFOW: FormOfWay = FormOfWay.MOTORWAY
+
+  private def calculatePointFromLinearReference(geometry: Seq[Point], measure: Double): Option[Point] = {
+    case class AlgorithmState(previousPoint: Point, remainingMeasure: Double, result: Option[Point])
+    if (geometry.size < 2 || measure < 0) { None }
+    else {
+      val state = geometry.tail.foldLeft(AlgorithmState(geometry.head, measure, None)) { (acc, point) =>
+        if (acc.result.isDefined) {
+          acc
+        } else {
+          val distance = point.distanceTo(acc.previousPoint)
+          val remainingMeasure = acc.remainingMeasure
+          if (remainingMeasure <= distance + 0.01) {
+            val directionVector = (point - acc.previousPoint).normalize()
+            val result = Some(acc.previousPoint + directionVector.scale(acc.remainingMeasure))
+            AlgorithmState(point, acc.remainingMeasure - distance, result)
+          } else {
+            AlgorithmState(point, acc.remainingMeasure - distance, None)
+          }
+        }
+      }
+      state.result
+    }
+  }
+
 }

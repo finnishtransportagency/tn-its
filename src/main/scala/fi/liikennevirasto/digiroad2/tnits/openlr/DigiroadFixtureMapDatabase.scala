@@ -3,9 +3,10 @@ package fi.liikennevirasto.digiroad2.tnits.openlr
 import java.awt.geom.Rectangle2D
 import java.util
 
+import fi.liikennevirasto.digiroad2.tnits.Point
 import openlr.map.{Line, MapDatabase, Node}
 
-class DigiroadMapDatabase extends MapDatabase {
+class DigiroadFixtureMapDatabase extends MapDatabase {
   import collection.JavaConverters._
 
   override def hasTurnRestrictions: Boolean = ???
@@ -16,8 +17,8 @@ class DigiroadMapDatabase extends MapDatabase {
 
   override def getAllLines: util.Iterator[Line] =
     Seq[Line](
-      DigiroadLine(1, 10),
-      DigiroadLine(2, 20)
+      DigiroadLine(1, Seq(Point(0, 0), Point(10, 0)), 10),
+      DigiroadLine(2, Seq(Point(10, 0), Point(30, 0)), 20)
     ).iterator.asJava
 
   override def hasTurnRestrictionOnPath(path: util.List[_ <: Line]): Boolean = ???
