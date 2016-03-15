@@ -85,31 +85,11 @@ class DigiroadMapDatabase extends MapDatabase {
   override def getNode(id: Long): Node = ???
 }
 
-class DigiroadMapLoader extends OpenLRMapLoader {
-  override def getParameter: util.Collection[MapLoadParameter] = ???
-
-  override def getName: String = ???
-
-  override def getDescription: String = ???
-
-  override def getNumberOfParams: Int = ???
-
-  override def load(params: util.Collection[MapLoadParameter]): MapDatabase = {
-    new DigiroadMapDatabase
-  }
-
-  override def getMapDescriptor: String = ???
-}
-
 object OpenLRTest {
 
   def main(args: Array[String]) = {
     import collection.JavaConverters._
 
-    val mapLoader = new SQLiteMapLoader
-    val dbFileName = new DBFileNameParameter()
-    dbFileName.setValue("tomtom-openlr-testdata-utrecht/tomtom_utrecht_2008_04_copy.db3")
-//    val mapDatabase = mapLoader.load(Seq[MapLoadParameter](dbFileName).asJava)
     val mapDatabase = new DigiroadMapDatabase
     val encoder = new OpenLREncoder
     val param = new OpenLREncoderParameter.Builder()
