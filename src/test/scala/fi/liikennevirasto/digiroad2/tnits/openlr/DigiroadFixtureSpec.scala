@@ -7,7 +7,7 @@ import org.specs2.mutable.Specification
   * Tests for DigiroadFixtureMapDatabase, DigiroadLine and DigiroadNode.
   */
 class DigiroadFixtureSpec extends Specification {
-  "foo" >> {
+  "Line start and endpoints" >> {
     val mapDatabase = DigiroadFixtureMapDatabase(Seq(
       DigiroadLine(1, Seq(Point(0, 0), Point(10, 0)), 10),
       DigiroadLine(2, Seq(Point(10, 0), Point(30, 0)), 20)
