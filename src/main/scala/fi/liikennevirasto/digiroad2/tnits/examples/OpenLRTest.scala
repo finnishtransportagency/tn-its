@@ -1,12 +1,55 @@
 package fi.liikennevirasto.digiroad2.tnits.examples
 
+import java.awt.geom.Rectangle2D
+import java.util
 import java.util.Base64
 
 import openlr.binary.ByteArray
 import openlr.encoder.{OpenLREncoder, OpenLREncoderParameter}
 import openlr.location.LocationFactory
-import openlr.map.loader.MapLoadParameter
+import openlr.map.{Line, MapDatabase, Node}
+import openlr.map.loader.{MapLoadParameter, OpenLRMapLoader}
 import openlr.map.sqlite.loader.{DBFileNameParameter, SQLiteMapLoader}
+
+class DigiroadMapDatabase extends MapDatabase {
+  override def hasTurnRestrictions: Boolean = ???
+
+  override def getAllNodes: util.Iterator[Node] = ???
+
+  override def getLine(id: Long): Line = ???
+
+  override def getAllLines: util.Iterator[Line] = ???
+
+  override def hasTurnRestrictionOnPath(path: util.List[_ <: Line]): Boolean = ???
+
+  override def findNodesCloseByCoordinate(longitude: Double, latitude: Double, distance: Int): util.Iterator[Node] = ???
+
+  override def findLinesCloseByCoordinate(longitude: Double, latitude: Double, distance: Int): util.Iterator[Line] = ???
+
+  override def getMapBoundingBox: Rectangle2D.Double = ???
+
+  override def getNumberOfLines: Int = ???
+
+  override def getNumberOfNodes: Int = ???
+
+  override def getNode(id: Long): Node = ???
+}
+
+class DigiroadMapLoader extends OpenLRMapLoader {
+  override def getParameter: util.Collection[MapLoadParameter] = ???
+
+  override def getName: String = ???
+
+  override def getDescription: String = ???
+
+  override def getNumberOfParams: Int = ???
+
+  override def load(params: util.Collection[MapLoadParameter]): MapDatabase = {
+    new DigiroadMapDatabase
+  }
+
+  override def getMapDescriptor: String = ???
+}
 
 object OpenLRTest {
 
