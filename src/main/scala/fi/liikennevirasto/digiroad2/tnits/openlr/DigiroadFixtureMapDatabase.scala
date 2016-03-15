@@ -3,7 +3,6 @@ package fi.liikennevirasto.digiroad2.tnits.openlr
 import java.awt.geom.Rectangle2D
 import java.util
 
-import fi.liikennevirasto.digiroad2.tnits.Point
 import openlr.map.{Line, MapDatabase, Node}
 
 case class DigiroadFixtureMapDatabase(lines: Seq[Line]) extends MapDatabase {
