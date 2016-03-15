@@ -2,14 +2,64 @@ package fi.liikennevirasto.digiroad2.tnits.examples
 
 import java.awt.geom.Rectangle2D
 import java.util
-import java.util.Base64
+import java.util.{Base64, Locale}
 
 import openlr.binary.ByteArray
 import openlr.encoder.{OpenLREncoder, OpenLREncoderParameter}
 import openlr.location.LocationFactory
-import openlr.map.{Line, MapDatabase, Node}
+import openlr.map.{FunctionalRoadClass, _}
 import openlr.map.loader.{MapLoadParameter, OpenLRMapLoader}
 import openlr.map.sqlite.loader.{DBFileNameParameter, SQLiteMapLoader}
+
+class DigiroadLine extends Line {
+  override def getGeoCoordinateAlongLine(distanceAlong: Int): GeoCoordinates = ???
+
+  override def getID: Long = ???
+
+  override def getShape: Rectangle2D.Double = ???
+
+  override def getLineLength: Int = ???
+
+  override def getPointAlongLine(distanceAlong: Int): Rectangle2D.Double = ???
+
+  override def getFRC: FunctionalRoadClass = ???
+
+  override def getNextLines: util.Iterator[Line] = ???
+
+  override def getShapeCoordinates: util.List[GeoCoordinates] = ???
+
+  override def getStartNode: Node = ???
+
+  override def getEndNode: Node = ???
+
+  override def getNames: util.Map[Locale, util.List[String]] = ???
+
+  override def measureAlongLine(longitude: Double, latitude: Double): Int = ???
+
+  override def getPrevLines: util.Iterator[Line] = ???
+
+  override def distanceToPoint(longitude: Double, latitude: Double): Int = ???
+
+  override def getFOW: FormOfWay = ???
+}
+
+class DigiroadNode extends Node {
+  override def getID: Long = ???
+
+  override def getLongitudeDeg: Double = ???
+
+  override def getConnectedLines: util.Iterator[Line] = ???
+
+  override def getLatitudeDeg: Double = ???
+
+  override def getOutgoingLines: util.Iterator[Line] = ???
+
+  override def getGeoCoordinates: GeoCoordinates = ???
+
+  override def getIncomingLines: util.Iterator[Line] = ???
+
+  override def getNumberConnectedLines: Int = ???
+}
 
 class DigiroadMapDatabase extends MapDatabase {
   override def hasTurnRestrictions: Boolean = ???
