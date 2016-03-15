@@ -33,7 +33,10 @@ object Digiroad2TnitsBuild extends Build {
         "ch.qos.logback" % "logback-classic" % "1.1.5" % "runtime",
         "org.eclipse.jetty" % "jetty-webapp" % "9.2.15.v20160210" % "compile;container",
         "javax.servlet" % "javax.servlet-api" % "3.1.0" % "provided",
-        "log4j" % "log4j" % "1.2.17" % "compile" // Needed by map-1.4.2.jar
+        // Needed by map-1.4.2.jar
+        "org.apache.logging.log4j" % "log4j-1.2-api" % "2.5" % "compile",
+        "org.apache.logging.log4j" % "log4j-api" % "2.5" % "compile",
+        "org.apache.logging.log4j" % "log4j-core" % "2.5" % "compile"
       ),
       scalateTemplateConfig in Compile <<= (sourceDirectory in Compile){ base =>
         Seq(
