@@ -1,6 +1,6 @@
 package fi.liikennevirasto.digiroad2.tnits.examples
 
-import java.awt.geom.Rectangle2D
+import java.awt.geom.{Path2D, Point2D, Rectangle2D}
 import java.util
 import java.util.{Base64, Locale}
 
@@ -16,11 +16,11 @@ class DigiroadLine extends Line {
 
   override def getID: Long = ???
 
-  override def getShape: Rectangle2D.Double = ???
+  override def getShape: Path2D.Double = ???
 
   override def getLineLength: Int = ???
 
-  override def getPointAlongLine(distanceAlong: Int): Rectangle2D.Double = ???
+  override def getPointAlongLine(distanceAlong: Int): Point2D.Double = ???
 
   override def getFRC: FunctionalRoadClass = ???
 
@@ -109,7 +109,8 @@ object OpenLRTest {
     val mapLoader = new SQLiteMapLoader
     val dbFileName = new DBFileNameParameter()
     dbFileName.setValue("tomtom-openlr-testdata-utrecht/tomtom_utrecht_2008_04_copy.db3")
-    val mapDatabase = mapLoader.load(Seq[MapLoadParameter](dbFileName).asJava)
+//    val mapDatabase = mapLoader.load(Seq[MapLoadParameter](dbFileName).asJava)
+    val mapDatabase = new DigiroadMapDatabase
     val encoder = new OpenLREncoder
     val param = new OpenLREncoderParameter.Builder()
       .`with`(mapDatabase)
