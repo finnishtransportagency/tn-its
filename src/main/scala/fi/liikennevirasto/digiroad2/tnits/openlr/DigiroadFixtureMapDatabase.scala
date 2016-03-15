@@ -6,20 +6,18 @@ import java.util
 import fi.liikennevirasto.digiroad2.tnits.Point
 import openlr.map.{Line, MapDatabase, Node}
 
-class DigiroadFixtureMapDatabase extends MapDatabase {
+case class DigiroadFixtureMapDatabase(lines: Seq[Line]) extends MapDatabase {
   import collection.JavaConverters._
 
   override def hasTurnRestrictions: Boolean = ???
 
   override def getAllNodes: util.Iterator[Node] = ???
 
-  override def getLine(id: Long): Line = ???
+  override def getLine(id: Long): Line =
+    lines.find { line => line.getID == id }.orNull
 
   override def getAllLines: util.Iterator[Line] =
-    Seq[Line](
-      DigiroadLine(1, Seq(Point(0, 0), Point(10, 0)), 10),
-      DigiroadLine(2, Seq(Point(10, 0), Point(30, 0)), 20)
-    ).iterator.asJava
+    lines.iterator.asJava
 
   override def hasTurnRestrictionOnPath(path: util.List[_ <: Line]): Boolean = ???
 

@@ -2,6 +2,7 @@ package fi.liikennevirasto.digiroad2.tnits.openlr
 
 import java.util.Base64
 
+import fi.liikennevirasto.digiroad2.tnits.Point
 import openlr.binary.ByteArray
 import openlr.encoder.{OpenLREncoder, OpenLREncoderParameter}
 import openlr.location.LocationFactory
@@ -13,7 +14,10 @@ object OpenLRTest {
   def main(args: Array[String]) = {
     import collection.JavaConverters._
 
-    val mapDatabase = new DigiroadFixtureMapDatabase
+    val mapDatabase = new DigiroadFixtureMapDatabase(Seq(
+      DigiroadLine(1, Seq(Point(0, 0), Point(10, 0)), 10),
+      DigiroadLine(2, Seq(Point(10, 0), Point(30, 0)), 20)
+    ))
     val encoder = new OpenLREncoder
     val param = new OpenLREncoderParameter.Builder()
       .`with`(mapDatabase)
