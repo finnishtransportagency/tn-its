@@ -22,6 +22,7 @@ object Digiroad2TnitsBuild extends Build {
       name := Name,
       version := Version,
       scalaVersion := ScalaVersion,
+      mainClass in Compile := Some("JettyLauncher"),
       resolvers += Classpaths.typesafeReleases,
       resolvers += "Scalaz Bintray Repo" at "http://dl.bintray.com/scalaz/releases",
       libraryDependencies ++= Seq(
