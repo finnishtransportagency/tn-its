@@ -1,4 +1,4 @@
-package fi.liikennevirasto.digiroad2.tnits.openlr.examples;
+package fi.liikennevirasto.digiroad2.tnits.openlr;
 
 import openlr.LocationReference;
 import openlr.OpenLRProcessingException;
