@@ -15,6 +15,9 @@ case class DigiroadNode(point: Point) extends Node {
   override def getNumberConnectedLines: Int =
     1
 
+  override def getGeoCoordinates: GeoCoordinates =
+    DigiroadCoordinates(point)
+
   override def getID: Long =
     ???
 
@@ -23,9 +26,6 @@ case class DigiroadNode(point: Point) extends Node {
 
   override def getOutgoingLines: util.Iterator[Line] =
     ???
-
-  override def getGeoCoordinates: GeoCoordinates =
-    DigiroadCoordinates(point)
 
   override def getIncomingLines: util.Iterator[Line] =
     ???
