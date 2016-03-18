@@ -1,15 +1,16 @@
-package fi.liikennevirasto.digiroad2.tnits.openlr
+package fi.liikennevirasto.digiroad2.tnits.openlr.examples
 
 import java.util.Base64
 
 import fi.liikennevirasto.digiroad2.tnits.Point
+import fi.liikennevirasto.digiroad2.tnits.openlr.{DigiroadFixtureMapDatabase, DigiroadLine}
 import openlr.binary.ByteArray
 import openlr.encoder.{OpenLREncoder, OpenLREncoderParameter}
 import openlr.location.LocationFactory
 import openlr.xml.OpenLRXmlWriter
 import openlr.xml.generated.OpenLR
 
-object OpenLRTest {
+object OpenLRExample {
 
   def main(args: Array[String]) = {
     import collection.JavaConverters._
