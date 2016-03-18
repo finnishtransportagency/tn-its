@@ -1,6 +1,6 @@
 package fi.liikennevirasto.digiroad2.tnits
 
-import java.net.URLEncoder
+import java.net.{URI, URLDecoder, URLEncoder}
 
 import org.scalatra._
 
@@ -11,24 +11,33 @@ class Digiroad2TnItsApi extends ScalatraServlet {
   get("/rosattedownload/download/queryDataSets") {
     contentType = "application/xml"
 
-    val dataSetPaths = getServletContext.getResourcePaths("/RosatteTestData/").asScala
-    val dataSetIds = dataSetPaths.map { _.drop("/RosatteTestData/".length).dropRight(".xml".length) }
+    val dataSetPaths =
+      getServletContext.getResourcePaths("/RosatteTestData/").asScala
 
-    params.get("lastValidDatasetId").map { lastValidDatasetId =>
-      <rst:ROSATTERestDatasetRefList xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:rst="http://www.ertico.com/en/subprojects/rosatte/rst" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-        <rst:ROSATTERestDatasetRef xlink:href="/rosattedownload/download/readDataSet?dataSetID=1uShiYqi%2fEe120s9P1ga7AAAAN2DTdVBAAAAcIdN1UE%3d"/>
-      </rst:ROSATTERestDatasetRefList>
-    }.getOrElse {
-      val dataSetUrls = dataSetIds.map { dataSetId =>
-        "http://localhost:8080/rosattedownload/download/readDataSet?dataSetID=" + URLEncoder.encode(dataSetId, "UTF-8")
+    val dataSetIds =
+      dataSetPaths
+        .toSeq
+        .map { _.drop("/RosatteTestData/".length).dropRight(".xml".length) }
+        .map { id => (id, Rosatte.decodeDataSetId(URLDecoder.decode(id, "UTF-8"))) }
+        .sortBy { case (_, id) => id.startDate }
+
+    val wantedDataSetIds =
+      if (params.contains("lastValidDatasetId")) {
+        val lastValidDataSetId =
+          params("lastValidDatasetId")
+        val wantedId =
+          Rosatte.decodeDataSetId(lastValidDataSetId)
+        dataSetIds
+          .filter { case (_, id) => id.startDate.isAfter(wantedId.startDate) }
+          .map(_._1)
+      } else {
+        dataSetIds
+          .map(_._1)
       }
 
-      <rst:ROSATTERestDatasetRefList xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:rst="http://www.ertico.com/en/subprojects/rosatte/rst" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-        {
-          dataSetUrls.map { url => <rst:ROSATTERestDatasetRef xlink:href={ url }/> }
-        }
-      </rst:ROSATTERestDatasetRefList>
-    }
+    <rst:ROSATTERestDatasetRefList xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:rst="http://www.ertico.com/en/subprojects/rosatte/rst" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      {wantedDataSetIds.map(dataSetElement)}
+    </rst:ROSATTERestDatasetRefList>
   }
 
   get("/rosattedownload/download/readDataSet") {
@@ -37,5 +46,10 @@ class Digiroad2TnItsApi extends ScalatraServlet {
       contentType = "application/xml"
       dataStream
     }.getOrElse(NotFound("No dataset found for id " + id))
+  }
+
+  def dataSetElement(id: String) = {
+    val url = "http://localhost:8080/rosattedownload/download/readDataSet?dataSetID=" + URLEncoder.encode(id, "UTF-8")
+    <rst:ROSATTERestDatasetRef xlink:href={url}/>
   }
 }

@@ -17,13 +17,15 @@ object Rosatte {
     new String(Base64.getEncoder.encode(bytes.array()), "ASCII")
   }
 
-  def decodeDataSetId(id: String): (UUID, Instant, Instant) = {
+  case class DataSetId(id: UUID, startDate: Instant, endDate: Instant)
+
+  def decodeDataSetId(id: String): DataSetId = {
     val bytes = Base64.getDecoder.decode(id)
     val uuid = new UUID(bytesToLong(bytes.slice(0, 8)), bytesToLong(bytes.slice(8, 16)))
     val start = bytesToLong(bytes.slice(16, 24))
     val end = bytesToLong(bytes.slice(24, 32))
 
-    (uuid, Instant.ofEpochSecond(start), Instant.ofEpochSecond(end))
+    DataSetId(uuid, Instant.ofEpochSecond(start), Instant.ofEpochSecond(end))
   }
 
   private def bytesToLong(bytes: Array[Byte]) =

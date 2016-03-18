@@ -4,6 +4,7 @@ import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.UUID
 
+import fi.liikennevirasto.digiroad2.tnits.Rosatte.DataSetId
 import org.specs2.mutable.Specification
 
 class RosatteSpec extends Specification {
@@ -13,7 +14,7 @@ class RosatteSpec extends Specification {
     val end = Instant.now.truncatedTo(ChronoUnit.SECONDS)
 
     val encodedDataSetId = Rosatte.encodeDataSetId(uuid, start, end)
-    val (decodedUuid, decodedStart, decodedEnd) = Rosatte.decodeDataSetId(encodedDataSetId)
+    val DataSetId(decodedUuid, decodedStart, decodedEnd) = Rosatte.decodeDataSetId(encodedDataSetId)
 
     decodedUuid must_== uuid
     decodedStart must_== start
