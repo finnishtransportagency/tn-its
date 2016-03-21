@@ -6,6 +6,8 @@ import java.time.Instant
 import java.util.{Base64, UUID}
 
 object Rosatte {
+  val LiikennevirastoUUID = UUID.fromString("f90056dc-8945-4885-9860-f0f017855cfd")
+
   def encodeDataSetId(issuer: UUID, start: Instant, end: Instant): String = {
     val bytes = ByteBuffer.allocate(32)
     bytes.putLong(issuer.getMostSignificantBits)
