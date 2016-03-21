@@ -49,7 +49,15 @@ class Digiroad2TnItsApi extends ScalatraServlet {
   }
 
   def dataSetElement(id: String) = {
-    val url = "http://localhost:8080/rosattedownload/download/readDataSet?dataSetID=" + URLEncoder.encode(id, "UTF-8")
+    val scheme = request.urlScheme.toString.toLowerCase
+    val port = serverPort
+    val url =
+      (scheme, port) match {
+        case ("http", 80) | ("https", 443) =>
+          s"$scheme://$serverHost/rosattedownload/download/readDataSet?dataSetID=" + URLEncoder.encode(id, "UTF-8")
+        case _ =>
+          s"$scheme://$serverHost:$port/rosattedownload/download/readDataSet?dataSetID=" + URLEncoder.encode(id, "UTF-8")
+      }
     <rst:ROSATTERestDatasetRef xlink:href={url}/>
   }
 }
