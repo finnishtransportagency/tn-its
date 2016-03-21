@@ -1,6 +1,6 @@
 package fi.liikennevirasto.digiroad2.tnits
 
-import java.net.{URI, URLDecoder, URLEncoder}
+import java.net.{URLDecoder, URLEncoder}
 
 import org.scalatra._
 
