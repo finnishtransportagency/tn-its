@@ -14,7 +14,13 @@ class Digiroad2TnItsApi extends ScalatraServlet with FutureSupport {
 
   get("/rosattedownload/download/queryDataSets") {
     new AsyncResult { val is =
-      RemoteDatasets.index
+      RemoteDatasets.index.map { dataSetIds =>
+        contentType = "application/xml"
+
+        <rst:ROSATTERestDatasetRefList xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:rst="http://www.ertico.com/en/subprojects/rosatte/rst" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          {dataSetIds.map(dataSetElement)}
+        </rst:ROSATTERestDatasetRefList>
+      }
     }
   }
 
