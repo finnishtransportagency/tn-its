@@ -12,17 +12,32 @@ class Digiroad2TnItsApi extends ScalatraServlet with FutureSupport {
   override protected implicit def executor: ExecutionContext =
     scala.concurrent.ExecutionContext.global
 
-  get("/rosattedownload/download/queryDataSets") {
-    new AsyncResult { val is =
-      RemoteDatasets.index.map { dataSetIds =>
-        contentType = "application/xml"
+  // From aineistot.liikennevirasto.fi
 
-        <rst:ROSATTERestDatasetRefList xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:rst="http://www.ertico.com/en/subprojects/rosatte/rst" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-          {dataSetIds.map(dataSetElement)}
-        </rst:ROSATTERestDatasetRefList>
+  get("/rosattedownload/download/queryDataSets") {
+    new AsyncResult {
+      val is =
+        RemoteDatasets.index.map { dataSetIds =>
+          contentType = "application/xml"
+
+          <rst:ROSATTERestDatasetRefList xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:rst="http://www.ertico.com/en/subprojects/rosatte/rst" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            {dataSetIds.map(dataSetElement)}
+          </rst:ROSATTERestDatasetRefList>
+        }
+    }
+  }
+
+  get("/rosattedownload/download/readDataSet") {
+    new AsyncResult {
+      val is = {
+        contentType = "application/xml"
+        val id = params.getOrElse("dataSetID", halt(BadRequest("Missing mandatory parameter 'dataSetID'")))
+        RemoteDatasets.get(id)
       }
     }
   }
+
+  // Local test data
 
   get("/rosattetest/download/queryDataSets") {
     contentType = "application/xml"
@@ -56,7 +71,7 @@ class Digiroad2TnItsApi extends ScalatraServlet with FutureSupport {
     </rst:ROSATTERestDatasetRefList>
   }
 
-  get("/rosattedownload/download/readDataSet") {
+  get("/rosattetest/download/readDataSet") {
     val id = params.getOrElse("dataSetID", halt(BadRequest("Missing mandatory parameter 'dataSetID'")))
     Option(getServletContext.getResourceAsStream("/RosatteTestData/" + id + ".xml")).map { dataStream =>
       contentType = "application/xml"
