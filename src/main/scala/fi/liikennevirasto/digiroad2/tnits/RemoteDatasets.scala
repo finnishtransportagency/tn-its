@@ -14,15 +14,13 @@ object RemoteDatasets {
   private val baseUrl: Req =
     (host("aineistot.liikennevirasto.fi") / "digiroad" / "tnits-testdata")
       .setFollowRedirects(true)
+      .secure
       .as(
         user = sys.env.getOrElse("AINEISTOT_USERNAME", ""),
         password = sys.env.getOrElse("AINEISTOT_PASSWORD", ""))
 
-  private def dataSetUrl(id: String): Req = {
-    val url = baseUrl / (id + ".xml")
-    println(s"URL: ${url.url}")
-    url
-  }
+  private def dataSetUrl(id: String): Req =
+    baseUrl / (id + ".xml")
 
   def index: Future[Seq[String]] =
     Http(baseUrl OK as.String).map { contents =>
