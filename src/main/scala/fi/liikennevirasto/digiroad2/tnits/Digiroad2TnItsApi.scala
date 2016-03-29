@@ -2,13 +2,37 @@ package fi.liikennevirasto.digiroad2.tnits
 
 import java.net.{URLDecoder, URLEncoder}
 
+import dispatch.url
 import org.scalatra._
 
 import scala.collection.JavaConverters._
+import scala.concurrent.{ExecutionContext, Future}
 
-class Digiroad2TnItsApi extends ScalatraServlet {
+object Aineistot {
+  val index =
+    url("http://aineistot.liikennevirasto.fi/digiroad/tnits-testdata/")
+      .as(
+        user = sys.env.getOrElse("AINEISTOT_USERNAME", ""),
+        password = sys.env.getOrElse("AINEISTOT_PASSWORD", ""))
+
+  def getIndex: Future[String] = {
+    import dispatch._, Defaults._
+    Http(index OK as.String)
+  }
+}
+
+class Digiroad2TnItsApi extends ScalatraServlet with FutureSupport {
+
+  override protected implicit def executor: ExecutionContext =
+    scala.concurrent.ExecutionContext.global
 
   get("/rosattedownload/download/queryDataSets") {
+    new AsyncResult { val is =
+      Aineistot.getIndex
+    }
+  }
+
+  get("/rosattetest/download/queryDataSets") {
     contentType = "application/xml"
 
     val dataSetPaths =
@@ -60,4 +84,5 @@ class Digiroad2TnItsApi extends ScalatraServlet {
       }
     <rst:ROSATTERestDatasetRef xlink:href={url}/>
   }
+
 }
