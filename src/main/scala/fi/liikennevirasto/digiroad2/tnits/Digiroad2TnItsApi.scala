@@ -1,6 +1,7 @@
 package fi.liikennevirasto.digiroad2.tnits
 
 import java.net.{URLDecoder, URLEncoder}
+import javax.servlet.http.HttpServletRequest
 
 import org.scalatra._
 
@@ -98,7 +99,7 @@ class Digiroad2TnItsApi extends ScalatraServlet with FutureSupport {
     }.getOrElse(NotFound("No dataset found for id " + id))
   }
 
-  def dataSetElement(id: String) = {
+  def dataSetElement(id: String)(implicit request: HttpServletRequest) = {
     val scheme = request.urlScheme.toString.toLowerCase
     val port = serverPort
     val url =
