@@ -14,7 +14,6 @@ object RemoteDatasets {
   private val baseUrl: Req =
     (host("aineistot.liikennevirasto.fi") / "digiroad" / "tnits-testdata")
       .setFollowRedirects(true)
-      .secure
       .as(
         user = sys.env.getOrElse("AINEISTOT_USERNAME", ""),
         password = sys.env.getOrElse("AINEISTOT_PASSWORD", ""))
