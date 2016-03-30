@@ -6,6 +6,7 @@ import org.scalatra._
 
 import scala.collection.JavaConverters._
 import scala.concurrent.ExecutionContext
+import scala.util.Try
 
 class Digiroad2TnItsApi extends ScalatraServlet with FutureSupport {
 
@@ -100,7 +101,13 @@ class Digiroad2TnItsApi extends ScalatraServlet with FutureSupport {
 
   def dataSetElement(id: String) = {
     val scheme = request.urlScheme.toString.toLowerCase
-    val port = serverPort
+    val port = Try(serverPort).getOrElse {
+      scheme match {
+        case "http" => 80
+        case "https" => 443
+        case _ => throw new RuntimeException("Invalid scheme")
+      }
+    }
     val url =
       (scheme, port) match {
         case ("http", 80) | ("https", 443) =>
