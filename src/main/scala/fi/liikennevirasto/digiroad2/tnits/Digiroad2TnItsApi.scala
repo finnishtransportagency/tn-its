@@ -20,8 +20,27 @@ class Digiroad2TnItsApi extends ScalatraServlet with FutureSupport {
         RemoteDatasets.index.map { dataSetIds =>
           contentType = "application/xml"
 
+          val decodedDatasetIds =
+            dataSetIds
+              .map { id => (id, Rosatte.decodeDataSetId(URLDecoder.decode(id, "UTF-8"))) }
+              .sortBy { case (_, id) => id.startDate }
+
+          val wantedDataSetIds =
+            if (params.contains("lastValidDatasetId")) {
+              val lastValidDataSetId =
+                params("lastValidDatasetId")
+              val wantedId =
+                Rosatte.decodeDataSetId(lastValidDataSetId)
+              decodedDatasetIds
+                .filter { case (_, id) => id.startDate.isAfter(wantedId.startDate) }
+                .map(_._1)
+            } else {
+              decodedDatasetIds
+                .map(_._1)
+            }
+
           <rst:ROSATTERestDatasetRefList xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:rst="http://www.ertico.com/en/subprojects/rosatte/rst" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-            {dataSetIds.map(dataSetElement)}
+            {wantedDataSetIds.map(dataSetElement)}
           </rst:ROSATTERestDatasetRefList>
         }
     }
@@ -85,9 +104,9 @@ class Digiroad2TnItsApi extends ScalatraServlet with FutureSupport {
     val url =
       (scheme, port) match {
         case ("http", 80) | ("https", 443) =>
-          s"$scheme://$serverHost/rosattedownload/download/readDataSet?dataSetID=" + URLEncoder.encode(id, "UTF-8")
+          s"$scheme://$serverHost/rosattedownload/download/readDataSet?dataSetID=" + id
         case _ =>
-          s"$scheme://$serverHost:$port/rosattedownload/download/readDataSet?dataSetID=" + URLEncoder.encode(id, "UTF-8")
+          s"$scheme://$serverHost:$port/rosattedownload/download/readDataSet?dataSetID=" + id
       }
     <rst:ROSATTERestDatasetRef xlink:href={url}/>
   }
