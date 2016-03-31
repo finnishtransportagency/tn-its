@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServletRequest
 
 import org.scalatra._
 
-import scala.collection.JavaConverters._
 import scala.concurrent.ExecutionContext
 
 class Digiroad2TnItsApi extends ScalatraServlet with FutureSupport {
