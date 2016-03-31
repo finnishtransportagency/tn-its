@@ -2,6 +2,7 @@ package fi.liikennevirasto.digiroad2.tnits
 
 import java.io.InputStream
 import java.net.URLDecoder
+import java.net.URLEncoder
 
 import dispatch._
 import Defaults._
@@ -19,7 +20,7 @@ object RemoteDatasets {
         password = sys.env.getOrElse("AINEISTOT_PASSWORD", ""))
 
   private def dataSetUrl(id: String): Req =
-    baseUrl / (id + ".xml")
+    baseUrl / (URLEncoder.encode(id, "UTF-8") + ".xml")
 
   def index: Future[Seq[String]] =
     Http(baseUrl OK as.String).map { contents =>
