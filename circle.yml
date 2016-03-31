@@ -5,6 +5,8 @@ machine:
 dependencies:
   override:
     - ./sbt test:compile
+  cache_directories:
+    - "~/.sbt"
 
 test:
   override:
