@@ -54,6 +54,7 @@ object RosatteConverter {
   }
 
   def featureMember(feature: Feature) = {
+    val changeType = feature.properties("changeType").asInstanceOf[String]
     // todo: replace hardcoded values
     <gml:featureMember>
       <rst:GenericSafetyFeature gml:id="i65736963-342f-4e0d-8c8e-76cb4d39387f">
@@ -82,7 +83,7 @@ object RosatteConverter {
         <rst:validFrom>2013-12-20</rst:validFrom>
         <rst:updateInfo>
           <rst:UpdateInfo>
-            <rst:type>Remove</rst:type>
+            <rst:type>{changeType}</rst:type>
           </rst:UpdateInfo>
         </rst:updateInfo>
         <rst:source>Regulation</rst:source>
