@@ -59,7 +59,7 @@ object RosatteConverter {
       <rst:GenericSafetyFeature gml:id="i65736963-342f-4e0d-8c8e-76cb4d39387f">
         <rst:id>
           <rst:SafetyFeatureId>
-            <rst:providerId>SE.TrV.NVDB</rst:providerId>
+            <rst:providerId>FI.LiVi.OTH</rst:providerId>
             <rst:id>{"003c4744-28c0-42ef-be3d-107bea6bf006"}</rst:id>
           </rst:SafetyFeatureId>
         </rst:id>
