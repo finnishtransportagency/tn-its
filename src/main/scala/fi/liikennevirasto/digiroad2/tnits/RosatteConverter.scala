@@ -1,5 +1,7 @@
 package fi.liikennevirasto.digiroad2.tnits
 
+import java.time.Instant
+
 import dispatch.Defaults._
 import dispatch._
 import fi.liikennevirasto.digiroad2.tnits.GeoJson.Feature
@@ -26,23 +28,27 @@ object RosatteConverter {
         password = sys.env.getOrElse("CHANGE_API_PASSWORD", ""))
 
   def main(args: Array[String]) {
-    val speedLimitFeatures = readSpeedLimitChanges
-    println(convertToChangeDataSet(speedLimitFeatures))
+    val start = Instant.parse("2016-03-01T22:00:00Z")
+    val speedLimitFeatures = readSpeedLimitChanges(start)
+    println(convertToChangeDataSet(speedLimitFeatures, start))
   }
 
-  def readSpeedLimitChanges: Seq[Feature] = {
-    val req = (changesApiUrl / "speed_limits").addQueryParameter("since", "2016-03-01T16:00")
+  def readSpeedLimitChanges(since: Instant): Seq[Feature] = {
+    val req = (changesApiUrl / "speed_limits").addQueryParameter("since", since.toString)
     val contents = Await.result(Http(req OK as.String), 30.seconds)
     (parse(contents) \ "features").extract[Seq[Feature]]
   }
 
-  def convertToChangeDataSet(speedLimitFeatures: Seq[Feature]) = {
-    // todo: replace hardcoded dataset id
+  def convertToChangeDataSet(speedLimitFeatures: Seq[Feature], startTime: Instant) = {
+    // todo: replace current time with the latest modification time from changes
+    //       or specify explicitly in the change api
+    val endTime = Instant.now()
+
     <rst:ROSATTESafetyFeatureDataset xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:net="urn:x-inspire:specification:gmlas:Network:3.2" xmlns:openlr="http://www.openlr.org/openlr" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:TPEG="TPEG" xmlns:rst="http://www.ertico.com/en/subprojects/rosatte/rst" xsi:schemaLocation="http://www.ertico.com/en/subprojects/rosatte/rst http://rosatte-no.triona.se/schemas/Rosatte.xsd" gml:id="i0fbf03ad-5c7a-4490-bb7c-64f95a91cb3c">
       { speedLimitFeatures.map(featureMember) }
       <rst:metadata>
-        <rst:datasetId>1uShiYqi/Ee120s9P1ga7AAAADiDTdVBAAAA3YNN1UE=</rst:datasetId>
-        <rst:datasetCreationTime> { DateTime.now.toString } </rst:datasetCreationTime>
+        <rst:datasetId>{ Rosatte.encodeDataSetId(Rosatte.LiikennevirastoUUID, startTime, endTime)}</rst:datasetId>
+        <rst:datasetCreationTime>{ endTime }</rst:datasetCreationTime>
       </rst:metadata>
       <rst:type>Update</rst:type>
     </rst:ROSATTESafetyFeatureDataset>
