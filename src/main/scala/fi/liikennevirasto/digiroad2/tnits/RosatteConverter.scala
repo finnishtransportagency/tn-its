@@ -55,6 +55,7 @@ object RosatteConverter {
 
   def featureMember(feature: Feature) = {
     val changeType = feature.properties("changeType").asInstanceOf[String]
+    val speedLimitValue = feature.properties("value").asInstanceOf[BigInt]
     // todo: replace hardcoded values
     <gml:featureMember>
       <rst:GenericSafetyFeature gml:id="i65736963-342f-4e0d-8c8e-76cb4d39387f">
@@ -94,12 +95,12 @@ object RosatteConverter {
             </gml:posList>
           </gml:LineString>
         </rst:encodedGeometry>
-        <rst:type>RoadNumber</rst:type>
+        <rst:type>SpeedLimit</rst:type>
         <rst:properties>
           <rst:SafetyFeaturePropertyValue>
-            <rst:type>RoadNumber</rst:type>
+            <rst:type>MaximumSpeedLimit</rst:type>
             <rst:propertyValue>
-              <gml:measure uom="">111</gml:measure>
+              <gml:measure uom="kmph">{speedLimitValue}</gml:measure>
             </rst:propertyValue>
           </rst:SafetyFeaturePropertyValue>
         </rst:properties>
