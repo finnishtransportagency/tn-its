@@ -5,7 +5,6 @@ import java.time.Instant
 import dispatch.Defaults._
 import dispatch._
 import fi.liikennevirasto.digiroad2.tnits.GeoJson.Feature
-import org.joda.time.DateTime
 
 import scala.concurrent.Await
 import scala.concurrent.duration._
