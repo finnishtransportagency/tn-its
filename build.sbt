@@ -1,4 +1,3 @@
-val scalaVersion = "2.11.8"
 val scalatraVersion = "2.4.0"
 
 lazy val root =
@@ -9,7 +8,7 @@ lazy val root =
       organization := "fi.liikennevirasto.digiroad2",
       version := "0.1.0-SNAPSHOT",
       mainClass in Compile := Some("JettyLauncher"),
-      scalaVersion := scalaVersion,
+      scalaVersion := "2.11.8",
       libraryDependencies ++= Seq(
         "org.scalatra" %% "scalatra" % scalatraVersion,
         "org.scalatra" %% "scalatra-json" % scalatraVersion,
