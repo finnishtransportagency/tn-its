@@ -1,12 +1,10 @@
 package fi.liikennevirasto.digiroad2.tnits
 
 import java.io.InputStream
-import java.net.URLDecoder
-import java.net.URLEncoder
+import java.net.{URLDecoder, URLEncoder}
 
+import dispatch.Defaults._
 import dispatch._
-import Defaults._
-import com.ning.http.client.Response
 import org.jsoup.Jsoup
 
 import scala.collection.JavaConverters._
