@@ -26,10 +26,14 @@ object RosatteConverter {
         password = sys.env.getOrElse("CHANGE_API_PASSWORD", ""))
 
   def main(args: Array[String]) {
+    val speedLimitFeatures = readSpeedLimitChanges
+    println(convertToChangeDataSet(speedLimitFeatures))
+  }
+
+  def readSpeedLimitChanges: Seq[Feature] = {
     val req = (changesApiUrl / "speed_limits").addQueryParameter("since", "2016-03-01T16:00")
     val contents = Await.result(Http(req OK as.String), 30.seconds)
-    val speedLimitFeatures = (parse(contents) \ "features").extract[Seq[GeoJson.Feature]]
-    println(convertToChangeDataSet(speedLimitFeatures))
+    (parse(contents) \ "features").extract[Seq[Feature]]
   }
 
   def convertToChangeDataSet(speedLimitFeatures: Seq[Feature]) = {
