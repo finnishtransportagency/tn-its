@@ -36,7 +36,7 @@ object RemoteDatasets {
   def get(id: String): Future[InputStream] =
     Http(dataSetUrl(id) OK as.Response(_.getResponseBodyAsStream))
 
-  def put(id: String, contents: String): Unit = {
+  def put(filename: String, contents: String): Unit = {
     val client = new FTPClient
     println("Connect")
     client.connect("aineistot.liikennevirasto.fi")
@@ -48,7 +48,6 @@ object RemoteDatasets {
     println("Change directory")
     if (!client.changeWorkingDirectory("tnits-converter"))
       throw new IllegalStateException("No such directory: tn-its")
-    val filename = s"$id.xml"
     println("List files")
     val files = client.listNames()
     if (files == null)
@@ -57,7 +56,7 @@ object RemoteDatasets {
       throw new IllegalArgumentException(s"$filename already exists on server")
     println("Save file")
     if (!client.storeFile(filename, new ByteArrayInputStream(contents.getBytes("UTF-8"))))
-      throw new IllegalStateException(client.getReplyString)
+      throw new IllegalStateException(s"Error saving file `$filename`: ${client.getReplyString}")
     println("Logout")
     if (!client.logout())
       throw new IllegalStateException(client.getReplyString)

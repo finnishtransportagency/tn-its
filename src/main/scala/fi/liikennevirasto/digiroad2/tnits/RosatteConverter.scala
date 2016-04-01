@@ -1,6 +1,8 @@
 package fi.liikennevirasto.digiroad2.tnits
 
+import java.net.URLEncoder
 import java.time.Instant
+import java.util.Base64
 
 import dispatch.Defaults._
 import dispatch._
@@ -10,6 +12,7 @@ import scala.concurrent.Await
 import scala.concurrent.duration._
 import org.json4s._
 import org.json4s.jackson.JsonMethods._
+import sun.misc.BASE64Encoder
 
 object GeoJson {
   case class Feature(geometry: LineString, properties: Map[String, Any])
@@ -29,10 +32,12 @@ object RosatteConverter {
   def main(args: Array[String]) {
     try {
       val start = Instant.parse("2016-03-01T22:00:00Z")
+      val end = Instant.now
       val speedLimitFeatures = readSpeedLimitChanges(start)
-      val result = convertToChangeDataSet(speedLimitFeatures, start)
+      val result = convertToChangeDataSet(speedLimitFeatures, start, end)
+      val id = Rosatte.encodeDataSetId(Rosatte.LiikennevirastoUUID, start, end)
       println(result)
-      RemoteDatasets.put("test-id", result.toString)
+      RemoteDatasets.put(s"${URLEncoder.encode(id, "UTF-8")}.xml", result.toString)
     } finally {
       Http.shutdown()
     }
@@ -44,11 +49,9 @@ object RosatteConverter {
     (parse(contents) \ "features").extract[Seq[Feature]]
   }
 
-  def convertToChangeDataSet(speedLimitFeatures: Seq[Feature], startTime: Instant) = {
+  def convertToChangeDataSet(speedLimitFeatures: Seq[Feature], startTime: Instant, endTime: Instant): Any = {
     // todo: replace current time with the latest modification time from changes
     //       or specify explicitly in the change api
-    val endTime = Instant.now()
-
     <rst:ROSATTESafetyFeatureDataset xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:net="urn:x-inspire:specification:gmlas:Network:3.2" xmlns:openlr="http://www.openlr.org/openlr" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:TPEG="TPEG" xmlns:rst="http://www.ertico.com/en/subprojects/rosatte/rst" xsi:schemaLocation="http://www.ertico.com/en/subprojects/rosatte/rst http://rosatte-no.triona.se/schemas/Rosatte.xsd" gml:id="i0fbf03ad-5c7a-4490-bb7c-64f95a91cb3c">
       { speedLimitFeatures.map(featureMember) }
       <rst:metadata>
