@@ -42,3 +42,4 @@ pubsub/target
 .*.sw?
 .idea
 
+.env
