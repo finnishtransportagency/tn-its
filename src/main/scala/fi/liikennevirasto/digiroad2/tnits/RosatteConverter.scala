@@ -27,9 +27,15 @@ object RosatteConverter {
         password = sys.env.getOrElse("CHANGE_API_PASSWORD", ""))
 
   def main(args: Array[String]) {
-    val start = Instant.parse("2016-03-01T22:00:00Z")
-    val speedLimitFeatures = readSpeedLimitChanges(start)
-    println(convertToChangeDataSet(speedLimitFeatures, start))
+    try {
+      val start = Instant.parse("2016-03-01T22:00:00Z")
+      val speedLimitFeatures = readSpeedLimitChanges(start)
+      val result = convertToChangeDataSet(speedLimitFeatures, start)
+      println(result)
+      RemoteDatasets.put("test-id", result.toString)
+    } finally {
+      Http.shutdown()
+    }
   }
 
   def readSpeedLimitChanges(since: Instant): Seq[Feature] = {

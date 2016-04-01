@@ -1,13 +1,15 @@
 package fi.liikennevirasto.digiroad2.tnits
 
-import java.io.InputStream
+import java.io.{ByteArrayInputStream, InputStream}
 import java.net.{URLDecoder, URLEncoder}
 
 import dispatch.Defaults._
 import dispatch._
+import org.apache.commons.net.ftp.{FTPClient, FTPClientConfig}
 import org.jsoup.Jsoup
 
 import scala.collection.JavaConverters._
+import scala.io.Source
 
 object RemoteDatasets {
   private val baseUrl: Req =
@@ -33,4 +35,34 @@ object RemoteDatasets {
 
   def get(id: String): Future[InputStream] =
     Http(dataSetUrl(id) OK as.Response(_.getResponseBodyAsStream))
+
+  def put(id: String, contents: String): Unit = {
+    val client = new FTPClient
+    println("Connect")
+    client.connect("aineistot.liikennevirasto.fi")
+    val username = sys.env.getOrElse("AINEISTOT_USERNAME", "")
+    val password = sys.env.getOrElse("AINEISTOT_PASSWORD", "")
+    println("Login")
+    if (!client.login(username, password))
+      throw new IllegalArgumentException("Login failed")
+    println("Change directory")
+    if (!client.changeWorkingDirectory("tnits-converter"))
+      throw new IllegalStateException("No such directory: tn-its")
+    val filename = s"$id.xml"
+    println("List files")
+    val files = client.listNames()
+    if (files == null)
+      throw new IllegalStateException(client.getReplyString)
+    if (files.contains(filename))
+      throw new IllegalArgumentException(s"$filename already exists on server")
+    println("Save file")
+    if (!client.storeFile(filename, new ByteArrayInputStream(contents.getBytes("UTF-8"))))
+      throw new IllegalStateException(client.getReplyString)
+    println("Logout")
+    if (!client.logout())
+      throw new IllegalStateException(client.getReplyString)
+    println("Disconnect")
+    client.disconnect()
+    println("Done")
+  }
 }
