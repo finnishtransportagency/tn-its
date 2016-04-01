@@ -20,6 +20,7 @@ lazy val root =
         "javax.servlet" % "javax.servlet-api" % "3.1.0" % "provided",
         "net.databinder.dispatch" %% "dispatch-core" % "0.11.3",
         "org.jsoup" % "jsoup" % "1.8.3",
+        "commons-net" % "commons-net" % "3.4",
         // Needed by map-1.4.2.jar
         "org.apache.logging.log4j" % "log4j-1.2-api" % "2.5" % "compile",
         "org.apache.logging.log4j" % "log4j-api" % "2.5" % "compile",
