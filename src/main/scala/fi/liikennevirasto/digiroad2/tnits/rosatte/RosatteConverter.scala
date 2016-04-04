@@ -62,6 +62,7 @@ object RosatteConverter {
     val geometry = feature.geometry.coordinates.map(_.take(2)).flatten.mkString(" ")
     val startMeasure = feature.properties("startMeasure").asInstanceOf[Double]
     val endMeasure = feature.properties("endMeasure").asInstanceOf[Double]
+    val assetId = feature.properties("id").asInstanceOf[BigInt].intValue
     val link = feature.properties("link").asInstanceOf[Map[String, Any]]
     val linkReference = "FI.1000018." + link("id").asInstanceOf[BigInt].intValue.toString
     val applicableDirection = feature.properties("sideCode").asInstanceOf[BigInt].intValue match {
@@ -75,7 +76,7 @@ object RosatteConverter {
         <rst:id>
           <rst:SafetyFeatureId>
             <rst:providerId>FI.LiVi.OTH</rst:providerId>
-            <rst:id>{"003c4744-28c0-42ef-be3d-107bea6bf006"}</rst:id>
+            <rst:id>{ assetId }</rst:id>
           </rst:SafetyFeatureId>
         </rst:id>
         <rst:locationReference>
