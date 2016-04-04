@@ -36,7 +36,6 @@ object RosatteConverter {
       val speedLimitFeatures = readSpeedLimitChanges(start)
       val result = convertToChangeDataSet(speedLimitFeatures, start, end)
       val id = Rosatte.encodeDataSetId(Rosatte.LiikennevirastoUUID, start, end)
-      println(result)
       RemoteDatasets.put(s"${URLEncoder.encode(id, "UTF-8")}.xml", result.toString)
     } finally {
       Http.shutdown()
