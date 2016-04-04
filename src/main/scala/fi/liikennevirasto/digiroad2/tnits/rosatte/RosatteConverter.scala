@@ -62,6 +62,8 @@ object RosatteConverter {
     val geometry = feature.geometry.coordinates.flatten.mkString(" ")
     val startMeasure = feature.properties("startMeasure").asInstanceOf[Double]
     val endMeasure = feature.properties("endMeasure").asInstanceOf[Double]
+    val link = feature.properties("link").asInstanceOf[Map[String, Any]]
+    val linkReference = "FI.1000018." + link("id").asInstanceOf[BigInt].intValue.toString
     val applicableDirection = feature.properties("sideCode").asInstanceOf[BigInt].intValue match {
       case 1 => "bothDirections"
       case 2 => "inDirection"
@@ -79,7 +81,7 @@ object RosatteConverter {
         <rst:locationReference>
           <rst:INSPIRELinearLocation gml:id={UUID.randomUUID().toString}>
             <net:SimpleLinearReference>
-              <net:element xlink:href="SE.TrV.NVDB:LinkSequence:1000:9729"/>
+              <net:element xlink:href={ linkReference }/>
               <net:applicableDirection>{ applicableDirection }</net:applicableDirection>
               <net:fromPosition uom="meter">{ startMeasure }</net:fromPosition>
               <net:toPosition uom="meter">{ endMeasure }</net:toPosition>
