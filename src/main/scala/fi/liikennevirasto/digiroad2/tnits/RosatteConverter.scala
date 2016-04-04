@@ -23,7 +23,7 @@ object RosatteConverter {
   protected implicit val jsonFormats: Formats = DefaultFormats
 
   private val changesApiUrl: Req =
-    (host("localhost:6666") / "digiroad" / "api" / "changes")
+    (host(sys.env.getOrElse("CHANGE_API_URL", "")))
       .setFollowRedirects(true)
       .as(
         user = sys.env.getOrElse("CHANGE_API_USERNAME", ""),
