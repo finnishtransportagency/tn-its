@@ -2,7 +2,7 @@ package fi.liikennevirasto.digiroad2.tnits.openlr
 
 import java.util
 
-import fi.liikennevirasto.digiroad2.tnits.Point
+import fi.liikennevirasto.digiroad2.tnits.geometry.Point
 import openlr.map.{GeoCoordinates, Line, Node}
 
 case class DigiroadNode(point: Point) extends Node {

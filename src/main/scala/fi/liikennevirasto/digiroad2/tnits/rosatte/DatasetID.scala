@@ -1,14 +1,14 @@
-package fi.liikennevirasto.digiroad2.tnits
+package fi.liikennevirasto.digiroad2.tnits.rosatte
 
 import java.math.BigInteger
 import java.nio.ByteBuffer
 import java.time.Instant
 import java.util.{Base64, UUID}
 
-object Rosatte {
+object DatasetID {
   val LiikennevirastoUUID = UUID.fromString("f90056dc-8945-4885-9860-f0f017855cfd")
 
-  def encodeDataSetId(issuer: UUID, start: Instant, end: Instant): String = {
+  def encode(issuer: UUID, start: Instant, end: Instant): String = {
     val bytes = ByteBuffer.allocate(32)
     bytes.putLong(issuer.getMostSignificantBits)
     bytes.putLong(issuer.getLeastSignificantBits)
@@ -21,7 +21,7 @@ object Rosatte {
 
   case class DataSetId(id: UUID, startDate: Instant, endDate: Instant)
 
-  def decodeDataSetId(id: String): DataSetId = {
+  def decode(id: String): DataSetId = {
     val bytes = Base64.getDecoder.decode(id)
     val uuid = new UUID(bytesToLong(bytes.slice(0, 8)), bytesToLong(bytes.slice(8, 16)))
     val start = bytesToLong(bytes.slice(16, 24))

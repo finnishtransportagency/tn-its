@@ -3,6 +3,7 @@ package fi.liikennevirasto.digiroad2.tnits
 import java.net.URLDecoder
 import javax.servlet.http.HttpServletRequest
 
+import fi.liikennevirasto.digiroad2.tnits.rosatte.DatasetID
 import org.scalatra._
 
 import scala.concurrent.ExecutionContext
@@ -20,7 +21,7 @@ class Digiroad2TnItsApi extends ScalatraServlet with FutureSupport {
 
           val decodedDatasetIds =
             dataSetIds
-              .map { id => (id, Rosatte.decodeDataSetId(URLDecoder.decode(id, "UTF-8"))) }
+              .map { id => (id, DatasetID.decode(URLDecoder.decode(id, "UTF-8"))) }
               .sortBy { case (_, id) => id.startDate }
 
           val wantedDataSetIds =
@@ -28,7 +29,7 @@ class Digiroad2TnItsApi extends ScalatraServlet with FutureSupport {
               val lastValidDataSetId =
                 params("lastValidDatasetId")
               val wantedId =
-                Rosatte.decodeDataSetId(lastValidDataSetId)
+                DatasetID.decode(lastValidDataSetId)
               decodedDatasetIds
                 .filter { case (_, id) => id.startDate.isAfter(wantedId.startDate) }
                 .map(_._1)

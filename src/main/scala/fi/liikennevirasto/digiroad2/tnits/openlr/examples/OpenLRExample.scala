@@ -2,7 +2,7 @@ package fi.liikennevirasto.digiroad2.tnits.openlr.examples
 
 import java.util.Base64
 
-import fi.liikennevirasto.digiroad2.tnits.Point
+import fi.liikennevirasto.digiroad2.tnits.geometry.Point
 import fi.liikennevirasto.digiroad2.tnits.openlr.{DigiroadFixtureMapDatabase, DigiroadLine}
 import openlr.binary.ByteArray
 import openlr.encoder.{OpenLREncoder, OpenLREncoderParameter}

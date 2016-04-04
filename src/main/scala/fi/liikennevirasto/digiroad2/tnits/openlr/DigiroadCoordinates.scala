@@ -1,6 +1,6 @@
 package fi.liikennevirasto.digiroad2.tnits.openlr
 
-import fi.liikennevirasto.digiroad2.tnits.Point
+import fi.liikennevirasto.digiroad2.tnits.geometry.Point
 import openlr.map.GeoCoordinates
 
 case class DigiroadCoordinates(point: Point) extends GeoCoordinates {

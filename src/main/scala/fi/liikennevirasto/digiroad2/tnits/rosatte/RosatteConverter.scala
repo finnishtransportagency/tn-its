@@ -1,23 +1,18 @@
-package fi.liikennevirasto.digiroad2.tnits
+package fi.liikennevirasto.digiroad2.tnits.rosatte
 
 import java.net.URLEncoder
 import java.time.Instant
-import java.util.{UUID, Base64}
+import java.util.UUID
 
 import dispatch.Defaults._
 import dispatch._
-import fi.liikennevirasto.digiroad2.tnits.GeoJson.Feature
+import fi.liikennevirasto.digiroad2.tnits.RemoteDatasets
+import fi.liikennevirasto.digiroad2.tnits.geojson.Feature
+import org.json4s._
+import org.json4s.jackson.JsonMethods._
 
 import scala.concurrent.Await
 import scala.concurrent.duration._
-import org.json4s._
-import org.json4s.jackson.JsonMethods._
-import sun.misc.BASE64Encoder
-
-object GeoJson {
-  case class Feature(geometry: LineString, properties: Map[String, Any])
-  case class LineString(coordinates: Seq[Seq[Double]])
-}
 
 object RosatteConverter {
   protected implicit val jsonFormats: Formats = DefaultFormats
@@ -35,7 +30,7 @@ object RosatteConverter {
       val end = Instant.now
       val speedLimitFeatures = readSpeedLimitChanges(start)
       val result = convertToChangeDataSet(speedLimitFeatures, start, end)
-      val id = Rosatte.encodeDataSetId(Rosatte.LiikennevirastoUUID, start, end)
+      val id = DatasetID.encode(DatasetID.LiikennevirastoUUID, start, end)
       RemoteDatasets.put(s"${URLEncoder.encode(id, "UTF-8")}.xml", result.toString)
     } finally {
       Http.shutdown()
@@ -54,7 +49,7 @@ object RosatteConverter {
     <rst:ROSATTESafetyFeatureDataset xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:net="urn:x-inspire:specification:gmlas:Network:3.2" xmlns:openlr="http://www.openlr.org/openlr" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:TPEG="TPEG" xmlns:rst="http://www.ertico.com/en/subprojects/rosatte/rst" xsi:schemaLocation="http://www.ertico.com/en/subprojects/rosatte/rst http://rosatte-no.triona.se/schemas/Rosatte.xsd" gml:id="i0fbf03ad-5c7a-4490-bb7c-64f95a91cb3c">
       { speedLimitFeatures.map(featureMember) }
       <rst:metadata>
-        <rst:datasetId>{ Rosatte.encodeDataSetId(Rosatte.LiikennevirastoUUID, startTime, endTime)}</rst:datasetId>
+        <rst:datasetId>{ DatasetID.encode(DatasetID.LiikennevirastoUUID, startTime, endTime)}</rst:datasetId>
         <rst:datasetCreationTime>{ endTime }</rst:datasetCreationTime>
       </rst:metadata>
       <rst:type>Update</rst:type>

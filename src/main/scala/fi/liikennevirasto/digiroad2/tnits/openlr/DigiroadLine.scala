@@ -4,7 +4,7 @@ import java.awt.geom.{Path2D, Point2D}
 import java.util
 import java.util.Locale
 
-import fi.liikennevirasto.digiroad2.tnits.Point
+import fi.liikennevirasto.digiroad2.tnits.geometry.Point
 import openlr.map._
 
 case class DigiroadLine(id: Long, geometry: Seq[Point], length: Int) extends Line {
