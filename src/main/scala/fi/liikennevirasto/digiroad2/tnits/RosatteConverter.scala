@@ -66,6 +66,8 @@ object RosatteConverter {
     val changeType = feature.properties("changeType").asInstanceOf[String]
     val speedLimitValue = feature.properties("value").asInstanceOf[BigInt]
     val geometry = feature.geometry.coordinates.flatten.mkString(" ")
+    val startMeasure = feature.properties("startMeasure").asInstanceOf[Double]
+    val endMeasure = feature.properties("endMeasure").asInstanceOf[Double]
     // todo: replace hardcoded values
     <gml:featureMember>
       <rst:GenericSafetyFeature gml:id={UUID.randomUUID().toString}>
@@ -80,8 +82,8 @@ object RosatteConverter {
             <net:SimpleLinearReference>
               <net:element xlink:href="SE.TrV.NVDB:LinkSequence:1000:9729"/>
               <net:applicableDirection>inDirection</net:applicableDirection>
-              <net:fromPosition uom="meter">0</net:fromPosition>
-              <net:toPosition uom="meter">127.108815059772</net:toPosition>
+              <net:fromPosition uom="meter">{ startMeasure }</net:fromPosition>
+              <net:toPosition uom="meter">{ endMeasure }</net:toPosition>
             </net:SimpleLinearReference>
           </rst:INSPIRELinearLocation>
         </rst:locationReference>
