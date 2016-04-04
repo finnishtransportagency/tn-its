@@ -25,6 +25,7 @@ lazy val root =
         "org.apache.logging.log4j" % "log4j-1.2-api" % "2.5" % "compile",
         "org.apache.logging.log4j" % "log4j-api" % "2.5" % "compile",
         "org.apache.logging.log4j" % "log4j-core" % "2.5" % "compile"
-      )
+      ),
+      containerPort in Jetty := 8090
     )
     .enablePlugins(JettyPlugin, JavaAppPackaging)
