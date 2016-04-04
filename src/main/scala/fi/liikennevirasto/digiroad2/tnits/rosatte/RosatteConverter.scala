@@ -59,7 +59,7 @@ object RosatteConverter {
   def featureMember(feature: Feature) = {
     val changeType = feature.properties("changeType").asInstanceOf[String]
     val speedLimitValue = feature.properties("value").asInstanceOf[BigInt]
-    val geometry = feature.geometry.coordinates.flatten.mkString(" ")
+    val geometry = feature.geometry.coordinates.map(_.take(2)).flatten.mkString(" ")
     val startMeasure = feature.properties("startMeasure").asInstanceOf[Double]
     val endMeasure = feature.properties("endMeasure").asInstanceOf[Double]
     val link = feature.properties("link").asInstanceOf[Map[String, Any]]
@@ -102,7 +102,7 @@ object RosatteConverter {
         </rst:updateInfo>
         <rst:source>Regulation</rst:source>
         <rst:encodedGeometry>
-          <gml:LineString gml:id={UUID.randomUUID().toString} srsDimension="3">
+          <gml:LineString gml:id={UUID.randomUUID().toString} srsDimension="2">
             <gml:posList>{geometry}</gml:posList>
           </gml:LineString>
         </rst:encodedGeometry>
