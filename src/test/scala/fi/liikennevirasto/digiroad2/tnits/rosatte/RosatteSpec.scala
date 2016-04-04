@@ -1,10 +1,9 @@
-package fi.liikennevirasto.digiroad2.tnits
+package fi.liikennevirasto.digiroad2.tnits.rosatte
 
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.UUID
 
-import fi.liikennevirasto.digiroad2.tnits.rosatte.DatasetID
 import fi.liikennevirasto.digiroad2.tnits.rosatte.DatasetID.DataSetId
 import org.specs2.mutable.Specification
 
