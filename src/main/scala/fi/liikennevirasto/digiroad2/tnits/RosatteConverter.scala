@@ -2,7 +2,7 @@ package fi.liikennevirasto.digiroad2.tnits
 
 import java.net.URLEncoder
 import java.time.Instant
-import java.util.Base64
+import java.util.{UUID, Base64}
 
 import dispatch.Defaults._
 import dispatch._
@@ -68,7 +68,7 @@ object RosatteConverter {
     val geometry = feature.geometry.coordinates.flatten.mkString(" ")
     // todo: replace hardcoded values
     <gml:featureMember>
-      <rst:GenericSafetyFeature gml:id="i65736963-342f-4e0d-8c8e-76cb4d39387f">
+      <rst:GenericSafetyFeature gml:id={UUID.randomUUID().toString}>
         <rst:id>
           <rst:SafetyFeatureId>
             <rst:providerId>FI.LiVi.OTH</rst:providerId>
@@ -76,7 +76,7 @@ object RosatteConverter {
           </rst:SafetyFeatureId>
         </rst:id>
         <rst:locationReference>
-          <rst:INSPIRELinearLocation gml:id="i9c28bb18-72b9-460f-b243-75d4bd2afc88">
+          <rst:INSPIRELinearLocation gml:id={UUID.randomUUID().toString}>
             <net:SimpleLinearReference>
               <net:element xlink:href="SE.TrV.NVDB:LinkSequence:1000:9729"/>
               <net:applicableDirection>inDirection</net:applicableDirection>
@@ -86,7 +86,7 @@ object RosatteConverter {
           </rst:INSPIRELinearLocation>
         </rst:locationReference>
         <rst:locationReference>
-          <rst:OpenLRLocationString gml:id="i2e8364eb-eb2e-4fee-a8ec-4e425ffc0866">
+          <rst:OpenLRLocationString gml:id={UUID.randomUUID().toString}>
             <rst:base64String>CwjjfCgGCBt5Av9MADYbCQ==</rst:base64String>
             <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
           </rst:OpenLRLocationString>
@@ -99,7 +99,7 @@ object RosatteConverter {
         </rst:updateInfo>
         <rst:source>Regulation</rst:source>
         <rst:encodedGeometry>
-          <gml:LineString gml:id="ibce9895a-b1b8-47be-81a4-99ea59f4cfe6" srsDimension="3">
+          <gml:LineString gml:id={UUID.randomUUID().toString} srsDimension="3">
             <gml:posList>{geometry}</gml:posList>
           </gml:LineString>
         </rst:encodedGeometry>
