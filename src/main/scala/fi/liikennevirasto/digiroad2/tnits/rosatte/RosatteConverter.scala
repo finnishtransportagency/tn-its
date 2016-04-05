@@ -2,12 +2,17 @@ package fi.liikennevirasto.digiroad2.tnits.rosatte
 
 import java.net.URLEncoder
 import java.time.Instant
-import java.util.UUID
+import java.util.{Base64, UUID}
 
 import dispatch.Defaults._
 import dispatch._
 import fi.liikennevirasto.digiroad2.tnits.RemoteDatasets
 import fi.liikennevirasto.digiroad2.tnits.geojson.Feature
+import fi.liikennevirasto.digiroad2.tnits.geometry.Point
+import fi.liikennevirasto.digiroad2.tnits.openlr.{DigiroadFixtureMapDatabase, DigiroadLine}
+import openlr.binary.ByteArray
+import openlr.encoder.{OpenLREncoder, OpenLREncoderParameter}
+import openlr.location.LocationFactory
 import org.json4s._
 import org.json4s.jackson.JsonMethods._
 
@@ -32,7 +37,8 @@ object RosatteConverter {
       val onlyOneWaySpeedLimitFeatures = splitFeaturesApplicableToBothDirections(speedLimitFeatures)
       val result = convertToChangeDataSet(onlyOneWaySpeedLimitFeatures, start, end)
       val id = DatasetID.encode(DatasetID.LiikennevirastoUUID, start, end)
-      RemoteDatasets.put(s"${URLEncoder.encode(id, "UTF-8")}.xml", result.toString)
+      println(result)
+//      RemoteDatasets.put(s"${URLEncoder.encode(id, "UTF-8")}.xml", result.toString)
     } finally {
       Http.shutdown()
     }
@@ -69,6 +75,8 @@ object RosatteConverter {
     }
   }
 
+//  case class Asset(startMeasure: Double, endMeasure: Double, direction: Direction, link: Link)
+
   def featureMember(feature: Feature) = {
     val changeType = feature.properties("changeType").asInstanceOf[String]
     val speedLimitValue = feature.properties("value").asInstanceOf[BigInt]
@@ -83,6 +91,7 @@ object RosatteConverter {
       case 3 => "inOppositeDirection"
       case _ => ""
     }
+    val openLR = encodeOpenLRLocationString(startMeasure, endMeasure, applicableDirection, link)
     <gml:featureMember>
       <rst:GenericSafetyFeature gml:id={UUID.randomUUID().toString}>
         <rst:id>
@@ -103,7 +112,7 @@ object RosatteConverter {
         </rst:locationReference>
         <rst:locationReference>
           <rst:OpenLRLocationString gml:id={UUID.randomUUID().toString}>
-            <rst:base64String>CwjjfCgGCBt5Av9MADYbCQ==</rst:base64String>
+            <rst:base64String>{openLR}</rst:base64String>
             <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
           </rst:OpenLRLocationString>
         </rst:locationReference>
@@ -129,5 +138,40 @@ object RosatteConverter {
         </rst:properties>
       </rst:GenericSafetyFeature>
     </gml:featureMember>
+  }
+
+  private def encodeOpenLRLocationString(startMeasure: Double, endMeasure: Double, applicableDirection: String, link: Map[String, Any]): String = {
+    import collection.JavaConverters._
+
+    val points =
+      link("geometry")
+        .asInstanceOf[Map[String, Any]]("coordinates")
+        .asInstanceOf[Seq[Seq[Double]]]
+        .map { case Seq(x, y, z) => Point(x, y, z) }
+
+    val linkGeometry =
+      if (applicableDirection == "inOppositeDirection")
+        points.reverse
+      else
+        points
+
+    val linkLength =
+      link("properties").asInstanceOf[Map[String, Any]]("length").asInstanceOf[Double]
+
+    val line = DigiroadLine(1, linkGeometry, linkLength.round.toInt)
+
+    val mapDatabase = new DigiroadFixtureMapDatabase(Seq(line))
+    val encoder = new OpenLREncoder
+    val param = new OpenLREncoderParameter.Builder()
+      .`with`(mapDatabase)
+      .buildParameter()
+
+    val lineLocation =
+      LocationFactory.createLineLocationWithOffsets(
+        s"loc-1", Seq(line).asJava, startMeasure.round.toInt, (linkLength - endMeasure).round.toInt)
+    val encoded = encoder.encodeLocation(param, lineLocation)
+    val reference = encoded.getLocationReference("binary")
+    val data = reference.getLocationReferenceData.asInstanceOf[ByteArray]
+    new String(Base64.getEncoder.encode(data.getData), "ASCII")
   }
 }

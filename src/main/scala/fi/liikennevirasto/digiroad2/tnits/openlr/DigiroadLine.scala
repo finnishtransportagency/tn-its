@@ -18,6 +18,7 @@ case class DigiroadLine(id: Long, geometry: Seq[Point], length: Int) extends Lin
     length
 
   override def getFRC: FunctionalRoadClass =
+    // TODO: Implement
     FunctionalRoadClass.FRC_0
 
   override def getStartNode: Node =
@@ -27,6 +28,7 @@ case class DigiroadLine(id: Long, geometry: Seq[Point], length: Int) extends Lin
     DigiroadNode(geometry.last)
 
   override def getFOW: FormOfWay =
+    // TODO: Implement
     FormOfWay.MOTORWAY
 
   override def getShape: Path2D.Double =
