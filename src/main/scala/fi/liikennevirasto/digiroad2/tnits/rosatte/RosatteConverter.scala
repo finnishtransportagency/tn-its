@@ -1,11 +1,12 @@
 package fi.liikennevirasto.digiroad2.tnits.rosatte
 
+import java.net.URLEncoder
 import java.time.Instant
 import java.util.{Base64, UUID}
 
 import dispatch.Defaults._
 import dispatch._
-import fi.liikennevirasto.digiroad2.tnits.geojson.Feature
+import fi.liikennevirasto.digiroad2.tnits.{RemoteDatasets, geojson}
 import fi.liikennevirasto.digiroad2.tnits.geometry.Point
 import fi.liikennevirasto.digiroad2.tnits.openlr.{DigiroadFixtureMapDatabase, DigiroadLine}
 import openlr.binary.ByteArray
@@ -19,6 +20,17 @@ import scala.concurrent.duration._
 
 object RosatteConverter {
   protected implicit val jsonFormats: Formats = DefaultFormats
+
+  case class Properties(
+     sideCode: Int,
+     changeType: String,
+     value: Int,
+     startMeasure: Double,
+     endMeasure: Double,
+     id: Long,
+     link: Map[String, Any])
+
+  type Feature = geojson.Feature[Properties]
 
   private val changesApiUrl: Req =
     host(sys.env.getOrElse("CHANGE_API_URL", ""))
@@ -36,7 +48,7 @@ object RosatteConverter {
       val result = convertToChangeDataSet(onlyOneWaySpeedLimitFeatures, start, end)
       val id = DatasetID.encode(DatasetID.LiikennevirastoUUID, start, end)
       println(result)
-//      RemoteDatasets.put(s"${URLEncoder.encode(id, "UTF-8")}.xml", result.toString)
+      RemoteDatasets.put(s"${URLEncoder.encode(id, "UTF-8")}.xml", result.toString)
     } finally {
       Http.shutdown()
     }
@@ -63,28 +75,23 @@ object RosatteConverter {
 
   def splitFeaturesApplicableToBothDirections(features: Seq[Feature]): Seq[Feature] = {
     features.flatMap { feature =>
-      feature.properties("sideCode").asInstanceOf[BigInt].intValue match {
+      feature.properties.sideCode match {
         case 1 =>
-          Seq(feature.copy(properties = feature.properties.updated("sideCode", BigInt(2))),
-            feature.copy(properties = feature.properties.updated("sideCode", BigInt(3))))
+          Seq(feature.copy(properties = feature.properties.copy(sideCode = 2)),
+            feature.copy(properties = feature.properties.copy(sideCode = 3)))
         case _ =>
           Seq(feature)
       }
     }
   }
 
-//  case class Asset(startMeasure: Double, endMeasure: Double, direction: Direction, link: Link)
-
   def featureMember(feature: Feature) = {
-    val changeType = feature.properties("changeType").asInstanceOf[String]
-    val speedLimitValue = feature.properties("value").asInstanceOf[BigInt]
-    val geometry = feature.geometry.coordinates.map(_.take(2)).flatten.mkString(" ")
-    val startMeasure = feature.properties("startMeasure").asInstanceOf[Double]
-    val endMeasure = feature.properties("endMeasure").asInstanceOf[Double]
-    val assetId = feature.properties("id").asInstanceOf[BigInt].intValue
-    val link = feature.properties("link").asInstanceOf[Map[String, Any]]
+    val geometry = feature.geometry.coordinates.flatMap(_.take(2)).mkString(" ")
+    val startMeasure = feature.properties.startMeasure
+    val endMeasure = feature.properties.endMeasure
+    val link = feature.properties.link
     val linkReference = "FI.1000018." + link("id").asInstanceOf[BigInt].intValue.toString
-    val applicableDirection = feature.properties("sideCode").asInstanceOf[BigInt].intValue match {
+    val applicableDirection = feature.properties.sideCode match {
       case 2 => "inDirection"
       case 3 => "inOppositeDirection"
       case _ => ""
@@ -95,7 +102,7 @@ object RosatteConverter {
         <rst:id>
           <rst:SafetyFeatureId>
             <rst:providerId>FI.LiVi.OTH</rst:providerId>
-            <rst:id>{ assetId }</rst:id>
+            <rst:id>{feature.properties.id}</rst:id>
           </rst:SafetyFeatureId>
         </rst:id>
         <rst:locationReference>
@@ -116,7 +123,8 @@ object RosatteConverter {
         </rst:locationReference>
         <rst:updateInfo>
           <rst:UpdateInfo>
-            <rst:type>{changeType}</rst:type>
+            <rst:type>
+              {feature.properties.changeType}</rst:type>
           </rst:UpdateInfo>
         </rst:updateInfo>
         <rst:source>Regulation</rst:source>
@@ -130,7 +138,8 @@ object RosatteConverter {
           <rst:SafetyFeaturePropertyValue>
             <rst:type>MaximumSpeedLimit</rst:type>
             <rst:propertyValue>
-              <gml:measure uom="kmph">{speedLimitValue}</gml:measure>
+              <gml:measure uom="kmph">
+                {feature.properties.value}</gml:measure>
             </rst:propertyValue>
           </rst:SafetyFeaturePropertyValue>
         </rst:properties>
