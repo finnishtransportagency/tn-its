@@ -70,7 +70,6 @@ object RosatteConverter {
       case 2 => "inDirection"
       case 3 => "inOppositeDirection"
     }
-    // todo: replace hardcoded values
     <gml:featureMember>
       <rst:GenericSafetyFeature gml:id={UUID.randomUUID().toString}>
         <rst:id>
@@ -95,7 +94,6 @@ object RosatteConverter {
             <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
           </rst:OpenLRLocationString>
         </rst:locationReference>
-        <rst:validFrom>2013-12-20</rst:validFrom>
         <rst:updateInfo>
           <rst:UpdateInfo>
             <rst:type>{changeType}</rst:type>
