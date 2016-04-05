@@ -1,12 +1,10 @@
 package fi.liikennevirasto.digiroad2.tnits.rosatte
 
-import java.net.URLEncoder
 import java.time.Instant
 import java.util.{Base64, UUID}
 
 import dispatch.Defaults._
 import dispatch._
-import fi.liikennevirasto.digiroad2.tnits.RemoteDatasets
 import fi.liikennevirasto.digiroad2.tnits.geojson.Feature
 import fi.liikennevirasto.digiroad2.tnits.geometry.Point
 import fi.liikennevirasto.digiroad2.tnits.openlr.{DigiroadFixtureMapDatabase, DigiroadLine}
