@@ -29,7 +29,8 @@ object RosatteConverter {
       val start = Instant.parse("2016-03-01T22:00:00Z")
       val end = Instant.now
       val speedLimitFeatures = readSpeedLimitChanges(start)
-      val result = convertToChangeDataSet(speedLimitFeatures, start, end)
+      val onlyOneWaySpeedLimitFeatures = splitFeaturesApplicableToBothDirections(speedLimitFeatures)
+      val result = convertToChangeDataSet(onlyOneWaySpeedLimitFeatures, start, end)
       val id = DatasetID.encode(DatasetID.LiikennevirastoUUID, start, end)
       RemoteDatasets.put(s"${URLEncoder.encode(id, "UTF-8")}.xml", result.toString)
     } finally {
@@ -56,6 +57,18 @@ object RosatteConverter {
     </rst:ROSATTESafetyFeatureDataset>
   }
 
+  def splitFeaturesApplicableToBothDirections(features: Seq[Feature]): Seq[Feature] = {
+    features.flatMap { feature =>
+      feature.properties("sideCode").asInstanceOf[BigInt].intValue match {
+        case 1 =>
+          Seq(feature.copy(properties = feature.properties.updated("sideCode", BigInt(2))),
+            feature.copy(properties = feature.properties.updated("sideCode", BigInt(3))))
+        case _ =>
+          Seq(feature)
+      }
+    }
+  }
+
   def featureMember(feature: Feature) = {
     val changeType = feature.properties("changeType").asInstanceOf[String]
     val speedLimitValue = feature.properties("value").asInstanceOf[BigInt]
@@ -66,9 +79,9 @@ object RosatteConverter {
     val link = feature.properties("link").asInstanceOf[Map[String, Any]]
     val linkReference = "FI.1000018." + link("id").asInstanceOf[BigInt].intValue.toString
     val applicableDirection = feature.properties("sideCode").asInstanceOf[BigInt].intValue match {
-      case 1 => "bothDirections"
       case 2 => "inDirection"
       case 3 => "inOppositeDirection"
+      case _ => ""
     }
     <gml:featureMember>
       <rst:GenericSafetyFeature gml:id={UUID.randomUUID().toString}>
