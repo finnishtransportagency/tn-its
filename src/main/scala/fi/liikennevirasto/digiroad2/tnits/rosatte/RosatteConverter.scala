@@ -165,7 +165,7 @@ object RosatteConverter {
     val linkLength =
       link("properties").asInstanceOf[Map[String, Any]]("length").asInstanceOf[Double]
 
-    val line = DigiroadLine(1, linkGeometry, linkLength.round.toInt)
+    val line = DigiroadLine(1, linkGeometry, linkLength.floor.toInt)
 
     val mapDatabase = new DigiroadFixtureMapDatabase(Seq(line))
     val encoder = new OpenLREncoder
@@ -175,7 +175,7 @@ object RosatteConverter {
 
     val lineLocation =
       LocationFactory.createLineLocationWithOffsets(
-        s"loc-1", Seq(line).asJava, startMeasure.round.toInt, (linkLength - endMeasure).round.toInt)
+        s"loc-1", Seq(line).asJava, startMeasure.floor.toInt, (linkLength - endMeasure).floor.toInt)
     val encoded = encoder.encodeLocation(param, lineLocation)
     val reference = encoded.getLocationReference("binary")
     val data = reference.getLocationReferenceData.asInstanceOf[ByteArray]
