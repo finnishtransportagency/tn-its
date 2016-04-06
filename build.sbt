@@ -27,6 +27,7 @@ lazy val root =
         "commons-net" % "commons-net" % "3.4",
         "org.geotools" % "gt-referencing" % geoToolsVersion,
         "org.geotools" % "gt-epsg-wkt" % geoToolsVersion,
+        "javax.media" % "jai_core" % "1.1.3",
         // Needed by map-1.4.2.jar
         "org.apache.logging.log4j" % "log4j-1.2-api" % "2.5" % "compile",
         "org.apache.logging.log4j" % "log4j-api" % "2.5" % "compile",
