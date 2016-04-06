@@ -1,4 +1,5 @@
 val scalatraVersion = "2.4.0"
+val geoToolsVersion = "14.3"
 
 lazy val root =
   project
@@ -9,6 +10,7 @@ lazy val root =
       version := "0.1.0-SNAPSHOT",
       mainClass in Compile := Some("JettyLauncher"),
       scalaVersion := "2.11.8",
+      resolvers += "Open Source Geospatial Foundation Repository" at "http://download.osgeo.org/webdav/geotools/",
       libraryDependencies ++= Seq(
         "org.scalatra" %% "scalatra" % scalatraVersion,
         "org.scalatra" %% "scalatra-json" % scalatraVersion,
@@ -21,6 +23,8 @@ lazy val root =
         "net.databinder.dispatch" %% "dispatch-core" % "0.11.3",
         "org.jsoup" % "jsoup" % "1.8.3",
         "commons-net" % "commons-net" % "3.4",
+        "org.geotools" % "gt-referencing" % geoToolsVersion,
+        "org.geotools" % "gt-epsg-wkt" % geoToolsVersion,
         // Needed by map-1.4.2.jar
         "org.apache.logging.log4j" % "log4j-1.2-api" % "2.5" % "compile",
         "org.apache.logging.log4j" % "log4j-api" % "2.5" % "compile",

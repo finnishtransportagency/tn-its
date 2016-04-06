@@ -12,6 +12,7 @@ import fi.liikennevirasto.digiroad2.tnits.openlr.{DigiroadFixtureMapDatabase, Di
 import openlr.binary.ByteArray
 import openlr.encoder.{OpenLREncoder, OpenLREncoderParameter}
 import openlr.location.LocationFactory
+import org.geotools.referencing.CRS
 import org.json4s._
 import org.json4s.jackson.JsonMethods._
 
@@ -86,7 +87,9 @@ object RosatteConverter {
   }
 
   def featureMember(feature: Feature) = {
-    val geometry = feature.geometry.coordinates.flatMap(_.take(2)).mkString(" ")
+    val coordinates = feature.geometry.coordinates.flatMap(_.take(2))
+    val transformedCoordinates = convertCoordinates(coordinates, 2)
+    val geometry = transformedCoordinates.mkString(" ")
     val startMeasure = feature.properties.startMeasure
     val endMeasure = feature.properties.endMeasure
     val link = feature.properties.link
@@ -150,11 +153,20 @@ object RosatteConverter {
   private def encodeOpenLRLocationString(startMeasure: Double, endMeasure: Double, applicableDirection: String, link: Map[String, Any]): String = {
     import collection.JavaConverters._
 
-    val points =
+    val coordinates =
       link("geometry")
         .asInstanceOf[Map[String, Any]]("coordinates")
         .asInstanceOf[Seq[Seq[Double]]]
+        .flatten
+
+    val transformedCoordinates =
+      convertCoordinates(coordinates, 3)
+
+    val points =
+      transformedCoordinates
+        .grouped(3)
         .map { case Seq(x, y, z) => Point(x, y, z) }
+        .toSeq
 
     val linkGeometry =
       if (applicableDirection == "inOppositeDirection")
@@ -182,5 +194,14 @@ object RosatteConverter {
     val reference = encoded.getLocationReference("binary")
     val data = reference.getLocationReferenceData.asInstanceOf[ByteArray]
     new String(Base64.getEncoder.encode(data.getData), "ASCII")
+  }
+
+  private def convertCoordinates(coordinates: Seq[Double], dimension: Int): Seq[Double] = {
+    val OTHReferencingSystem = CRS.decode("EPSG:3067")
+    val openLRReferencingSystem = CRS.decode("EPSG:4326")
+    val transformation = CRS.findMathTransform(OTHReferencingSystem, openLRReferencingSystem)
+    val transformedCoordinates = new Array[Double](coordinates.length)
+    transformation.transform(coordinates.toArray, 0, transformedCoordinates, 0, coordinates.length / dimension)
+    transformedCoordinates
   }
 }
