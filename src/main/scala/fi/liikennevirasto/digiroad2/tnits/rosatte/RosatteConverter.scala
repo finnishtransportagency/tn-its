@@ -162,10 +162,12 @@ object RosatteConverter {
       else
         points
 
-    val linkLength =
-      link("properties").asInstanceOf[Map[String, Any]]("length").asInstanceOf[Double]
+    val linkProperties = link("properties").asInstanceOf[Map[String, Any]]
+    val linkLength = linkProperties("length").asInstanceOf[Double]
+    val functionalClass = linkProperties("functionalClass").asInstanceOf[BigInt]
+    val linkType = linkProperties("type").asInstanceOf[BigInt]
 
-    val line = DigiroadLine(1, linkGeometry, linkLength.floor.toInt)
+    val line = DigiroadLine(1, linkGeometry, linkLength.floor.toInt, functionalClass.intValue, linkType.intValue)
 
     val mapDatabase = new DigiroadFixtureMapDatabase(Seq(line))
     val encoder = new OpenLREncoder

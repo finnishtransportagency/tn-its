@@ -7,7 +7,7 @@ import java.util.Locale
 import fi.liikennevirasto.digiroad2.tnits.geometry.Point
 import openlr.map._
 
-case class DigiroadLine(id: Long, geometry: Seq[Point], length: Int) extends Line {
+case class DigiroadLine(id: Long, geometry: Seq[Point], length: Int, linkType: Int = 1, functionalClass: Int = 1) extends Line {
   override def getGeoCoordinateAlongLine(distanceAlong: Int): GeoCoordinates =
     DigiroadCoordinates(calculatePointFromLinearReference(geometry, distanceAlong.toDouble).get)
 
@@ -18,8 +18,16 @@ case class DigiroadLine(id: Long, geometry: Seq[Point], length: Int) extends Lin
     length
 
   override def getFRC: FunctionalRoadClass =
-    // TODO: Implement
-    FunctionalRoadClass.FRC_0
+   functionalClass match {
+     case 1 => FunctionalRoadClass.FRC_0
+     case 2 => FunctionalRoadClass.FRC_1
+     case 3 => FunctionalRoadClass.FRC_2
+     case 4 => FunctionalRoadClass.FRC_3
+     case 5 => FunctionalRoadClass.FRC_4
+     case 6 => FunctionalRoadClass.FRC_5
+     case 7 => FunctionalRoadClass.FRC_6
+     case 8 => FunctionalRoadClass.FRC_7
+   }
 
   override def getStartNode: Node =
     DigiroadNode(geometry(0))
@@ -28,8 +36,22 @@ case class DigiroadLine(id: Long, geometry: Seq[Point], length: Int) extends Lin
     DigiroadNode(geometry.last)
 
   override def getFOW: FormOfWay =
-    // TODO: Implement
-    FormOfWay.MOTORWAY
+    linkType match {
+      case 1 => FormOfWay.MOTORWAY
+      case 2 => FormOfWay.MULTIPLE_CARRIAGEWAY
+      case 3 => FormOfWay.SINGLE_CARRIAGEWAY
+      case 4 => FormOfWay.OTHER
+      case 5 => FormOfWay.ROUNDABOUT
+      case 6 => FormOfWay.SLIPROAD
+      case 7 => FormOfWay.OTHER
+      case 8 => FormOfWay.OTHER
+      case 9 => FormOfWay.OTHER
+      case 10 => FormOfWay.OTHER
+      case 11 => FormOfWay.OTHER
+      case 12 => FormOfWay.OTHER
+      case 13 => FormOfWay.OTHER
+      case 21 => FormOfWay.OTHER
+    }
 
   override def getShape: Path2D.Double =
     ???
