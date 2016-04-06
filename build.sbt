@@ -10,7 +10,7 @@ lazy val root =
       version := "0.1.0-SNAPSHOT",
       mainClass in Compile := Some("JettyLauncher"),
       scalaVersion := "2.11.8",
-      resolvers ++= Seq(
+      externalResolvers ++= Seq(
         "Open Source Geospatial Foundation Repository" at "http://download.osgeo.org/webdav/geotools/",
         "GeoToolKit Repository" at "http://maven.geotoolkit.org"),
       libraryDependencies ++= Seq(
