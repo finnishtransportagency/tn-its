@@ -13,9 +13,9 @@ class DigiroadFixtureSpec extends FunSuite {
       DigiroadLine(2, Seq(Point(10, 0), Point(30, 0)), 20)
     ))
 
-    assert(mapDatabase.getLine(1).getStartNode == DigiroadNode(Point(0, 0)))
-    assert(mapDatabase.getLine(1).getEndNode == DigiroadNode(Point(10, 0)))
-    assert(mapDatabase.getLine(2).getStartNode == DigiroadNode(Point(10, 0)))
-    assert(mapDatabase.getLine(2).getEndNode == DigiroadNode(Point(30, 0)))
+    assert(mapDatabase.getLine(1).getStartNode == DigiroadNode(DigiroadCoordinates(Point(0, 0))))
+    assert(mapDatabase.getLine(1).getEndNode == DigiroadNode(DigiroadCoordinates(Point(10, 0))))
+    assert(mapDatabase.getLine(2).getStartNode == DigiroadNode(DigiroadCoordinates(Point(10, 0))))
+    assert(mapDatabase.getLine(2).getEndNode == DigiroadNode(DigiroadCoordinates(Point(30, 0))))
   }
 }
