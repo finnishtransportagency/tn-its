@@ -1,3 +1,5 @@
+mvn := mvn -q
+
 usage:
 	@echo Usage:
 	@echo "  make build   — Build project"
@@ -7,18 +9,18 @@ usage:
 	@echo "  make test    — Run tests"
 
 build:
-	mvn compile
+	$(mvn) compile
 
 run: build
-	mvn jetty:run -Djetty.http.port=8090
+	$(mvn) jetty:run -Djetty.http.port=8090
 
 convert: build
-	mvn exec:java $(JAVA_OPTS) -Dexec.mainClass=fi.liikennevirasto.digiroad2.tnits.rosatte.RosatteConverter
+	$(mvn) exec:java -Dexec.mainClass=fi.liikennevirasto.digiroad2.tnits.rosatte.RosatteConverter
 
 test: build
-	mvn test
+	$(mvn) test
 
 clean:
-	mvn clean
+	$(mvn) clean
 
 .PHONY: build clean run test usage convert
