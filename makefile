@@ -9,13 +9,13 @@ usage:
 build:
 	mvn compile
 
-run:
+run: build
 	mvn exec:java $(JAVA_OPTS) -Dexec.mainClass=JettyLauncher
 
-convert:
+convert: build
 	mvn exec:java $(JAVA_OPTS) -Dexec.mainClass=fi.liikennevirasto.digiroad2.tnits.rosatte.RosatteConverter
 
-test:
+test: build
 	mvn test
 
 .PHONY: build clean run test usage convert
