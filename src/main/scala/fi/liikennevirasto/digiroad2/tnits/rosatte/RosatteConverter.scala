@@ -42,7 +42,7 @@ object RosatteConverter {
 
   def main(args: Array[String]) {
     try {
-      val start = Instant.parse("2016-04-01T22:00:00Z")
+      val start = Instant.parse("2016-04-07T09:30:00Z")
       val end = Instant.now
       val speedLimitFeatures = readSpeedLimitChanges(start)
       val onlyOneWaySpeedLimitFeatures = splitFeaturesApplicableToBothDirections(speedLimitFeatures)
