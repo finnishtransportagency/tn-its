@@ -10,7 +10,7 @@ build:
 	mvn compile
 
 run: build
-	mvn exec:java $(JAVA_OPTS) -Dexec.mainClass=JettyLauncher
+	mvn jetty:run -Djetty.http.port=8090
 
 convert: build
 	mvn exec:java $(JAVA_OPTS) -Dexec.mainClass=fi.liikennevirasto.digiroad2.tnits.rosatte.RosatteConverter

@@ -15,6 +15,7 @@
         <geotools.version>14.3</geotools.version>
         <openlr.version>1.4.2</openlr.version>
         <specs2.version>3.7.2</specs2.version>
+        <jetty.version>9.3.8.v20160314</jetty.version>
     </properties>
     <organization>
         <name>fi.liikennevirasto.digiroad2</name>
@@ -126,7 +127,7 @@
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-webapp</artifactId>
-            <version>9.3.8.v20160314</version>
+            <version>${jetty.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -245,6 +246,11 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>${jetty.version}</version>
             </plugin>
         </plugins>
     </build>
