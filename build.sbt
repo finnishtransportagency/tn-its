@@ -5,7 +5,6 @@ lazy val root =
   project
     .in(file("."))
     .settings(
-      net.virtualvoid.sbt.graph.Plugin.graphSettings,
       name := "Digiroad2 TN-ITS",
       organization := "fi.liikennevirasto.digiroad2",
       version := "0.1.0-SNAPSHOT",
