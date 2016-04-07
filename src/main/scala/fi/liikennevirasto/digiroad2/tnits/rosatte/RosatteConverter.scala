@@ -88,7 +88,7 @@ object RosatteConverter {
 
   def featureMember(feature: Feature) = {
     val coordinates = feature.geometry.coordinates.flatMap(_.take(2))
-    val transformedCoordinates = convertCoordinates(coordinates, 2)
+    val transformedCoordinates = convertCoordinates(coordinates)
     val geometry = transformedCoordinates.mkString(" ")
     val startMeasure = feature.properties.startMeasure
     val endMeasure = feature.properties.endMeasure
@@ -159,11 +159,8 @@ object RosatteConverter {
         .asInstanceOf[Seq[Seq[Double]]]
         .flatten
 
-    val transformedCoordinates =
-      convertCoordinates(coordinates, 3)
-
     val points =
-      transformedCoordinates
+      coordinates
         .grouped(3)
         .map { case Seq(x, y, z) => Point(x, y, z) }
         .toSeq
@@ -196,12 +193,12 @@ object RosatteConverter {
     new String(Base64.getEncoder.encode(data.getData), "ASCII")
   }
 
-  private def convertCoordinates(coordinates: Seq[Double], dimension: Int): Seq[Double] = {
+  def convertCoordinates(coordinates: Seq[Double]): Seq[Double] = {
     val OTHReferencingSystem = CRS.decode("EPSG:3067")
     val openLRReferencingSystem = CRS.decode("EPSG:4326")
     val transformation = CRS.findMathTransform(OTHReferencingSystem, openLRReferencingSystem)
     val transformedCoordinates = new Array[Double](coordinates.length)
-    transformation.transform(coordinates.toArray, 0, transformedCoordinates, 0, coordinates.length / dimension)
+    transformation.transform(coordinates.toArray, 0, transformedCoordinates, 0, coordinates.length / 2)
     transformedCoordinates
   }
 }

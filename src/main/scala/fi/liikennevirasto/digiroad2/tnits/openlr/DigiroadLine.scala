@@ -30,10 +30,10 @@ case class DigiroadLine(id: Long, geometry: Seq[Point], length: Int, linkType: I
    }
 
   override def getStartNode: Node =
-    DigiroadNode(geometry(0))
+    DigiroadNode(DigiroadCoordinates(geometry(0)))
 
   override def getEndNode: Node =
-    DigiroadNode(geometry.last)
+    DigiroadNode(DigiroadCoordinates(geometry.last))
 
   override def getFOW: FormOfWay =
     linkType match {

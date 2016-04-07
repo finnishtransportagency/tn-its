@@ -5,18 +5,18 @@ import java.util
 import fi.liikennevirasto.digiroad2.tnits.geometry.Point
 import openlr.map.{GeoCoordinates, Line, Node}
 
-case class DigiroadNode(point: Point) extends Node {
+case class DigiroadNode(coordinates: DigiroadCoordinates) extends Node {
   override def getLongitudeDeg: Double =
-    point.x
+    coordinates.getLongitudeDeg
 
   override def getLatitudeDeg: Double =
-    point.y
+    coordinates.getLatitudeDeg
 
   override def getNumberConnectedLines: Int =
     1
 
   override def getGeoCoordinates: GeoCoordinates =
-    DigiroadCoordinates(point)
+    coordinates
 
   override def getID: Long =
     ???
