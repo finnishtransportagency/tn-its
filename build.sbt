@@ -14,6 +14,7 @@ lazy val root =
         Classpaths.typesafeReleases,
         "opengeo" at "http://repo.opengeo.org/",
         "Open Source Geospatial Foundation Repository" at "http://download.osgeo.org/webdav/geotools/",
+        "For the jai_core" at "http://download.osgeo.org/webdav/geotools/javax/media/jai_core/",
         "GeoToolKit Repository" at "http://maven.geotoolkit.org"),
       libraryDependencies ++= Seq(
         "org.scalatra" %% "scalatra" % scalatraVersion,
