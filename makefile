@@ -18,4 +18,7 @@ convert: build
 test: build
 	mvn test
 
+clean:
+	mvn clean
+
 .PHONY: build clean run test usage convert
