@@ -1,9 +1,9 @@
 usage:
 	@echo Usage:
-	@echo "  make build"
-	@echo "  make clean"
-	@echo "  make run"
-	@echo "  make test"
+	@echo "  make build — Build project"
+	@echo "  make clean — Remove build files"
+	@echo "  make run   — Run server"
+	@echo "  make test  — Run tests"
 
 build:
 	mvn compile
