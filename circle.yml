@@ -1,16 +1,3 @@
 machine:
   java:
     version: oraclejdk8
-
-dependencies:
-  override:
-    - ./sbt test:compile
-  cache_directories:
-    - "~/.sbt"
-
-test:
-  override:
-    - ./sbt test:test
-  post:
-    - mkdir -p $CIRCLE_TEST_REPORTS/junit/
-    - cp target/test-reports/*.xml $CIRCLE_TEST_REPORTS/junit/
