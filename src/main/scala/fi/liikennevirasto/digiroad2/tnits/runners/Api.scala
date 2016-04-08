@@ -1,13 +1,13 @@
+package fi.liikennevirasto.digiroad2.tnits.runners
+
+import fi.liikennevirasto.digiroad2.tnits.config
 import org.eclipse.jetty.server.Server
-import org.eclipse.jetty.servlet.{ DefaultServlet, ServletContextHandler }
 import org.eclipse.jetty.webapp.WebAppContext
 import org.scalatra.servlet.ScalatraListener
 
-object JettyLauncher {
+object Api {
   def main(args: Array[String]) {
-    val port = if(System.getenv("PORT") != null) System.getenv("PORT").toInt else 8090
-
-    val server = new Server(port)
+    val server = new Server(config.apiPort)
     val context = new WebAppContext()
     context.setContextPath("/")
     context.setResourceBase("src/main/webapp")

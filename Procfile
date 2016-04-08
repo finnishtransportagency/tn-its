@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -cp target/classes:target/dependency/* JettyLauncher
+web: java $JAVA_OPTS -cp target/classes:target/dependency/* fi.liikennevirasto.digiroad2.tnits.runners.Api

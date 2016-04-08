@@ -1,26 +1,26 @@
-package fi.liikennevirasto.digiroad2.tnits
+package fi.liikennevirasto.digiroad2.tnits.aineistot
 
 import java.io.{ByteArrayInputStream, InputStream}
 import java.net.{URLDecoder, URLEncoder}
 
 import dispatch.Defaults._
 import dispatch._
-import org.apache.commons.net.ftp.{FTPClient, FTPClientConfig}
+import fi.liikennevirasto.digiroad2.tnits.config
+import org.apache.commons.net.ftp.FTPClient
 import org.jsoup.Jsoup
 
 import scala.collection.JavaConverters._
-import scala.io.Source
 
 object RemoteDatasets {
-  private val baseUrl: Req =
-    (host("aineistot.liikennevirasto.fi") / "digiroad" / "tnits-testdata")
+  private val logins =
+    config.logins('aineistot)
+
+  val baseUrl =
+    url(config.urls('aineistot))
       .setFollowRedirects(true)
       .as(
-        user = sys.env.getOrElse("AINEISTOT_USERNAME", ""),
-        password = sys.env.getOrElse("AINEISTOT_PASSWORD", ""))
-
-  private def dataSetUrl(id: String): Req =
-    baseUrl / (URLEncoder.encode(id, "UTF-8") + ".xml")
+        user = logins.username,
+        password = logins.password)
 
   def index: Future[Seq[String]] =
     Http(baseUrl OK as.String).map { contents =>
@@ -38,10 +38,8 @@ object RemoteDatasets {
 
   def put(filename: String, contents: String): Unit = {
     val client = new FTPClient
-    client.connect("aineistot.liikennevirasto.fi")
-    val username = sys.env.getOrElse("AINEISTOT_USERNAME", "")
-    val password = sys.env.getOrElse("AINEISTOT_PASSWORD", "")
-    if (!client.login(username, password))
+    client.connect(config.urls('aineistotFtp))
+    if (!client.login(logins.username, logins.password))
       throw new IllegalArgumentException("Login failed")
     if (!client.changeWorkingDirectory("tnits-converter"))
       throw new IllegalStateException("No such directory: tn-its")
@@ -56,4 +54,7 @@ object RemoteDatasets {
       throw new IllegalStateException(client.getReplyString)
     client.disconnect()
   }
+
+  private def dataSetUrl(id: String): Req =
+    baseUrl / (URLEncoder.encode(id, "UTF-8") + ".xml")
 }

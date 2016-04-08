@@ -1,8 +1,9 @@
-package fi.liikennevirasto.digiroad2.tnits
+package fi.liikennevirasto.digiroad2.tnits.api
 
 import java.net.URLDecoder
 import javax.servlet.http.HttpServletRequest
 
+import fi.liikennevirasto.digiroad2.tnits.aineistot.RemoteDatasets
 import fi.liikennevirasto.digiroad2.tnits.rosatte.DatasetID
 import org.scalatra._
 
