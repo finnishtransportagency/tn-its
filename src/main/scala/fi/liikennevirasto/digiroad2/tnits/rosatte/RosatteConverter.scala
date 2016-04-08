@@ -7,7 +7,7 @@ import java.util.{Base64, UUID}
 import dispatch.Defaults._
 import dispatch._
 import fi.liikennevirasto.digiroad2.tnits.{RemoteDatasets, geojson}
-import fi.liikennevirasto.digiroad2.tnits.geometry.Point
+import fi.liikennevirasto.digiroad2.tnits.geometry.{CoordinateTransform, Point}
 import fi.liikennevirasto.digiroad2.tnits.openlr.{DigiroadFixtureMapDatabase, DigiroadLine}
 import openlr.binary.ByteArray
 import openlr.encoder.{OpenLREncoder, OpenLREncoderParameter}
@@ -88,7 +88,7 @@ object RosatteConverter {
 
   def featureMember(feature: Feature) = {
     val coordinates = feature.geometry.coordinates.flatMap(_.take(2))
-    val transformedCoordinates = convertCoordinates(coordinates)
+    val transformedCoordinates = CoordinateTransform.convertToWgs84(coordinates)
     val geometry = transformedCoordinates.mkString(" ")
     val startMeasure = feature.properties.startMeasure
     val endMeasure = feature.properties.endMeasure
@@ -191,14 +191,5 @@ object RosatteConverter {
     val reference = encoded.getLocationReference("binary")
     val data = reference.getLocationReferenceData.asInstanceOf[ByteArray]
     new String(Base64.getEncoder.encode(data.getData), "ASCII")
-  }
-
-  def convertCoordinates(coordinates: Seq[Double]): Seq[Double] = {
-    val OTHReferencingSystem = CRS.decode("EPSG:3067")
-    val openLRReferencingSystem = CRS.decode("EPSG:4326")
-    val transformation = CRS.findMathTransform(OTHReferencingSystem, openLRReferencingSystem)
-    val transformedCoordinates = new Array[Double](coordinates.length)
-    transformation.transform(coordinates.toArray, 0, transformedCoordinates, 0, coordinates.length / 2)
-    transformedCoordinates
   }
 }
