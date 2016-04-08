@@ -1,4 +1,4 @@
-mvn := mvn -q
+mvn := mvn -q -e
 
 usage:
 	@echo Usage:
