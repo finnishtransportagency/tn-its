@@ -22,7 +22,11 @@ import scala.concurrent.duration._
 object RosatteConverter {
   protected implicit val jsonFormats: Formats = DefaultFormats
 
-  case class RoadLinkProperties(id: Long, functionalClass: Int, `type`: Int, length: Double)
+  case class RoadLinkProperties(
+     id: Long,
+     functionalClass: Int,
+     `type`: Int,
+     length: Double)
 
   case class Properties(
      sideCode: Int,

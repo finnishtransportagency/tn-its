@@ -18,16 +18,17 @@ case class DigiroadLine(id: Long, geometry: Seq[Point], length: Int, linkType: I
     length
 
   override def getFRC: FunctionalRoadClass =
-   functionalClass match {
-     case 1 => FunctionalRoadClass.FRC_0
-     case 2 => FunctionalRoadClass.FRC_1
-     case 3 => FunctionalRoadClass.FRC_2
-     case 4 => FunctionalRoadClass.FRC_3
-     case 5 => FunctionalRoadClass.FRC_4
-     case 6 => FunctionalRoadClass.FRC_5
-     case 7 => FunctionalRoadClass.FRC_6
-     case 8 => FunctionalRoadClass.FRC_7
-   }
+    functionalClass match {
+      case 1 => FunctionalRoadClass.FRC_0
+      case 2 => FunctionalRoadClass.FRC_1
+      case 3 => FunctionalRoadClass.FRC_2
+      case 4 => FunctionalRoadClass.FRC_3
+      case 5 => FunctionalRoadClass.FRC_4
+      case 6 => FunctionalRoadClass.FRC_5
+      case 7 => FunctionalRoadClass.FRC_6
+      case 8 => FunctionalRoadClass.FRC_7
+      case _ => FunctionalRoadClass.FRC_7
+    }
 
   override def getStartNode: Node =
     DigiroadNode(DigiroadCoordinates(geometry(0)))
@@ -51,6 +52,7 @@ case class DigiroadLine(id: Long, geometry: Seq[Point], length: Int, linkType: I
       case 12 => FormOfWay.OTHER
       case 13 => FormOfWay.OTHER
       case 21 => FormOfWay.OTHER
+      case _ => FormOfWay.UNDEFINED
     }
 
   override def getShape: Path2D.Double =
