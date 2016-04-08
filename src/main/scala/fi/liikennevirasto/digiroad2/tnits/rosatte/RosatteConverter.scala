@@ -93,7 +93,8 @@ object RosatteConverter {
     val startMeasure = feature.properties.startMeasure
     val endMeasure = feature.properties.endMeasure
     val link = feature.properties.link
-    val linkReference = "FI.1000018." + link("id").asInstanceOf[BigInt].intValue.toString
+    val linkProperties = link("properties").asInstanceOf[Map[String, Any]]
+    val linkReference = "FI.1000018." + linkProperties("id").asInstanceOf[BigInt].intValue.toString
     val applicableDirection = feature.properties.sideCode match {
       case 2 => "inDirection"
       case 3 => "inOppositeDirection"
@@ -176,7 +177,7 @@ object RosatteConverter {
     val functionalClass = linkProperties("functionalClass").asInstanceOf[BigInt]
     val linkType = linkProperties("type").asInstanceOf[BigInt]
 
-    val line = DigiroadLine(1, linkGeometry, linkLength.floor.toInt, functionalClass.intValue, linkType.intValue)
+    val line = DigiroadLine(1, linkGeometry, linkLength.floor.toInt, linkType.intValue, functionalClass.intValue)
 
     val mapDatabase = new DigiroadFixtureMapDatabase(Seq(line))
     val encoder = new OpenLREncoder
