@@ -5,22 +5,23 @@ object config {
     username: String,
     password: String)
 
-  val logins: Map[Symbol, Login] = Map(
+  val logins = Map(
     'aineistot -> Login(
-      username = sys.env.getOrElse("AINEISTOT_USERNAME", ""),
-      password = sys.env.getOrElse("AINEISTOT_PASSWORD", "")),
+      username = env("AINEISTOT_USERNAME"),
+      password = env("AINEISTOT_PASSWORD")),
     'oth -> Login(
-      username = sys.env.getOrElse("CHANGE_API_USERNAME", ""),
-      password = sys.env.getOrElse("CHANGE_API_PASSWORD", "")
-    )
-  )
+      username = env("CHANGE_API_USERNAME"),
+      password = env("CHANGE_API_PASSWORD")))
 
   val urls = Map(
     'aineistot -> "http://aineistot.liikennevirasto.fi/digiroad/tnits-testdata",
     'aineistotFtp -> "aineistot.liikennevirasto.fi",
-    'changes -> sys.env.getOrElse("CHANGE_API_URL", "")
+    'changes -> env("CHANGE_API_URL")
   )
 
   val apiPort =
     sys.env.get("PORT").fold(8090)(_.toInt)
+
+  private def env(name: String) =
+    sys.env.getOrElse(name, sys.error(s"Environment variable required: $name"))
 }
