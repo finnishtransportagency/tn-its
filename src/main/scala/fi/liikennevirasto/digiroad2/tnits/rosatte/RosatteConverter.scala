@@ -22,6 +22,8 @@ import scala.concurrent.duration._
 object RosatteConverter {
   protected implicit val jsonFormats: Formats = DefaultFormats
 
+  case class RoadLinkProperties(id: Long, functionalClass: Int, `type`: Int, length: Double)
+
   case class Properties(
      sideCode: Int,
      changeType: String,
@@ -29,9 +31,10 @@ object RosatteConverter {
      startMeasure: Double,
      endMeasure: Double,
      id: Long,
-     link: Map[String, Any])
+     link: RoadLinkFeature)
 
   type Feature = geojson.Feature[Properties]
+  type RoadLinkFeature = geojson.Feature[RoadLinkProperties]
 
   private val changesApiUrl: Req =
     host(sys.env.getOrElse("CHANGE_API_URL", ""))
@@ -93,8 +96,7 @@ object RosatteConverter {
     val startMeasure = feature.properties.startMeasure
     val endMeasure = feature.properties.endMeasure
     val link = feature.properties.link
-    val linkProperties = link("properties").asInstanceOf[Map[String, Any]]
-    val linkReference = "FI.1000018." + linkProperties("id").asInstanceOf[BigInt].intValue.toString
+    val linkReference = "FI.1000018." + link.properties.id
     val applicableDirection = feature.properties.sideCode match {
       case 2 => "inDirection"
       case 3 => "inOppositeDirection"
@@ -151,14 +153,11 @@ object RosatteConverter {
     </gml:featureMember>
   }
 
-  private def encodeOpenLRLocationString(startMeasure: Double, endMeasure: Double, applicableDirection: String, link: Map[String, Any]): String = {
+  private def encodeOpenLRLocationString(startMeasure: Double, endMeasure: Double, applicableDirection: String, link: RoadLinkFeature): String = {
     import collection.JavaConverters._
 
     val coordinates =
-      link("geometry")
-        .asInstanceOf[Map[String, Any]]("coordinates")
-        .asInstanceOf[Seq[Seq[Double]]]
-        .flatten
+      link.geometry.coordinates.flatten
 
     val points =
       coordinates
@@ -172,10 +171,9 @@ object RosatteConverter {
       else
         points
 
-    val linkProperties = link("properties").asInstanceOf[Map[String, Any]]
-    val linkLength = linkProperties("length").asInstanceOf[Double]
-    val functionalClass = linkProperties("functionalClass").asInstanceOf[BigInt]
-    val linkType = linkProperties("type").asInstanceOf[BigInt]
+    val linkLength = link.properties.length
+    val functionalClass = link.properties.functionalClass
+    val linkType = link.properties.`type`
 
     val line = DigiroadLine(1, linkGeometry, linkLength.floor.toInt, linkType.intValue, functionalClass.intValue)
 
