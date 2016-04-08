@@ -6,13 +6,12 @@ import java.util.{Base64, UUID}
 
 import dispatch.Defaults._
 import dispatch._
-import fi.liikennevirasto.digiroad2.tnits.{RemoteDatasets, geojson}
 import fi.liikennevirasto.digiroad2.tnits.geometry.{CoordinateTransform, Point}
 import fi.liikennevirasto.digiroad2.tnits.openlr.{DigiroadFixtureMapDatabase, DigiroadLine}
+import fi.liikennevirasto.digiroad2.tnits.{RemoteDatasets, geojson}
 import openlr.binary.ByteArray
 import openlr.encoder.{OpenLREncoder, OpenLREncoderParameter}
 import openlr.location.LocationFactory
-import org.geotools.referencing.CRS
 import org.json4s._
 import org.json4s.jackson.JsonMethods._
 
