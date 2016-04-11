@@ -12,11 +12,9 @@ object features {
     value: Int,
     startMeasure: Double,
     endMeasure: Double,
-    id: Long,
     link: RoadLink)
 
   case class RoadLinkProperties(
-    id: Long,
     functionalClass: Int,
     `type`: Int,
     length: Double)

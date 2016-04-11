@@ -51,7 +51,7 @@ object RosatteConverter {
     val startMeasure = feature.properties.startMeasure
     val endMeasure = feature.properties.endMeasure
     val link = feature.properties.link
-    val linkReference = "FI.1000018." + link.properties.id
+    val linkReference = "FI.1000018." + link.id
     val applicableDirection = feature.properties.sideCode match {
       case 2 => "inDirection"
       case 3 => "inOppositeDirection"
@@ -64,7 +64,7 @@ object RosatteConverter {
           <rst:SafetyFeatureId>
             <rst:providerId>FI.LiVi.OTH</rst:providerId>
             <rst:id>
-              {feature.properties.id}
+              {feature.id}
             </rst:id>
           </rst:SafetyFeatureId>
         </rst:id>
