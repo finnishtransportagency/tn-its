@@ -17,8 +17,6 @@ object RosatteConverter {
   }
 
   def convertToChangeDataSet(speedLimitFeatures: Seq[features.Asset], startTime: Instant, endTime: Instant): Any = {
-    // todo: replace current time with the latest modification time from changes
-    //       or specify explicitly in the change api
     <rst:ROSATTESafetyFeatureDataset xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:net="urn:x-inspire:specification:gmlas:Network:3.2" xmlns:openlr="http://www.openlr.org/openlr" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:TPEG="TPEG" xmlns:rst="http://www.ertico.com/en/subprojects/rosatte/rst" xsi:schemaLocation="http://www.ertico.com/en/subprojects/rosatte/rst http://rosatte-no.triona.se/schemas/Rosatte.xsd" gml:id="i0fbf03ad-5c7a-4490-bb7c-64f95a91cb3c">
       {speedLimitFeatures.map(featureMember)}<rst:metadata>
       <rst:datasetId>

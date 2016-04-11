@@ -22,8 +22,10 @@ object OTHClient {
         user = config.logins('oth).username,
         password = config.logins('oth).password)
 
-  def readSpeedLimitChanges(since: Instant): Seq[features.Asset] = {
-    val req = (changesApiUrl / "speed_limits").addQueryParameter("since", since.toString)
+  def readSpeedLimitChanges(since: Instant, until: Instant): Seq[features.Asset] = {
+    val req = (changesApiUrl / "speed_limits")
+      .addQueryParameter("since", since.toString)
+      .addQueryParameter("until", until.toString)
     val contents = Await.result(Http(req OK as.String), 30.seconds)
     (parse(contents) \ "features").extract[Seq[features.Asset]]
   }
