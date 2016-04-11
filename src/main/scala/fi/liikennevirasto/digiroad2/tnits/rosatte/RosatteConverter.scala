@@ -6,6 +6,8 @@ import java.util.UUID
 import fi.liikennevirasto.digiroad2.tnits.geometry.{CoordinateTransform, Point}
 import fi.liikennevirasto.digiroad2.tnits.openlr.OpenLREncoder
 
+import scala.util.{Failure, Success, Try}
+
 object RosatteConverter {
   def convert(speedLimits: Seq[features.Asset], start: Instant, end: Instant): DataSet = {
     val onlyOneWaySpeedLimits = splitFeaturesApplicableToBothDirections(speedLimits)
@@ -56,71 +58,76 @@ object RosatteConverter {
       case _ => ""
     }
     val openLR = encodeOpenLRLocationString(startMeasure, endMeasure, applicableDirection, link)
-    <gml:featureMember>
-      <rst:GenericSafetyFeature gml:id={UUID.randomUUID().toString}>
-        <rst:id>
-          <rst:SafetyFeatureId>
-            <rst:providerId>FI.LiVi.OTH</rst:providerId>
+    openLR match {
+      case Failure(reason) =>
+        println(reason)
+      case Success(reference) =>
+        <gml:featureMember>
+          <rst:GenericSafetyFeature gml:id={UUID.randomUUID().toString}>
             <rst:id>
-              {feature.id}
+              <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>
+                  {feature.id}
+                </rst:id>
+              </rst:SafetyFeatureId>
             </rst:id>
-          </rst:SafetyFeatureId>
-        </rst:id>
-        <rst:locationReference>
-          <rst:INSPIRELinearLocation gml:id={UUID.randomUUID().toString}>
-            <net:SimpleLinearReference>
-              <net:element xlink:href={linkReference}/>
-              <net:applicableDirection>
-                {applicableDirection}
-              </net:applicableDirection>
-              <net:fromPosition uom="meter">
-                {startMeasure}
-              </net:fromPosition>
-              <net:toPosition uom="meter">
-                {endMeasure}
-              </net:toPosition>
-            </net:SimpleLinearReference>
-          </rst:INSPIRELinearLocation>
-        </rst:locationReference>
-        <rst:locationReference>
-          <rst:OpenLRLocationString gml:id={UUID.randomUUID().toString}>
-            <rst:base64String>
-              {openLR}
-            </rst:base64String>
-            <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
-          </rst:OpenLRLocationString>
-        </rst:locationReference>
-        <rst:updateInfo>
-          <rst:UpdateInfo>
-            <rst:type>
-              {feature.properties.changeType}
-            </rst:type>
-          </rst:UpdateInfo>
-        </rst:updateInfo>
-        <rst:source>Regulation</rst:source>
-        <rst:encodedGeometry>
-          <gml:LineString gml:id={UUID.randomUUID().toString} srsDimension="2">
-            <gml:posList>
-              {geometry}
-            </gml:posList>
-          </gml:LineString>
-        </rst:encodedGeometry>
-        <rst:type>SpeedLimit</rst:type>
-        <rst:properties>
-          <rst:SafetyFeaturePropertyValue>
-            <rst:type>MaximumSpeedLimit</rst:type>
-            <rst:propertyValue>
-              <gml:measure uom="kmph">
-                {feature.properties.value}
-              </gml:measure>
-            </rst:propertyValue>
-          </rst:SafetyFeaturePropertyValue>
-        </rst:properties>
-      </rst:GenericSafetyFeature>
-    </gml:featureMember>
+            <rst:locationReference>
+              <rst:INSPIRELinearLocation gml:id={UUID.randomUUID().toString}>
+                <net:SimpleLinearReference>
+                  <net:element xlink:href={linkReference}/>
+                  <net:applicableDirection>
+                    {applicableDirection}
+                  </net:applicableDirection>
+                  <net:fromPosition uom="meter">
+                    {startMeasure}
+                  </net:fromPosition>
+                  <net:toPosition uom="meter">
+                    {endMeasure}
+                  </net:toPosition>
+                </net:SimpleLinearReference>
+              </rst:INSPIRELinearLocation>
+            </rst:locationReference>
+            <rst:locationReference>
+              <rst:OpenLRLocationString gml:id={UUID.randomUUID().toString}>
+                <rst:base64String>
+                  {openLR}
+                </rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+              </rst:OpenLRLocationString>
+            </rst:locationReference>
+            <rst:updateInfo>
+              <rst:UpdateInfo>
+                <rst:type>
+                  {feature.properties.changeType}
+                </rst:type>
+              </rst:UpdateInfo>
+            </rst:updateInfo>
+            <rst:source>Regulation</rst:source>
+            <rst:encodedGeometry>
+              <gml:LineString gml:id={UUID.randomUUID().toString} srsDimension="2">
+                <gml:posList>
+                  {geometry}
+                </gml:posList>
+              </gml:LineString>
+            </rst:encodedGeometry>
+            <rst:type>SpeedLimit</rst:type>
+            <rst:properties>
+              <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                  <gml:measure uom="kmph">
+                    {feature.properties.value}
+                  </gml:measure>
+                </rst:propertyValue>
+              </rst:SafetyFeaturePropertyValue>
+            </rst:properties>
+          </rst:GenericSafetyFeature>
+        </gml:featureMember>
+    }
   }
 
-  private def encodeOpenLRLocationString(startMeasure: Double, endMeasure: Double, applicableDirection: String, link: features.RoadLink): String = {
+  private def encodeOpenLRLocationString(startMeasure: Double, endMeasure: Double, applicableDirection: String, link: features.RoadLink): Try[String] = {
     val coordinates =
       link.geometry.coordinates.flatten
 
