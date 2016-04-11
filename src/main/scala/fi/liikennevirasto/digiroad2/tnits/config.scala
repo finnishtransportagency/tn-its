@@ -13,9 +13,12 @@ object config {
       username = env("CHANGE_API_USERNAME"),
       password = env("CHANGE_API_PASSWORD")))
 
+  val aineistot = "aineistot.liikennevirasto.fi"
+  val dir = env("AINEISTOT_DIRECTORY")
+
   val urls = Map(
-    'aineistot -> "http://aineistot.liikennevirasto.fi/digiroad/tnits-testdata",
-    'aineistotFtp -> "aineistot.liikennevirasto.fi",
+    'aineistot -> s"http://$aineistot/digiroad/$dir",
+    'aineistotFtp -> aineistot,
     'changes -> env("CHANGE_API_URL")
   )
 

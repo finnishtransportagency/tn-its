@@ -41,7 +41,7 @@ object RemoteDatasets {
     client.connect(config.urls('aineistotFtp))
     if (!client.login(logins.username, logins.password))
       throw new IllegalArgumentException("Login failed")
-    if (!client.changeWorkingDirectory("tnits-converter"))
+    if (!client.changeWorkingDirectory(config.dir))
       throw new IllegalStateException("No such directory: tn-its")
     val files = client.listNames()
     if (files == null)
