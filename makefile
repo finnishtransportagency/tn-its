@@ -15,7 +15,7 @@ run: build
 	$(mvn) jetty:run -Djetty.http.port=8090
 
 convert: build
-	$(mvn) exec:java -Dexec.cleanupDaemonThreads=false -Dexec.mainClass=fi.liikennevirasto.digiroad2.tnits.rosatte.RosatteConverter
+	$(mvn) exec:java -Dexec.cleanupDaemonThreads=false -Dexec.mainClass=fi.liikennevirasto.digiroad2.tnits.runners.Converter
 
 test: build
 	$(mvn) test
