@@ -2,14 +2,18 @@ package fi.liikennevirasto.digiroad2.tnits.aineistot
 
 import java.io.{ByteArrayInputStream, InputStream}
 import java.net.{URLDecoder, URLEncoder}
+import java.time.Instant
 
 import dispatch.Defaults._
 import dispatch._
 import fi.liikennevirasto.digiroad2.tnits.config
+import fi.liikennevirasto.digiroad2.tnits.rosatte.DatasetID
 import org.apache.commons.net.ftp.FTPClient
 import org.jsoup.Jsoup
 
 import scala.collection.JavaConverters._
+import scala.concurrent.duration._
+import scala.concurrent.{Await, Future}
 
 object RemoteDatasets {
   private val logins =
@@ -32,6 +36,19 @@ object RemoteDatasets {
         .map(_.dropRight(".xml".length))
         .map(URLDecoder.decode(_, "UTF-8"))
     }
+
+  def getLatestEndTime(): Option[Instant] = {
+    val dataSets = Await.result (RemoteDatasets.index, 30.seconds)
+
+    if (dataSets.nonEmpty) {
+      Some(dataSets
+        .map { id => DatasetID.decode(URLDecoder.decode(id, "UTF-8")) }
+        .map { _.endDate }
+        .max)
+    } else {
+      None
+    }
+  }
 
   def get(id: String): Future[InputStream] =
     Http(dataSetUrl(id) OK as.Response(_.getResponseBodyAsStream))

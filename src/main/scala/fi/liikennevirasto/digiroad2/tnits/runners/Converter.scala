@@ -12,7 +12,7 @@ import fi.liikennevirasto.digiroad2.tnits.rosatte.RosatteConverter
 object Converter {
   def main(args: Array[String]) {
     try {
-      val start = Instant.now.minus(1, ChronoUnit.DAYS)
+      val start = RemoteDatasets.getLatestEndTime.getOrElse(Instant.now.minus(1, ChronoUnit.DAYS))
       val end = Instant.now.minus(1, ChronoUnit.MINUTES)
       val speedLimits = OTHClient.readSpeedLimitChanges(start, end)
       val dataSet = RosatteConverter.convert(speedLimits, start, end)
