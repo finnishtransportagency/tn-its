@@ -10,7 +10,7 @@ import openlr.location.LocationFactory
 import scala.util.Try
 
 object OpenLREncoder {
-  def encodeAssetOnLink(startMeasure: Double, endMeasure: Double, linkGeometry: Seq[Point], linkLength: Double, functionalClass: Int, linkType: Int): Try[String] = {
+  def encodeAssetOnLink(startMeasure: Double, endMeasure: Double, linkGeometry: Seq[Point], linkLength: Double, functionalClass: Int, linkType: Int, linkId: String): Try[String] = {
     import collection.JavaConverters._
 
     Try {
@@ -24,7 +24,7 @@ object OpenLREncoder {
 
       val lineLocation =
         LocationFactory.createLineLocationWithOffsets(
-          s"loc-1", Seq(line).asJava, startMeasure.floor.toInt, (linkLength - endMeasure).floor.toInt)
+          linkId, Seq(line).asJava, startMeasure.floor.toInt, (linkLength - endMeasure).floor.toInt)
 
       val encoded = try
         encoder.encodeLocation(param, lineLocation)

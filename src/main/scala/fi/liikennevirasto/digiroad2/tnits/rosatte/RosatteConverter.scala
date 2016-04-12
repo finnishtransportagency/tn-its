@@ -57,7 +57,7 @@ object RosatteConverter {
       case 3 => "inOppositeDirection"
       case _ => ""
     }
-    val openLR = encodeOpenLRLocationString(startMeasure, endMeasure, applicableDirection, link)
+    val openLR = encodeOpenLRLocationString(startMeasure, endMeasure, applicableDirection, link, linkReference)
     openLR match {
       case Failure(reason) =>
         println(reason)
@@ -127,7 +127,7 @@ object RosatteConverter {
     }
   }
 
-  private def encodeOpenLRLocationString(startMeasure: Double, endMeasure: Double, applicableDirection: String, link: features.RoadLink): Try[String] = {
+  private def encodeOpenLRLocationString(startMeasure: Double, endMeasure: Double, applicableDirection: String, link: features.RoadLink, linkId: String): Try[String] = {
     val coordinates =
       link.geometry.coordinates.flatten
 
@@ -147,6 +147,6 @@ object RosatteConverter {
     val functionalClass = link.properties.functionalClass
     val linkType = link.properties.`type`
 
-    OpenLREncoder.encodeAssetOnLink(startMeasure, endMeasure, linkGeometry, linkLength, functionalClass, linkType)
+    OpenLREncoder.encodeAssetOnLink(startMeasure, endMeasure, linkGeometry, linkLength, functionalClass, linkType, linkId)
   }
 }
