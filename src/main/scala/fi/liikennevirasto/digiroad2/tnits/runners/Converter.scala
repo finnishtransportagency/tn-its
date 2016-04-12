@@ -2,7 +2,7 @@ package fi.liikennevirasto.digiroad2.tnits.runners
 
 import java.net.URLEncoder
 import java.time.Instant
-import java.time.temporal.{ChronoUnit, TemporalAmount, TemporalUnit}
+import java.time.temporal.ChronoUnit
 
 import dispatch.Http
 import fi.liikennevirasto.digiroad2.tnits.aineistot.RemoteDatasets

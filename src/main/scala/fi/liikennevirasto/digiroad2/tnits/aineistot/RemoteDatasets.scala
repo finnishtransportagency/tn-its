@@ -37,7 +37,7 @@ object RemoteDatasets {
         .map(URLDecoder.decode(_, "UTF-8"))
     }
 
-  def getLatestEndTime(): Option[Instant] = {
+  def getLatestEndTime: Option[Instant] = {
     val dataSets = Await.result (RemoteDatasets.index, 30.seconds)
 
     if (dataSets.nonEmpty) {
