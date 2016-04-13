@@ -20,14 +20,11 @@ object RosatteConverter {
 
   def convertToChangeDataSet(speedLimitFeatures: Seq[features.Asset], dataSetId: String, startTime: Instant, endTime: Instant): Any = {
     <rst:ROSATTESafetyFeatureDataset xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:net="urn:x-inspire:specification:gmlas:Network:3.2" xmlns:openlr="http://www.openlr.org/openlr" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:TPEG="TPEG" xmlns:rst="http://www.ertico.com/en/subprojects/rosatte/rst" xsi:schemaLocation="http://www.ertico.com/en/subprojects/rosatte/rst http://rosatte-no.triona.se/schemas/Rosatte.xsd" gml:id="i0fbf03ad-5c7a-4490-bb7c-64f95a91cb3c">
-      {speedLimitFeatures.map(featureMember)}<rst:metadata>
-      <rst:datasetId>
-        {dataSetId}
-      </rst:datasetId>
-      <rst:datasetCreationTime>
-        {endTime}
-      </rst:datasetCreationTime>
-    </rst:metadata>
+      {speedLimitFeatures.map(featureMember)}
+      <rst:metadata>
+        <rst:datasetId>{dataSetId}</rst:datasetId>
+        <rst:datasetCreationTime>{endTime}</rst:datasetCreationTime>
+      </rst:metadata>
       <rst:type>Update</rst:type>
     </rst:ROSATTESafetyFeatureDataset>
   }
@@ -63,51 +60,39 @@ object RosatteConverter {
         println(reason)
       case Success(reference) =>
         <gml:featureMember>
-          <rst:GenericSafetyFeature gml:id={UUID.randomUUID().toString}>
+          <rst:GenericSafetyFeature gml:id={ UUID.randomUUID().toString }>
             <rst:id>
               <rst:SafetyFeatureId>
                 <rst:providerId>FI.LiVi.OTH</rst:providerId>
-                <rst:id>
-                  {feature.id}
-                </rst:id>
+                <rst:id>{feature.id}</rst:id>
               </rst:SafetyFeatureId>
             </rst:id>
             <rst:locationReference>
-              <rst:INSPIRELinearLocation gml:id={UUID.randomUUID().toString}>
+              <rst:INSPIRELinearLocation gml:id={ UUID.randomUUID().toString }>
                 <net:SimpleLinearReference>
-                  <net:element xlink:href={linkReference}/>
-                  <net:applicableDirection>
-                    {applicableDirection}
-                  </net:applicableDirection>
-                  <net:fromPosition uom="meter">
-                    {startMeasure}
-                  </net:fromPosition>
-                  <net:toPosition uom="meter">
-                    {endMeasure}
-                  </net:toPosition>
+                  <net:element xlink:href={ linkReference }/>
+                  <net:applicableDirection>{ applicableDirection }</net:applicableDirection>
+                  <net:fromPosition uom="meter">{ startMeasure }</net:fromPosition>
+                  <net:toPosition uom="meter">{ endMeasure }</net:toPosition>
                 </net:SimpleLinearReference>
               </rst:INSPIRELinearLocation>
             </rst:locationReference>
             <rst:locationReference>
-              <rst:OpenLRLocationString gml:id={UUID.randomUUID().toString}>
-                <rst:base64String>
-                  {reference}
-                </rst:base64String>
+              <rst:OpenLRLocationString gml:id={ UUID.randomUUID().toString }>
+                <rst:base64String>{ reference }</rst:base64String>
                 <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
               </rst:OpenLRLocationString>
             </rst:locationReference>
             <rst:updateInfo>
               <rst:UpdateInfo>
-                <rst:type>
-                  {feature.properties.changeType}
-                </rst:type>
+                <rst:type>{ feature.properties.changeType }</rst:type>
               </rst:UpdateInfo>
             </rst:updateInfo>
             <rst:source>Regulation</rst:source>
             <rst:encodedGeometry>
-              <gml:LineString gml:id={UUID.randomUUID().toString} srsDimension="2">
+              <gml:LineString gml:id={ UUID.randomUUID().toString } srsDimension="2">
                 <gml:posList>
-                  {geometry}
+                  { geometry }
                 </gml:posList>
               </gml:LineString>
             </rst:encodedGeometry>
@@ -116,9 +101,7 @@ object RosatteConverter {
               <rst:SafetyFeaturePropertyValue>
                 <rst:type>MaximumSpeedLimit</rst:type>
                 <rst:propertyValue>
-                  <gml:measure uom="kmph">
-                    {feature.properties.value}
-                  </gml:measure>
+                  <gml:measure uom="kmph">{ feature.properties.value }</gml:measure>
                 </rst:propertyValue>
               </rst:SafetyFeaturePropertyValue>
             </rst:properties>
