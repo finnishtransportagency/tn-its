@@ -9,24 +9,28 @@ import fi.liikennevirasto.digiroad2.tnits.openlr.OpenLREncoder
 import scala.util.{Failure, Success, Try}
 
 object RosatteConverter {
-  def convert(speedLimits: Seq[features.Asset], start: Instant, end: Instant): DataSet = {
-    val onlyOneWaySpeedLimits = splitFeaturesApplicableToBothDirections(speedLimits)
+  def generateDataSet(featureMembers: Seq[Any], start: Instant, end: Instant): DataSet = {
     val dataSetId = DatasetID.encode(DatasetID.LiikennevirastoUUID, start, end)
-    val rosatteData = convertToChangeDataSet(onlyOneWaySpeedLimits, dataSetId, start, end)
+    val rosatteData = generateChangeData(featureMembers, dataSetId, start, end)
     DataSet(
       id = dataSetId,
       updates = rosatteData.toString)
   }
 
-  def convertToChangeDataSet(speedLimitFeatures: Seq[features.Asset], dataSetId: String, startTime: Instant, endTime: Instant): Any = {
+  def generateChangeData(featureMembers: Seq[Any], dataSetId: String, startTime: Instant, endTime: Instant): Any = {
     <rst:ROSATTESafetyFeatureDataset xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:net="urn:x-inspire:specification:gmlas:Network:3.2" xmlns:openlr="http://www.openlr.org/openlr" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:TPEG="TPEG" xmlns:rst="http://www.ertico.com/en/subprojects/rosatte/rst" xsi:schemaLocation="http://www.ertico.com/en/subprojects/rosatte/rst http://rosatte-no.triona.se/schemas/Rosatte.xsd" gml:id="i0fbf03ad-5c7a-4490-bb7c-64f95a91cb3c">
-      {speedLimitFeatures.map(featureMember)}
+      {featureMembers}
       <rst:metadata>
         <rst:datasetId>{dataSetId}</rst:datasetId>
         <rst:datasetCreationTime>{endTime}</rst:datasetCreationTime>
       </rst:metadata>
       <rst:type>Update</rst:type>
     </rst:ROSATTESafetyFeatureDataset>
+  }
+
+  def convert(assetFeatures: Seq[features.Asset], featureType: String, valueType: String, unit: String) = {
+    val onlyOneWayFeatures = splitFeaturesApplicableToBothDirections(assetFeatures)
+    onlyOneWayFeatures.map(toFeatureMember(_, featureType, valueType, unit))
   }
 
   def splitFeaturesApplicableToBothDirections(assets: Seq[features.Asset]): Seq[features.Asset] = {
@@ -41,7 +45,7 @@ object RosatteConverter {
     }
   }
 
-  def featureMember(feature: features.Asset) = {
+  def toFeatureMember(feature: features.Asset, featureType: String, valueType: String, unit: String) = {
     val coordinates = feature.geometry.coordinates.flatMap(_.take(2))
     val transformedCoordinates = CoordinateTransform.convertToWgs84(coordinates)
     val geometry = transformedCoordinates.mkString(" ")
@@ -96,12 +100,12 @@ object RosatteConverter {
                 </gml:posList>
               </gml:LineString>
             </rst:encodedGeometry>
-            <rst:type>SpeedLimit</rst:type>
+            <rst:type>{ featureType }</rst:type>
             <rst:properties>
               <rst:SafetyFeaturePropertyValue>
-                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:type>{ valueType }</rst:type>
                 <rst:propertyValue>
-                  <gml:measure uom="kmph">{ feature.properties.value }</gml:measure>
+                  <gml:measure uom={ unit }>{ feature.properties.value }</gml:measure>
                 </rst:propertyValue>
               </rst:SafetyFeaturePropertyValue>
             </rst:properties>
