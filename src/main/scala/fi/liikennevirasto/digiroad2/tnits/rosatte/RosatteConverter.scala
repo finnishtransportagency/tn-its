@@ -91,7 +91,7 @@ object RosatteConverter {
             <rst:locationReference>
               <rst:OpenLRLocationString gml:id={UUID.randomUUID().toString}>
                 <rst:base64String>
-                  {openLR}
+                  {reference}
                 </rst:base64String>
                 <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
               </rst:OpenLRLocationString>
