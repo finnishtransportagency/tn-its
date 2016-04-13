@@ -29,4 +29,12 @@ object OTHClient {
     val contents = Await.result(Http(req OK as.String), 30.seconds)
     (parse(contents) \ "features").extract[Seq[features.Asset]]
   }
+
+  def readTotalWeightLimitChanges(since: Instant, until: Instant): Seq[features.Asset] = {
+    val req = (changesApiUrl / "total_weight_limits")
+      .addQueryParameter("since", since.toString)
+      .addQueryParameter("until", until.toString)
+    val contents = Await.result(Http(req OK as.String), 30.seconds)
+    (parse(contents) \ "features").extract[Seq[features.Asset]]
+  }
 }

@@ -15,8 +15,11 @@ object Converter {
       val start = RemoteDatasets.getLatestEndTime.getOrElse(Instant.now.minus(1, ChronoUnit.DAYS))
       val end = Instant.now.minus(1, ChronoUnit.MINUTES)
       val speedLimits = OTHClient.readSpeedLimitChanges(start, end)
+      val totalWeightLimitChanges = OTHClient.readTotalWeightLimitChanges(start, end)
       val speedLimitRosatteFeatures = RosatteConverter.convert(speedLimits, "SpeedLimit", "MaximumSpeedLimit", "kmph")
-      val dataSet = RosatteConverter.generateDataSet(speedLimitRosatteFeatures, start, end)
+      val weightLimitRosatteFeatures = RosatteConverter.convert(totalWeightLimitChanges, "WeightLimit", "TotalWeightLimit", "kg")
+      val allRosatteFeatures = speedLimitRosatteFeatures ++ weightLimitRosatteFeatures
+      val dataSet = RosatteConverter.generateDataSet(allRosatteFeatures, start, end)
       println(dataSet.updates)
       val filename = s"${URLEncoder.encode(dataSet.id, "UTF-8")}.xml"
       RemoteDatasets.put(filename, dataSet.updates)
