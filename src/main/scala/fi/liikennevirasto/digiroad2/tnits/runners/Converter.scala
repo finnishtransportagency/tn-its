@@ -16,9 +16,9 @@ object Converter {
       val end = Instant.now.minus(1, ChronoUnit.MINUTES)
       val speedLimits = OTHClient.readSpeedLimitChanges(start, end)
       val totalWeightLimitChanges = OTHClient.readTotalWeightLimitChanges(start, end)
-      val speedLimitRosatteFeatures = RosatteConverter.convert(speedLimits, "SpeedLimit", "MaximumSpeedLimit", "kmph")
-      val weightLimitRosatteFeatures = RosatteConverter.convert(totalWeightLimitChanges, "WeightLimit", "TotalWeightLimit", "kg")
-      val allRosatteFeatures = speedLimitRosatteFeatures ++ weightLimitRosatteFeatures
+      val allRosatteFeatures =
+        RosatteConverter.convert(speedLimits, "SpeedLimit", "MaximumSpeedLimit", "kmph") ++
+        RosatteConverter.convert(totalWeightLimitChanges, "RestrictionForVehicles", "MaximumLadenWeight", "kg")
       val dataSet = RosatteConverter.generateDataSet(allRosatteFeatures, start, end)
       println(dataSet.updates)
       val filename = s"${URLEncoder.encode(dataSet.id, "UTF-8")}.xml"
