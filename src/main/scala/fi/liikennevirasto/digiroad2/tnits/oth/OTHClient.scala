@@ -27,7 +27,7 @@ object OTHClient {
     fetchChanges("total_weight_limits", since, until)
   }
 
-  private def fetchChanges(apiEndpoint: String, since: Instant, until: Instant): Future[Seq[Asset]] = {
+  def fetchChanges(apiEndpoint: String, since: Instant, until: Instant): Future[Seq[Asset]] = {
     val req = (changesApiUrl / apiEndpoint)
       .addQueryParameter("since", since.toString)
       .addQueryParameter("until", until.toString)
