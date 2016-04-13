@@ -11,18 +11,18 @@ import scala.util.{Failure, Success, Try}
 object RosatteConverter {
   def convert(speedLimits: Seq[features.Asset], start: Instant, end: Instant): DataSet = {
     val onlyOneWaySpeedLimits = splitFeaturesApplicableToBothDirections(speedLimits)
-    val rosatteData = convertToChangeDataSet(onlyOneWaySpeedLimits, start, end)
     val dataSetId = DatasetID.encode(DatasetID.LiikennevirastoUUID, start, end)
+    val rosatteData = convertToChangeDataSet(onlyOneWaySpeedLimits, dataSetId, start, end)
     DataSet(
       id = dataSetId,
       updates = rosatteData.toString)
   }
 
-  def convertToChangeDataSet(speedLimitFeatures: Seq[features.Asset], startTime: Instant, endTime: Instant): Any = {
+  def convertToChangeDataSet(speedLimitFeatures: Seq[features.Asset], dataSetId: String, startTime: Instant, endTime: Instant): Any = {
     <rst:ROSATTESafetyFeatureDataset xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:net="urn:x-inspire:specification:gmlas:Network:3.2" xmlns:openlr="http://www.openlr.org/openlr" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:TPEG="TPEG" xmlns:rst="http://www.ertico.com/en/subprojects/rosatte/rst" xsi:schemaLocation="http://www.ertico.com/en/subprojects/rosatte/rst http://rosatte-no.triona.se/schemas/Rosatte.xsd" gml:id="i0fbf03ad-5c7a-4490-bb7c-64f95a91cb3c">
       {speedLimitFeatures.map(featureMember)}<rst:metadata>
       <rst:datasetId>
-        {DatasetID.encode(DatasetID.LiikennevirastoUUID, startTime, endTime)}
+        {dataSetId}
       </rst:datasetId>
       <rst:datasetCreationTime>
         {endTime}
