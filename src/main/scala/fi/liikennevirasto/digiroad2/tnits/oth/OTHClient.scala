@@ -19,14 +19,6 @@ object OTHClient {
         user = config.logins('oth).username,
         password = config.logins('oth).password)
 
-  def readSpeedLimitChanges(since: Instant, until: Instant): Future[Seq[Asset]] = {
-    fetchChanges("speed_limits", since, until)
-  }
-
-  def readTotalWeightLimitChanges(since: Instant, until: Instant): Future[Seq[Asset]] = {
-    fetchChanges("total_weight_limits", since, until)
-  }
-
   def fetchChanges(apiEndpoint: String, since: Instant, until: Instant): Future[Seq[Asset]] = {
     val req = (changesApiUrl / apiEndpoint)
       .addQueryParameter("since", since.toString)
