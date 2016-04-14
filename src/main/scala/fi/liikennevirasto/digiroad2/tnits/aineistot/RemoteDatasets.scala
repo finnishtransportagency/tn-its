@@ -4,6 +4,8 @@ import java.io.{ByteArrayInputStream, InputStream}
 import java.net.{URLDecoder, URLEncoder}
 import java.time.Instant
 
+import com.ning.http.client.ProxyServer
+import com.ning.http.client.ProxyServer.Protocol
 import dispatch.Defaults._
 import dispatch._
 import fi.liikennevirasto.digiroad2.tnits.config
@@ -17,11 +19,12 @@ import scala.concurrent.{Await, Future}
 
 object RemoteDatasets {
   private val logins =
-    config.logins('aineistot)
+    config.logins.aineistot
 
   val baseUrl =
-    url(config.urls('aineistot))
+    url(config.urls.aineistot.base)
       .setFollowRedirects(true)
+      .setProxyServer(new ProxyServer(Protocol.HTTP, config.proxy.host, config.proxy.port, config.proxy.username, config.proxy.password))
       .as(
         user = logins.username,
         password = logins.password)
@@ -55,7 +58,7 @@ object RemoteDatasets {
 
   def put(filename: String, contents: String): Unit = {
     val client = new FTPClient
-    client.connect(config.urls('aineistotFtp))
+    client.connect(config.urls.aineistot.ftp)
     if (!client.login(logins.username, logins.password))
       throw new IllegalArgumentException("Login failed")
     if (!client.changeWorkingDirectory(config.dir))

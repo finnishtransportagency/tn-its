@@ -13,11 +13,11 @@ object OTHClient {
   protected implicit val jsonFormats: Formats = DefaultFormats
 
   private val changesApiUrl: Req =
-    host(config.urls('changes))
+    host(config.urls.changesApi)
       .setFollowRedirects(true)
       .as(
-        user = config.logins('oth).username,
-        password = config.logins('oth).password)
+        user = config.logins.oth.username,
+        password = config.logins.oth.password)
 
   def fetchChanges(apiEndpoint: String, since: Instant, until: Instant): Future[Seq[Asset]] = {
     val req = (changesApiUrl / apiEndpoint)
