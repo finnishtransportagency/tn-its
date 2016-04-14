@@ -22,9 +22,9 @@ object config {
 
   val urls = new {
     val aineistot = new {
-      val base = "aineistot.liikennevirasto.fi"
-      val dir = s"http://$base/digiroad/${config.dir}"
-      val ftp = base
+      val domain = "aineistot.liikennevirasto.fi"
+      val dir = s"http://$domain/digiroad/${config.dir}"
+      val ftp = domain
     }
     val changesApi = env("CHANGE_API_URL")
   }
