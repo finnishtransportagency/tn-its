@@ -3,10 +3,6 @@ package fi.liikennevirasto.digiroad2.tnits
 import java.net.{URI, URL}
 
 object config {
-  case class Login(
-    username: String,
-    password: String)
-
   val logins = new {
     val aineistot = new {
       val username = env("AINEISTOT_USERNAME")
@@ -31,26 +27,26 @@ object config {
 
   val optionalProxy = getProxy
 
-  val apiPort =
-    sys.env.get("PORT").fold(8090)(_.toInt)
+  val apiPort = optionalEnv("PORT").fold(8090)(_.toInt)
+
+  private def getProxy = {
+    optionalEnv("PROXIMO_URL")
+      .map(URI.create)
+      .map { url =>
+        val Array(user, pass) = url.getUserInfo.split(":")
+
+        new {
+          val host = url.getHost
+          val port = url.getPort
+          val username = user
+          val password = pass
+        }
+      }
+  }
 
   private def env(name: String) =
     sys.env.getOrElse(name, sys.error(s"Environment variable required: $name"))
 
   private def optionalEnv(name: String): Option[String] =
     sys.env.get(name)
-
-  private def getProxy = {
-    optionalEnv("QUOTAGUARDSTATIC_URL").map { quotaGuardStaticUrl =>
-      val url = URI.create(quotaGuardStaticUrl)
-      val Array(user, pass) = url.getUserInfo.split(":")
-
-      new {
-        val host = url.getHost
-        val port = url.getPort
-        val username = user
-        val password = pass
-      }
-    }
-  }
 }

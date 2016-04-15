@@ -21,15 +21,19 @@ object OTHClient {
         user = config.logins.oth.username,
         password = config.logins.oth.password)
 
-    config.optionalProxy.map { proxy =>
+    config.optionalProxy.fold(req) { proxy =>
       req.setProxyServer(new ProxyServer(Protocol.HTTP, proxy.host, proxy.port, proxy.username, proxy.password))
-    }.getOrElse(req)
+    }
   }
 
   def fetchChanges(apiEndpoint: String, since: Instant, until: Instant): Future[Seq[Asset]] = {
     val req = (changesApiUrl / apiEndpoint)
       .addQueryParameter("since", since.toString)
       .addQueryParameter("until", until.toString)
-    Http(req OK as.String).map(contents => (parse(contents) \ "features").extract[Seq[Asset]])
+
+    Http(req OK as.String)
+      .map { contents =>
+        (parse(contents) \ "features").extract[Seq[Asset]]
+      }
   }
 }
