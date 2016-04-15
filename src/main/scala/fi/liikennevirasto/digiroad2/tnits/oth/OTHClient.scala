@@ -15,13 +15,14 @@ object OTHClient {
   protected implicit val jsonFormats: Formats = DefaultFormats
 
   private val changesApiUrl: Req = {
-    val req = host(config.urls.changesApi)
+    val req = url(config.urls.changesApi)
       .setFollowRedirects(true)
       .as(
         user = config.logins.oth.username,
         password = config.logins.oth.password)
 
     config.optionalProxy.fold(req) { proxy =>
+      println(proxy.host, proxy.port, proxy.username, proxy.password)
       req.setProxyServer(new ProxyServer(Protocol.HTTP, proxy.host, proxy.port, proxy.username, proxy.password))
     }
   }

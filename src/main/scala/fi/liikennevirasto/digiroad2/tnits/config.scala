@@ -34,10 +34,15 @@ object config {
       .map(URI.create)
       .map { url =>
         val Array(user, pass) = url.getUserInfo.split(":")
+        val parsedPort = if (url.getPort == -1) {
+          if (url.getScheme == "https") 443 else 80
+        } else {
+          url.getPort
+        }
 
         new {
           val host = url.getHost
-          val port = url.getPort
+          val port = parsedPort
           val username = user
           val password = pass
         }
