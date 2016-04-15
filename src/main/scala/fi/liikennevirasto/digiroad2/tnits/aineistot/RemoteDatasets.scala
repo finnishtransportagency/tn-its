@@ -24,7 +24,6 @@ object RemoteDatasets {
   val baseUrl =
     url(config.urls.aineistot.dir)
       .setFollowRedirects(true)
-      .setProxyServer(new ProxyServer(Protocol.HTTP, config.proxy.host, config.proxy.port, config.proxy.username, config.proxy.password))
       .as(
         user = logins.username,
         password = logins.password)

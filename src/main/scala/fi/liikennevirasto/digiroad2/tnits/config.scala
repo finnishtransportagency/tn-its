@@ -29,7 +29,7 @@ object config {
     val changesApi = env("CHANGE_API_URL")
   }
 
-  val proxy = getProxy
+  val optionalProxy = getProxy
 
   val apiPort =
     sys.env.get("PORT").fold(8090)(_.toInt)
@@ -37,15 +37,20 @@ object config {
   private def env(name: String) =
     sys.env.getOrElse(name, sys.error(s"Environment variable required: $name"))
 
-  private def getProxy = {
-    val url = URI.create(env("QUOTAGUARDSTATIC_URL"))
-    val Array(user, pass) = url.getUserInfo.split(":")
+  private def optionalEnv(name: String): Option[String] =
+    sys.env.get(name)
 
-    new {
-      val host = url.getHost
-      val port = url.getPort
-      val username = user
-      val password = pass
+  private def getProxy = {
+    optionalEnv("QUOTAGUARDSTATIC_URL").map { quotaGuardStaticUrl =>
+      val url = URI.create(quotaGuardStaticUrl)
+      val Array(user, pass) = url.getUserInfo.split(":")
+
+      new {
+        val host = url.getHost
+        val port = url.getPort
+        val username = user
+        val password = pass
+      }
     }
   }
 }

@@ -2,6 +2,8 @@ package fi.liikennevirasto.digiroad2.tnits.oth
 
 import java.time.Instant
 
+import com.ning.http.client.ProxyServer
+import com.ning.http.client.ProxyServer.Protocol
 import dispatch.Defaults._
 import dispatch._
 import fi.liikennevirasto.digiroad2.tnits.config
@@ -12,12 +14,17 @@ import org.json4s.{DefaultFormats, Formats}
 object OTHClient {
   protected implicit val jsonFormats: Formats = DefaultFormats
 
-  private val changesApiUrl: Req =
-    host(config.urls.changesApi)
+  private val changesApiUrl: Req = {
+    val req = host(config.urls.changesApi)
       .setFollowRedirects(true)
       .as(
         user = config.logins.oth.username,
         password = config.logins.oth.password)
+
+    config.optionalProxy.map { proxy =>
+      req.setProxyServer(new ProxyServer(Protocol.HTTP, proxy.host, proxy.port, proxy.username, proxy.password))
+    }.getOrElse(req)
+  }
 
   def fetchChanges(apiEndpoint: String, since: Instant, until: Instant): Future[Seq[Asset]] = {
     val req = (changesApiUrl / apiEndpoint)
