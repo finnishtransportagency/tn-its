@@ -22,7 +22,6 @@ object OTHClient {
         password = config.logins.oth.password)
 
     config.optionalProxy.fold(req) { proxy =>
-      println(proxy.host, proxy.port, proxy.username, proxy.password)
       req.setProxyServer(new ProxyServer(Protocol.HTTP, proxy.host, proxy.port, proxy.username, proxy.password))
     }
   }
