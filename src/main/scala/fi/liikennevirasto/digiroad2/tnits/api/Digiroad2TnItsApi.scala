@@ -14,7 +14,7 @@ class Digiroad2TnItsApi extends ScalatraServlet with FutureSupport {
   override protected implicit def executor: ExecutionContext =
     scala.concurrent.ExecutionContext.global
 
-  get("/rosattedownload/download/queryDataSets") {
+  get("/download/queryDataSets") {
     new AsyncResult {
       val is =
         RemoteDatasets.index.map { dataSetIds =>
@@ -46,7 +46,7 @@ class Digiroad2TnItsApi extends ScalatraServlet with FutureSupport {
     }
   }
 
-  get("/rosattedownload/download/readDataSet") {
+  get("/download/readDataSet") {
     new AsyncResult {
       val is = {
         contentType = "application/xml"
