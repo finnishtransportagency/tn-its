@@ -7,7 +7,7 @@ import java.time.temporal.ChronoUnit
 import dispatch.Http
 import fi.liikennevirasto.digiroad2.tnits.aineistot.RemoteDatasets
 import fi.liikennevirasto.digiroad2.tnits.oth.OTHClient
-import fi.liikennevirasto.digiroad2.tnits.rosatte.RosatteConverter
+import fi.liikennevirasto.digiroad2.tnits.rosatte.{RosatteConverter, features}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
@@ -24,6 +24,8 @@ object Converter {
     }
   }
 
+  case class OTHException(cause: Throwable) extends RuntimeException(cause)
+
   def convert(): Unit = {
     val start = RemoteDatasets.getLatestEndTime.getOrElse(Instant.now.minus(1, ChronoUnit.DAYS))
     val end = Instant.now.minus(1, ChronoUnit.MINUTES)
@@ -36,9 +38,8 @@ object Converter {
       AssetType("height_limits", "RestrictionForVehicles", "MaximumHeight", "kg"),
       AssetType("total_weight_limits", "RestrictionForVehicles", "MaximumLadenWeight", "kg"))
 
-    val assets = Await.result(
-      Future.sequence(assetTypes.map(asset => OTHClient.fetchChanges(asset.apiEndPoint, start, end))),
-      30.seconds)
+    val assets = fetchAllChanges(start, end, assetTypes)
+
     val allRosatteFeatures =
       assetTypes.zip(assets).flatMap { case (assetType, changes) =>
         RosatteConverter.convert(changes, assetType.featureType, assetType.valueType, assetType.unit)
@@ -48,5 +49,15 @@ object Converter {
     println(dataSet.updates)
     val filename = s"${URLEncoder.encode(dataSet.id, "UTF-8")}.xml"
     RemoteDatasets.put(filename, dataSet.updates)
+  }
+
+  def fetchAllChanges(start: Instant, end: Instant, assetTypes: Seq[AssetType]): Seq[Seq[features.Asset]] = {
+    try {
+      val responses = Future.sequence(assetTypes.map(asset => OTHClient.fetchChanges(asset.apiEndPoint, start, end)))
+      Await.result(responses, 30.seconds)
+    } catch {
+      case err: Throwable =>
+        throw OTHException(err)
+    }
   }
 }

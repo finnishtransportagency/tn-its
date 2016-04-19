@@ -17,6 +17,8 @@ import scala.collection.JavaConverters._
 import scala.concurrent.duration._
 import scala.concurrent.{Await, Future}
 
+case class RemoteDatasetsException(cause: Throwable) extends RuntimeException(cause)
+
 object RemoteDatasets {
   private val logins =
     config.logins.aineistot
@@ -40,7 +42,12 @@ object RemoteDatasets {
     }
 
   def getLatestEndTime: Option[Instant] = {
-    val dataSets = Await.result (RemoteDatasets.index, 30.seconds)
+    val dataSets = try {
+      Await.result(RemoteDatasets.index, 30.seconds)
+    } catch {
+      case err: Throwable =>
+        throw RemoteDatasetsException(err)
+    }
 
     if (dataSets.nonEmpty) {
       Some(dataSets
