@@ -12,6 +12,10 @@ object config {
       val username = env("CHANGE_API_USERNAME")
       val password = env("CHANGE_API_PASSWORD")
     }
+    val converter = new {
+      val username = env("CONVERTER_API_USERNAME")
+      val password = env("CONVERTER_API_PASSWORD")
+    }
   }
 
   val dir = env("AINEISTOT_DIRECTORY")
