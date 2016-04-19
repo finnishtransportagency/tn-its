@@ -9,7 +9,7 @@ usage:
 	@echo "  make test    — Run tests"
 
 build:
-	$(mvn) compile
+	$(mvn) package
 
 run: build
 	$(mvn) jetty:run -Djetty.http.port=8090
