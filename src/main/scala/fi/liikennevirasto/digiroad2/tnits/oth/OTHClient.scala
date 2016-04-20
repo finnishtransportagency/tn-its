@@ -21,8 +21,13 @@ object OTHClient {
         user = config.logins.oth.username,
         password = config.logins.oth.password)
 
-    config.optionalProxy.fold(req) { proxy =>
+    if (config.optionalProxy.isDefined) {
+      val proxy = config.optionalProxy.get
+      println(s"Using proxy: $proxy")
       req.setProxyServer(new ProxyServer(Protocol.HTTPS, proxy.host, proxy.port, proxy.username, proxy.password))
+    } else {
+      println("Not using proxy")
+      req
     }
   }
 
