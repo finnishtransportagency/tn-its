@@ -51,6 +51,7 @@ object config {
           val port = parsedPort
           val username = user
           val password = pass
+          override def toString = s"$host $port $username $password"
         }
       }
   }

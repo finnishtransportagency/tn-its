@@ -35,10 +35,16 @@ object OTHClient {
     val req = (changesApiUrl / apiEndpoint)
       .addQueryParameter("since", since.toString)
       .addQueryParameter("until", until.toString)
+      .setProxyServer(new ProxyServer(Protocol.HTTP, "testioag.liikennevirasto.fi", 80, "proxy", "46fb35c23e53-48a7-bb43-5a32fbe07f5f"))
+
+    println(s"Request: ${req.url}")
 
     Http(req OK as.String)
       .map { contents =>
         (parse(contents) \ "features").extract[Seq[Asset]]
+      }
+      .recover { case err: Throwable =>
+        throw new RuntimeException(s"fetchChanges error, url: ${req.url}", err)
       }
   }
 }
