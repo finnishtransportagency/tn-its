@@ -24,7 +24,7 @@ object OTHClient {
     if (config.optionalProxy.isDefined) {
       val proxy = config.optionalProxy.get
       println(s"Using proxy: $proxy")
-      req.setProxyServer(new ProxyServer(Protocol.HTTPS, proxy.host, proxy.port, proxy.username, proxy.password))
+      req.setProxyServer(new ProxyServer(Protocol.HTTP, proxy.host, proxy.port, proxy.username, proxy.password))
     } else {
       println("Not using proxy")
       req
@@ -35,7 +35,7 @@ object OTHClient {
     val req = (changesApiUrl / apiEndpoint)
       .addQueryParameter("since", since.toString)
       .addQueryParameter("until", until.toString)
-      .setProxyServer(new ProxyServer(Protocol.HTTP, "testioag.liikennevirasto.fi", 80, "proxy", "46fb35c23e53-48a7-bb43-5a32fbe07f5f"))
+      .setProxyServer(new ProxyServer(Protocol.HTTP, "proxy-54-217-229-244.proximo.io", 80, "proxy", "46fb35c23e53-48a7-bb43-5a32fbe07f5f"))
 
     println(s"Request: ${req.url}")
 
