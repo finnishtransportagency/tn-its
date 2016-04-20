@@ -34,7 +34,7 @@ object config {
   val apiPort = optionalEnv("PORT").fold(8090)(_.toInt)
 
   private def getProxy = {
-    optionalEnv("PROXIMO_URL")
+    optionalEnv("QUOTAGUARDSTATIC_URL")
       .map(URI.create)
       .map { url =>
         val Array(user, pass) = url.getUserInfo.split(":")

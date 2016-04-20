@@ -77,24 +77,22 @@ object Converter {
   }
 
   def fetchAllChangesWithApacheHttpAsyncClient(start: Instant, end: Instant, assetTypes: Seq[AssetType]): Seq[String] = {
+    val credentials = new BasicCredentialsProvider
+    if (config.optionalProxy.isDefined) {
+      val proxy = config.optionalProxy.get
+      credentials.setCredentials(
+        new AuthScope(proxy.host, proxy.port),
+        new UsernamePasswordCredentials(proxy.username, proxy.password))
+    }
+    credentials.setCredentials(
+      new AuthScope("testioag.liikennevirasto.fi", 443), // TODO: Use config
+      new UsernamePasswordCredentials(config.logins.oth.username, config.logins.oth.password))
+
+    val client = HttpAsyncClients.custom()
+      .setDefaultCredentialsProvider(credentials)
+      .build()
+
     try {
-      val credentials = new BasicCredentialsProvider
-      credentials.setCredentials(
-        new AuthScope("proxy-54-217-229-244.proximo.io", 80),
-        new UsernamePasswordCredentials("proxy", "46fb35c23e53-48a7-bb43-5a32fbe07f5f"))
-      credentials.setCredentials(
-        new AuthScope("testioag.liikennevirasto.fi", 443),
-        new UsernamePasswordCredentials("kalpa", "RVu35UvVyzuMHw2"))
-
-      val client = HttpAsyncClients.custom()
-        .setDefaultCredentialsProvider(credentials)
-        .setProxy(new HttpHost("proxy-54-217-229-244.proximo.io", 80, "http"))
-        .setDefaultRequestConfig(RequestConfig.custom()
-            .setProxyPreferredAuthSchemes(util.Arrays.asList(AuthSchemes.BASIC))
-            .setTargetPreferredAuthSchemes(util.Arrays.asList(AuthSchemes.BASIC))
-          .build())
-        .build()
-
       client.start()
 
       val responses =
@@ -110,6 +108,8 @@ object Converter {
     } catch {
       case err: Throwable =>
         throw OTHException(err)
+    } finally {
+      client.close()
     }
   }
 }

@@ -1,28 +1,25 @@
 package fi.liikennevirasto.digiroad2.tnits.oth
 
-import java.net.Authenticator.RequestorType
-import java.security.Principal
 import java.time.Instant
-import java.util.concurrent.{CancellationException, CompletableFuture, Future}
+import java.util.concurrent.CancellationException
 
 import com.ning.http.client.ProxyServer
 import com.ning.http.client.ProxyServer.Protocol
 import dispatch.Defaults._
-import dispatch.{Future, _}
+import dispatch._
+import fi.liikennevirasto.digiroad2.tnits
 import fi.liikennevirasto.digiroad2.tnits.config
 import fi.liikennevirasto.digiroad2.tnits.rosatte.features.Asset
-import org.apache.http.auth.{AuthScope, Credentials, UsernamePasswordCredentials}
-import org.apache.http.{HttpHost, HttpResponse}
 import org.apache.http.client.config.RequestConfig
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.client.protocol.HttpClientContext
 import org.apache.http.concurrent.FutureCallback
-import org.apache.http.impl.client.BasicCredentialsProvider
+import org.apache.http.impl.auth.BasicScheme
+import org.apache.http.impl.client.BasicAuthCache
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient
+import org.apache.http.{HttpHost, HttpResponse}
 import org.json4s.jackson.JsonMethods._
 import org.json4s.{DefaultFormats, Formats}
-
-import scala.concurrent.Promise
 
 object OTHClient {
   protected implicit val jsonFormats: Formats = DefaultFormats
@@ -49,8 +46,21 @@ object OTHClient {
 
     val promise = scala.concurrent.Promise[HttpResponse]()
 
+    val config =
+      if (tnits.config.optionalProxy.isDefined) {
+        val proxy = tnits.config.optionalProxy.get
+        RequestConfig.custom()
+          .setProxy(new HttpHost(proxy.host, proxy.port))
+          .build()
+      } else {
+        RequestConfig.DEFAULT
+      }
+
+    val get = new HttpGet(url)
+    get.setConfig(config)
+    println(s"*** Request: ${get.getRequestLine}")
     httpClient
-      .execute(new HttpGet(url), new FutureCallback[HttpResponse] {
+      .execute(get, new FutureCallback[HttpResponse] {
         override def cancelled(): Unit =
           promise.failure(new CancellationException)
 
@@ -68,13 +78,10 @@ object OTHClient {
     val req = (changesApiUrl / apiEndpoint)
       .addQueryParameter("since", since.toString)
       .addQueryParameter("until", until.toString)
-      .setProxyServer(new ProxyServer(Protocol.HTTP, "proxy-54-217-229-244.proximo.io", 80, "proxy", "46fb35c23e53-48a7-bb43-5a32fbe07f5f"))
 
     println(s"Request: ${req.url}")
 
-    val proxyServer = new ProxyServer(Protocol.HTTP, "proxy-54-217-229-244.proximo.io", 80, "proxy", "46fb35c23e53-48a7-bb43-5a32fbe07f5f")
-    Http.configure(builder => builder.setProxyServer(proxyServer))
-      .apply(req OK as.String)
+    Http(req OK as.String)
       .map { contents =>
         (parse(contents) \ "features").extract[Seq[Asset]]
       }
