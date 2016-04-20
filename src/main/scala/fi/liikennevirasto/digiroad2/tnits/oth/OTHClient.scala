@@ -31,6 +31,10 @@ object OTHClient {
     }
   }
 
+  def fetchChangesWithApacheHttpComponentsClient(apiEndpoint: String, since: Instant, until: Instant) = {
+    
+  }
+
   def fetchChanges(apiEndpoint: String, since: Instant, until: Instant): Future[Seq[Asset]] = {
     val req = (changesApiUrl / apiEndpoint)
       .addQueryParameter("since", since.toString)

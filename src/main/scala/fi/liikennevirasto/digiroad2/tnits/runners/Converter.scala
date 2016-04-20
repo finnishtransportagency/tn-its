@@ -27,7 +27,7 @@ object Converter {
   case class OTHException(cause: Throwable) extends RuntimeException(cause)
 
   def convert(): Unit = {
-    val start = RemoteDatasets.getLatestEndTime.getOrElse(Instant.now.minus(1, ChronoUnit.DAYS))
+    val start = Instant.now.minus(1, ChronoUnit.HOURS)
     val end = Instant.now.minus(1, ChronoUnit.MINUTES)
 
     val assetTypes = Seq(
