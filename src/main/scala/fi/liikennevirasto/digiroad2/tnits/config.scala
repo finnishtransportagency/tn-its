@@ -44,6 +44,8 @@ object config {
           url.getPort
         }
 
+        println(s"Proxy: ${url.getHost} $parsedPort $user $pass")
+
         new {
           val host = url.getHost
           val port = parsedPort
