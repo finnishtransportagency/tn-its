@@ -39,7 +39,9 @@ object OTHClient {
 
     println(s"Request: ${req.url}")
 
-    Http(req OK as.String)
+    val proxyServer = new ProxyServer(Protocol.HTTP, "proxy-54-217-229-244.proximo.io", 80, "proxy", "46fb35c23e53-48a7-bb43-5a32fbe07f5f")
+    Http.configure(builder => builder.setProxyServer(proxyServer))
+      .apply(req OK as.String)
       .map { contents =>
         (parse(contents) \ "features").extract[Seq[Asset]]
       }
