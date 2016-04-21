@@ -2,6 +2,8 @@
 
 [![Circle CI](https://circleci.com/gh/finnishtransportagency/tn-its.svg?style=svg)](https://circleci.com/gh/finnishtransportagency/tn-its)
 
+This repository contains the [Finnish Transport Agency](http://www.liikennevirasto.fi/web/en) [TN-ITS](http://tn-its.eu) API and conversion implementations.
+
 ## Configuration
 
 | Environment variable   | Description | Required | Default |
@@ -18,13 +20,21 @@
 
 ## Local development
 
+### TN-ITS API
+
 ```sh
-$ make run
+make run
 ```
 
 Open [http://localhost:8090/RosatteDownload/download/querydatasets](http://localhost:8090/RosatteDownload/download/querydatasets).
 
-## Deploy
+### Conversion
+
+```sh
+make convert
+```
+
+## Deployment
 
 This repository is deployed automatically to Heroku on each push to the master branch.
 
