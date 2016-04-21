@@ -60,5 +60,5 @@ object config {
     sys.env.getOrElse(name, sys.error(s"Environment variable required: $name"))
 
   private def optionalEnv(name: String): Option[String] =
-    sys.env.get(name)
+    sys.env.get(name).filter(_ == null)
 }
