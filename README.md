@@ -2,14 +2,6 @@
 
 [![Circle CI](https://circleci.com/gh/finnishtransportagency/tn-its.svg?style=svg)](https://circleci.com/gh/finnishtransportagency/tn-its)
 
-## Build & Run ##
-
-```sh
-$ make run
-```
-
-Launch your browser, manually open [http://localhost:8080/RosatteDownload/download/querydatasets](http://localhost:8090/RosatteDownload/download/querydatasets) in your browser.
-
 ## Configuration
 
 | Environment variable   | Description | Required | Default |
@@ -24,4 +16,15 @@ Launch your browser, manually open [http://localhost:8080/RosatteDownload/downlo
 | CONVERTER_API_PASSWORD |             | Yes      |         |
 | PORT                   |             | No       | 8090    |
 
+## Local development
+
+```sh
+$ make run
+```
+
+Open [http://localhost:8090/RosatteDownload/download/querydatasets](http://localhost:8090/RosatteDownload/download/querydatasets).
+
+## Deploy
+
+This repository is deployed automatically to Heroku on each push to the master branch.
 
