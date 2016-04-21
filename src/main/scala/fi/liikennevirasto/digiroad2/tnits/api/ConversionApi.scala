@@ -15,8 +15,8 @@ class ConversionApi extends ScalatraServlet with FutureSupport with Authenticati
   }
 
   post("/") {
-    Converter.convert()
-    "OK"
+    Converter.convert(response.getOutputStream)
+    Unit
   }
 
 }

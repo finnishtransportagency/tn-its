@@ -1,5 +1,6 @@
 package fi.liikennevirasto.digiroad2.tnits.runners
 
+import java.io.{OutputStream, OutputStreamWriter, PrintWriter}
 import java.net.URLEncoder
 import java.time.Instant
 import java.time.temporal.ChronoUnit
@@ -18,7 +19,7 @@ case class AssetType(apiEndPoint: String, featureType: String, valueType: String
 object Converter {
   def main(args: Array[String]) {
     try {
-      convert()
+      convert(System.out)
     } finally {
       Http.shutdown()
     }
@@ -26,9 +27,13 @@ object Converter {
 
   case class OTHException(cause: Throwable) extends RuntimeException(cause)
 
-  def convert(): Unit = {
+  def convert(output: OutputStream): Unit = {
+    val writer = new PrintWriter(output, true)
     val start = RemoteDatasets.getLatestEndTime.getOrElse(Instant.now.minus(1, ChronoUnit.DAYS))
     val end = Instant.now.minus(1, ChronoUnit.MINUTES)
+
+    writer.println(s"start: $start")
+    writer.println(s"end: $end")
 
     val assetTypes = Seq(
       AssetType("speed_limits", "SpeedLimit", "MaximumSpeedLimit", "kmph"),
@@ -46,9 +51,11 @@ object Converter {
       }
 
     val dataSet = RosatteConverter.generateDataSet(allRosatteFeatures, start, end)
-    println(dataSet.updates)
     val filename = s"${URLEncoder.encode(dataSet.id, "UTF-8")}.xml"
+    writer.println(s"Dataset ID: ${dataSet.id}")
+    writer.println(s"dataset: $filename")
     RemoteDatasets.put(filename, dataSet.updates)
+    writer.println("done!\n")
   }
 
   def fetchAllChanges(start: Instant, end: Instant, assetTypes: Seq[AssetType]): Seq[Seq[features.Asset]] = {
