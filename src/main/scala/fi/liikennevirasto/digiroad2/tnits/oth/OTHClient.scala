@@ -1,51 +1,76 @@
 package fi.liikennevirasto.digiroad2.tnits.oth
 
+import java.net.URI
 import java.time.Instant
+import java.util.concurrent.Executors
 
-import com.ning.http.client.ProxyServer
-import com.ning.http.client.ProxyServer.Protocol
-import dispatch.Defaults._
-import dispatch._
 import fi.liikennevirasto.digiroad2.tnits.config
 import fi.liikennevirasto.digiroad2.tnits.rosatte.features.Asset
+import org.apache.http.HttpHost
+import org.apache.http.auth.{AuthScope, UsernamePasswordCredentials}
+import org.apache.http.client.config.RequestConfig
+import org.apache.http.client.methods.HttpGet
+import org.apache.http.impl.client.{BasicCredentialsProvider, HttpClients}
 import org.json4s.jackson.JsonMethods._
 import org.json4s.{DefaultFormats, Formats}
 
+import scala.concurrent.ExecutionContext
+import scala.io.Source
+
 object OTHClient {
   protected implicit val jsonFormats: Formats = DefaultFormats
-
-  private val changesApiUrl: Req = {
-    val req = url(config.urls.changesApi)
-      .setFollowRedirects(true)
-      .as(
-        user = config.logins.oth.username,
-        password = config.logins.oth.password)
-
-    if (config.optionalProxy.isDefined) {
-      val proxy = config.optionalProxy.get
-      println(s"Using proxy: $proxy")
-      req.setProxyServer(new ProxyServer(Protocol.HTTP, proxy.host, proxy.port, proxy.username, proxy.password))
-    } else {
-      println("Not using proxy")
-      req
-    }
-  }
+  private val executionContext = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(10))
+  private val client = createClient
 
   def fetchChanges(apiEndpoint: String, since: Instant, until: Instant): scala.concurrent.Future[Seq[Asset]] = {
-    val req = (changesApiUrl / apiEndpoint)
-      .addQueryParameter("since", since.toString)
-      .addQueryParameter("until", until.toString)
+    val changesApiUri = URI.create(config.urls.changesApi + "/" + apiEndpoint)
 
-    val request = req.toRequest
-    println(s"Proxy: ${request.getProxyServer}")
-    println(s"Request: ${req.url}")
+    val port = if (changesApiUri.getPort == -1) { if (changesApiUri.getScheme == "http") 80 else 443 } else { changesApiUri.getPort }
+    val target = new HttpHost(changesApiUri.getHost, port, changesApiUri.getScheme)
 
-    Http(req OK as.String)
-      .map { contents =>
-        (parse(contents) \ "features").extract[Seq[Asset]]
+    val get = new HttpGet(changesApiUri.getPath + s"?since=$since&until=$until")
+    get.setConfig(config.optionalProxy.fold(RequestConfig.DEFAULT) { proxy =>
+      val p = new HttpHost(proxy.host, proxy.port)
+      RequestConfig.custom()
+        .setProxy(p)
+        .build()
+    })
+
+    scala.concurrent.Future {
+      println(s"Fetch: ${get.getURI}")
+
+      using(client.execute(target, get)) { response =>
+        val response = client.execute(target, get)
+        val contents = response.getEntity.getContent
+
+        val s = Source.fromInputStream(contents).mkString
+
+        println(s"Response: $s")
+
+        (parse(s) \ "features").extract[Seq[Asset]]
       }
-      .recover { case err: Throwable =>
-        throw new RuntimeException(s"fetchChanges error, url: ${req.url}", err)
-      }
+    }(executionContext)
   }
+
+  private def using[T <: AutoCloseable, R](resource: T)(f: T => R) =
+    try {
+      f(resource)
+    } finally
+      resource.close()
+
+  private def createClient = {
+    val credentialsProvider = new BasicCredentialsProvider
+    config.optionalProxy.foreach { proxy =>
+      credentialsProvider.setCredentials(
+        new AuthScope(proxy.host, proxy.port),
+        new UsernamePasswordCredentials(proxy.username, proxy.password))
+    }
+    val changesApiUri = URI.create(config.urls.changesApi)
+    credentialsProvider.setCredentials(
+      new AuthScope(changesApiUri.getHost, changesApiUri.getPort),
+      new UsernamePasswordCredentials(config.logins.oth.username, config.logins.oth.password))
+
+    HttpClients.custom().setDefaultCredentialsProvider(credentialsProvider).setMaxConnPerRoute(20).build()
+  }
+
 }

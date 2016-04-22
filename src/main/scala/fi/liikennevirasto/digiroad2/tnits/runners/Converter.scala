@@ -60,7 +60,10 @@ object Converter {
   def fetchAllChanges(start: Instant, end: Instant, assetTypes: Seq[AssetType]): Seq[Seq[features.Asset]] = {
     try {
       val responses = Future.sequence(assetTypes.map(asset => OTHClient.fetchChanges(asset.apiEndPoint, start, end)))
-      Await.result(responses, 30.seconds)
+      responses.onFailure { case error: Throwable =>
+        throw error
+      }
+      Await.result(responses,   30.seconds)
     } catch {
       case err: Throwable =>
         throw OTHException(err)
