@@ -4,11 +4,15 @@ import java.io.{OutputStream, OutputStreamWriter, PrintWriter}
 import java.net.URLEncoder
 import java.time.Instant
 import java.time.temporal.ChronoUnit
+import java.util.concurrent.{CompletableFuture, TimeUnit}
+import java.util.function.Function
 
 import dispatch.Http
 import fi.liikennevirasto.digiroad2.tnits.aineistot.RemoteDatasets
 import fi.liikennevirasto.digiroad2.tnits.oth.OTHClient
+import fi.liikennevirasto.digiroad2.tnits.rosatte.features.Asset
 import fi.liikennevirasto.digiroad2.tnits.rosatte.{RosatteConverter, features}
+import org.asynchttpclient.DefaultAsyncHttpClient
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
@@ -59,8 +63,22 @@ object Converter {
 
   def fetchAllChanges(start: Instant, end: Instant, assetTypes: Seq[AssetType]): Seq[Seq[features.Asset]] = {
     try {
-      val responses = Future.sequence(assetTypes.map(asset => OTHClient.fetchChanges(asset.apiEndPoint, start, end)))
-      Await.result(responses, 30.seconds)
+//      val responses = Future.sequence(assetTypes.map(asset => OTHClient.fetchChanges(asset.apiEndPoint, start, end)))
+      val responses = assetTypes.map(asset => {
+        println(s"Fetch asset: ${asset.apiEndPoint}")
+        val response = OTHClient.fetchChangesWithAsyncHttpClient(asset.apiEndPoint, start, end)
+        println("Waiting for response")
+        response
+      })
+      CompletableFuture.allOf(responses: _*)
+        .exceptionally(new Function[Throwable, Void] {
+          override def apply(err: Throwable): Void = {
+            println(err)
+            throw err
+          }
+        })
+        .get(30, TimeUnit.SECONDS)
+      responses.map { resp => resp.get() }
     } catch {
       case err: Throwable =>
         throw OTHException(err)
