@@ -19,7 +19,7 @@ case class AssetType(apiEndPoint: String, featureType: String, valueType: String
 object Converter {
   def main(args: Array[String]) {
     try {
-      convert(System.out)
+      convert(new PrintWriter(System.out))
     } finally {
       Http.shutdown()
     }
@@ -27,8 +27,7 @@ object Converter {
 
   case class OTHException(cause: Throwable) extends RuntimeException(cause)
 
-  def convert(output: OutputStream): Unit = {
-    val writer = new PrintWriter(output, true)
+  def convert(writer: PrintWriter): Unit = {
     val start = RemoteDatasets.getLatestEndTime.getOrElse(Instant.now.minus(1, ChronoUnit.DAYS))
     val end = Instant.now.minus(1, ChronoUnit.MINUTES)
 

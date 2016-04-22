@@ -36,6 +36,8 @@ object OTHClient {
       .addQueryParameter("since", since.toString)
       .addQueryParameter("until", until.toString)
 
+    val request = req.toRequest
+    println(s"Proxy: ${request.getProxyServer}")
     println(s"Request: ${req.url}")
 
     Http(req OK as.String)
