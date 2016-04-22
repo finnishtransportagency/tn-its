@@ -63,22 +63,22 @@ object Converter {
 
   def fetchAllChanges(start: Instant, end: Instant, assetTypes: Seq[AssetType]): Seq[Seq[features.Asset]] = {
     try {
-//      val responses = Future.sequence(assetTypes.map(asset => OTHClient.fetchChanges(asset.apiEndPoint, start, end)))
-      val responses = assetTypes.map(asset => {
-        println(s"Fetch asset: ${asset.apiEndPoint}")
-        val response = OTHClient.fetchChangesWithAsyncHttpClient(asset.apiEndPoint, start, end)
-        println("Waiting for response")
-        response
-      })
-      CompletableFuture.allOf(responses: _*)
-        .exceptionally(new Function[Throwable, Void] {
-          override def apply(err: Throwable): Void = {
-            println(err)
-            throw err
-          }
-        })
-        .get(30, TimeUnit.SECONDS)
-      responses.map { resp => resp.get() }
+      Await.result(Future.sequence(assetTypes.map(asset => OTHClient.fetchChangesWithAsyncHttpClient(asset.apiEndPoint, start, end))), 30.seconds)
+//      val responses = assetTypes.map(asset => {
+//        println(s"Fetch asset: ${asset.apiEndPoint}")
+//        val response = OTHClient.fetchChangesWithAsyncHttpClient(asset.apiEndPoint, start, end)
+//        println("Waiting for response")
+//        response
+//      })
+//      CompletableFuture.allOf(responses: _*)
+//        .exceptionally(new Function[Throwable, Void] {
+//          override def apply(err: Throwable): Void = {
+//            println(err)
+//            throw err
+//          }
+//        })
+//        .get(30, TimeUnit.SECONDS)
+//      responses.map { resp => resp.get() }
     } catch {
       case err: Throwable =>
         throw OTHException(err)

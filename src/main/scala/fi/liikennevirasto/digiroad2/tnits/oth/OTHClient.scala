@@ -1,15 +1,18 @@
 package fi.liikennevirasto.digiroad2.tnits.oth
 
 import java.time.Instant
-import java.util.concurrent.CompletableFuture
-import java.util.function.Function
 
 import fi.liikennevirasto.digiroad2.tnits.config
 import fi.liikennevirasto.digiroad2.tnits.rosatte.features.Asset
 import org.asynchttpclient
-import org.asynchttpclient.{DefaultAsyncHttpClient, Realm, Response, proxy}
+import org.asynchttpclient._
 import org.json4s.jackson.JsonMethods._
 import org.json4s.{DefaultFormats, Formats}
+
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.{Await, Future, Promise}
+import scala.concurrent.duration._
+
 
 object OTHClient {
   protected implicit val jsonFormats: Formats = DefaultFormats
@@ -17,7 +20,7 @@ object OTHClient {
   private val changesApiUrl = config.urls.changesApi
 
 
-  def fetchChangesWithAsyncHttpClient(apiEndpoint: String, since: Instant, until: Instant): CompletableFuture[Seq[Asset]] = {
+  def fetchChangesWithAsyncHttpClient(apiEndpoint: String, since: Instant, until: Instant): Future[Seq[Asset]] = {
     val client =
       if (config.optionalProxy.isDefined) {
         val p = config.optionalProxy.get
@@ -34,24 +37,26 @@ object OTHClient {
 
     println(s"*** URL: $url")
 
-    val responseFuture = client
-      .prepareGet(url)
-      .setRealm(new Realm.Builder(config.logins.oth.username, config.logins.oth.password).build())
-      .execute()
 
-    println("a")
+    Future {
+      val promise = Promise[Response]()
 
-    val completableFuture = responseFuture
-      .toCompletableFuture
+      client
+        .prepareGet(url)
+        .setRealm(new Realm.Builder(config.logins.oth.username, config.logins.oth.password).build())
+        .execute(new AsyncCompletionHandler[Response] {
+          override def onCompleted(response: Response): Response = {
+            println("Completed")
+            promise.success(response)
+            response
+          }
+        })
 
-    println("b")
-
-    completableFuture
-      .thenApplyAsync(new Function[Response, Seq[Asset]] {
-        override def apply(response: Response): Seq[Asset] = {
-          println("inside")
-          (parse(response.getResponseBody) \ "features").extract[Seq[Asset]]: Seq[Asset]
-        }
-      })
+      Await.result(promise.future, 30.seconds)
+    }
+      .map { response =>
+        println("inside")
+        (parse(response.getResponseBody) \ "features").extract[Seq[Asset]]: Seq[Asset]
+      }
   }
 }
