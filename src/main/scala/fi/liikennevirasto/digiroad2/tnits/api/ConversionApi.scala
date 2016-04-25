@@ -20,6 +20,8 @@ class ConversionApi extends ScalatraServlet with FutureSupport with Authenticati
     val keepAlive = keepConnectionAlive(writer)
     Converter.convert(writer)
     keepAlive.cancel()
+    writer.println("OK")
+    writer.flush()
     Unit
   }
 
