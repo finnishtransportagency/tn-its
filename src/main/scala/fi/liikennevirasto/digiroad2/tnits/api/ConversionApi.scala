@@ -16,7 +16,7 @@ class ConversionApi extends ScalatraServlet with FutureSupport with Authenticati
   }
 
   post("/") {
-    val writer = response.writer.
+    val writer = response.writer
     val keepAlive = keepConnectionAlive(writer)
     Converter.convert(writer)
     keepAlive.cancel()
