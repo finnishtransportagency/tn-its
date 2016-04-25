@@ -65,6 +65,7 @@ object RemoteDatasets {
   def put(filename: String, contents: String): Unit = {
     val client = new FTPClient
     client.connect(config.urls.aineistot.ftp)
+    client.enterLocalPassiveMode()
     if (!client.login(logins.username, logins.password))
       throw new IllegalArgumentException("Login failed")
     if (!client.changeWorkingDirectory(config.dir))
