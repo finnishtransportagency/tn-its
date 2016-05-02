@@ -34,9 +34,9 @@ object Converter {
     val assetTypes = Seq(
       AssetType("speed_limits", "SpeedLimit", "MaximumSpeedLimit", "kmph"),
       AssetType("axle_weight_limits", "RestrictionForVehicles", "MaximumWeightPerSingleAxle", "kg"),
-      AssetType("length_limits", "RestrictionForVehicles", "MaximumLength", "m"),
-      AssetType("width_limits", "RestrictionForVehicles", "MaximumWidth", "m"),
-      AssetType("height_limits", "RestrictionForVehicles", "MaximumHeight", "m"),
+      AssetType("length_limits", "RestrictionForVehicles", "MaximumLength", "cm"),
+      AssetType("width_limits", "RestrictionForVehicles", "MaximumWidth", "cm"),
+      AssetType("height_limits", "RestrictionForVehicles", "MaximumHeight", "cm"),
       AssetType("total_weight_limits", "RestrictionForVehicles", "MaximumLadenWeight", "kg"))
 
     val assets = fetchAllChanges(start, end, assetTypes)
