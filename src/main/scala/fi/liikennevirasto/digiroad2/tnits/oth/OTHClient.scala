@@ -9,9 +9,7 @@ import org.apache.http.HttpHost
 import org.apache.http.auth.{AuthScope, UsernamePasswordCredentials}
 import org.apache.http.client.config.RequestConfig
 import org.apache.http.client.methods.HttpGet
-import org.apache.http.client.protocol.HttpClientContext
-import org.apache.http.impl.auth.BasicScheme
-import org.apache.http.impl.client.{BasicAuthCache, BasicCredentialsProvider, HttpClients}
+import org.apache.http.impl.client.{BasicCredentialsProvider, HttpClients}
 import org.json4s.jackson.JsonMethods._
 import org.json4s.{DefaultFormats, Formats}
 
@@ -26,7 +24,6 @@ object OTHClient {
     val port = if (changesApiUri.getPort == -1) { if (changesApiUri.getScheme == "http") 80 else 443 } else { changesApiUri.getPort }
     new HttpHost(changesApiUri.getHost, port, changesApiUri.getScheme)
   }
-  private val context = createContext
 
   def fetchChanges(apiEndpoint: String, since: Instant, until: Instant, executionContext: ExecutionContext): scala.concurrent.Future[Seq[Asset]] = {
     val changesApiUri = URI.create(config.urls.changesApi + "/" + apiEndpoint)
@@ -42,7 +39,7 @@ object OTHClient {
     Future {
       println(s"Fetch: ${get.getURI}")
 
-      using(client.execute(target, get, context)) { response =>
+      using(client.execute(target, get)) { response =>
         val contents = response.getEntity.getContent
 
         val s = Source.fromInputStream(contents).mkString
@@ -80,13 +77,4 @@ object OTHClient {
 
     HttpClients.custom().setDefaultCredentialsProvider(credentialsProvider).setMaxConnPerRoute(10).build()
   }
-
-  private def createContext = {
-    val authCache = new BasicAuthCache
-    authCache.put(target, new BasicScheme)
-    val context = HttpClientContext.create()
-    context.setAuthCache(authCache)
-    context
-  }
-
 }
