@@ -49,11 +49,13 @@ object OTHClient {
 
         println(s"[$apiEndpoint] Response: $s")
 
-        val parsed = (parse(s) \ "features").extract[Seq[Asset]]
-
-        println(s"[$apiEndpoint] Parsed ${parsed.size} assets")
-
-        parsed
+        if (s.nonEmpty && response.getStatusLine.getStatusCode == 200) {
+          val parsed = (parse(s) \ "features").extract[Seq[Asset]]
+          println(s"[$apiEndpoint] Parsed ${parsed.size} assets")
+          parsed
+        } else {
+          throw new RuntimeException(s"Request (${get.getURI}) failed with status: ${response.getStatusLine}")
+        }
       }
     }(executionContext)
   }
