@@ -42,8 +42,7 @@ object OTHClient {
     Future {
       println(s"Fetch: ${get.getURI}")
 
-      using(client.execute(target, get)) { response =>
-        val response = client.execute(target, get, context)
+      using(client.execute(target, get, context)) { response =>
         val contents = response.getEntity.getContent
 
         val s = Source.fromInputStream(contents).mkString
