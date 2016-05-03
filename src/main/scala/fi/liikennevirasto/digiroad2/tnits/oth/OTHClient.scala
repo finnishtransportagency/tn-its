@@ -48,11 +48,11 @@ object OTHClient {
 
         val s = Source.fromInputStream(contents).mkString
 
-        println(s"Response: $s")
+        println(s"[$apiEndpoint] Response: $s")
 
         val parsed = (parse(s) \ "features").extract[Seq[Asset]]
 
-        println(s"Parsed ${parsed.size} assets")
+        println(s"[$apiEndpoint] Parsed ${parsed.size} assets")
 
         parsed
       }
