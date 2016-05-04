@@ -29,6 +29,7 @@ object RosatteConverter {
   }
 
   def convert(assetFeatures: Seq[features.Asset], featureType: String, valueType: String, unit: String) = {
+    // We need to split two-way features into two one-way features because of OpenLR encoding
     val onlyOneWayFeatures = splitFeaturesApplicableToBothDirections(assetFeatures)
     onlyOneWayFeatures.map(toFeatureMember(_, featureType, valueType, unit))
   }
