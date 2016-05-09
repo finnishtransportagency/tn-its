@@ -57,7 +57,6 @@ object RemoteDatasets {
 
   def get(id: String): InputStream = {
     val get = new HttpGet(dataSetUrl(id))
-    println(s"get($id) -> ${get.getURI}")
     val response = createClient.execute(get)
     response.getEntity.getContent
   }
