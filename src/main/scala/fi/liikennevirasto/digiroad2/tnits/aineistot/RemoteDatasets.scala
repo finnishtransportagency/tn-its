@@ -4,7 +4,6 @@ import java.io.{InputStream, OutputStream}
 import java.net.{URLDecoder, URLEncoder, _}
 import java.time.Instant
 
-import dispatch._
 import fi.liikennevirasto.digiroad2.tnits.config
 import fi.liikennevirasto.digiroad2.tnits.rosatte.DatasetID
 import org.apache.commons.net.ftp.{FTP, FTPClient}
@@ -24,16 +23,12 @@ object RemoteDatasets {
     config.logins.aineistot
 
   val baseUrl =
-    url(config.urls.aineistot.dir)
-      .setFollowRedirects(true)
-      .as(
-        user = logins.username,
-        password = logins.password)
+    config.urls.aineistot.dir
 
-  def indexA: Seq[String] = {
+  def index: Seq[String] = {
       val response = createClient.execute(new HttpGet(config.urls.aineistot.dir))
       val contents = EntityUtils.toString(response.getEntity, "UTF-8")
-      val doc = Jsoup.parse(contents, baseUrl.url)
+      val doc = Jsoup.parse(contents, baseUrl)
       val links = doc.select("a")
       links.asScala
         .map(_.attr("href"))
@@ -44,7 +39,7 @@ object RemoteDatasets {
 
   def getLatestEndTime: Option[Instant] = {
     val dataSets = try {
-      RemoteDatasets.indexA
+      RemoteDatasets.index
     } catch {
       case err: Throwable =>
         throw RemoteDatasetsException(err)
@@ -61,7 +56,7 @@ object RemoteDatasets {
   }
 
   def get(id: String): InputStream = {
-    val get = new HttpGet(dataSetUrl(id).url)
+    val get = new HttpGet(dataSetUrl(id))
     println(s"get($id) -> ${get.getURI}")
     val response = createClient.execute(get)
     response.getEntity.getContent
@@ -86,8 +81,8 @@ object RemoteDatasets {
     (client, client.storeFileStream(filename))
   }
 
-  private def dataSetUrl(id: String): Req =
-    baseUrl / (URLEncoder.encode(id, "UTF-8") + ".xml")
+  private def dataSetUrl(id: String): String =
+    s"$baseUrl/${URLEncoder.encode(id, "UTF-8")}.xml"
 
   private def createClient = {
     val credentialsProvider = new BasicCredentialsProvider

@@ -17,7 +17,7 @@ class Digiroad2TnItsApi extends ScalatraServlet with FutureSupport {
   get("/download/queryDataSets") {
     contentType = "application/xml"
 
-    val dataSetIds = RemoteDatasets.indexA
+    val dataSetIds = RemoteDatasets.index
 
     val decodedDataSetIds =
       dataSetIds
