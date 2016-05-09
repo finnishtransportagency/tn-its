@@ -47,13 +47,9 @@ class Digiroad2TnItsApi extends ScalatraServlet with FutureSupport {
   }
 
   get("/download/readDataSet") {
-    new AsyncResult {
-      val is = {
-        contentType = "application/xml"
-        val id = params.getOrElse("dataSetID", halt(BadRequest("Missing mandatory parameter 'dataSetID'")))
-        RemoteDatasets.get(id)
-      }
-    }
+    contentType = "application/xml"
+    val id = params.getOrElse("dataSetID", halt(BadRequest("Missing mandatory parameter 'dataSetID'")))
+    RemoteDatasets.get(id)
   }
 
   def dataSetElement(id: String)(implicit request: HttpServletRequest) = {

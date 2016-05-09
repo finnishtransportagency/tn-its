@@ -1,5 +1,7 @@
 package fi.liikennevirasto.digiroad2.tnits.aineistot
 
+import java.io.{ByteArrayInputStream, InputStream}
+import java.net._
 import java.io.{OutputStream, ByteArrayInputStream, InputStream}
 import java.net.{URLDecoder, URLEncoder}
 import java.time.Instant
@@ -10,6 +12,10 @@ import dispatch.Defaults._
 import dispatch._
 import fi.liikennevirasto.digiroad2.tnits.config
 import fi.liikennevirasto.digiroad2.tnits.rosatte.DatasetID
+import org.apache.commons.net.ftp.FTPClient
+import org.apache.http.auth.{AuthScope, UsernamePasswordCredentials}
+import org.apache.http.client.methods.HttpGet
+import org.apache.http.impl.client.{BasicCredentialsProvider, HttpClients}
 import org.apache.commons.net.ftp.{FTP, FTPClient}
 import org.jsoup.Jsoup
 
@@ -59,8 +65,12 @@ object RemoteDatasets {
     }
   }
 
-  def get(id: String): Future[InputStream] =
-    Http(dataSetUrl(id) OK as.Response(_.getResponseBodyAsStream))
+  def get(id: String): InputStream = {
+    val get = new HttpGet(dataSetUrl(id).url)
+    println(s"get($id) -> ${get.getURI}")
+    val response = createClient.execute(get)
+    response.getEntity.getContent
+  }
 
   def getOutputStream(filename: String): (FTPClient, OutputStream) = {
     val client = new FTPClient
@@ -83,4 +93,14 @@ object RemoteDatasets {
 
   private def dataSetUrl(id: String): Req =
     baseUrl / (URLEncoder.encode(id, "UTF-8") + ".xml")
+
+  private def createClient = {
+    val credentialsProvider = new BasicCredentialsProvider
+    val dataSetsUri = URI.create(config.urls.aineistot.dir)
+    credentialsProvider.setCredentials(
+      new AuthScope(dataSetsUri.getHost, dataSetsUri.getPort),
+      new UsernamePasswordCredentials(config.logins.aineistot.username, config.logins.aineistot.password))
+
+    HttpClients.custom().setDefaultCredentialsProvider(credentialsProvider).setMaxConnPerRoute(10).build()
+  }
 }
