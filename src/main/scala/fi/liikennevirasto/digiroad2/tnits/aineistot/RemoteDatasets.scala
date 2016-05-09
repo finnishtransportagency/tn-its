@@ -4,7 +4,6 @@ import java.io.{InputStream, OutputStream}
 import java.net.{URLDecoder, URLEncoder, _}
 import java.time.Instant
 
-import dispatch.Defaults._
 import dispatch._
 import fi.liikennevirasto.digiroad2.tnits.config
 import fi.liikennevirasto.digiroad2.tnits.rosatte.DatasetID
@@ -12,6 +11,7 @@ import org.apache.commons.net.ftp.{FTP, FTPClient}
 import org.apache.http.auth.{AuthScope, UsernamePasswordCredentials}
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.{BasicCredentialsProvider, HttpClients}
+import org.apache.http.util.EntityUtils
 import org.jsoup.Jsoup
 
 import scala.collection.JavaConverters._
@@ -30,8 +30,9 @@ object RemoteDatasets {
         user = logins.username,
         password = logins.password)
 
-  def index: Future[Seq[String]] =
-    Http(baseUrl OK as.String).map { contents =>
+  def indexA: Seq[String] = {
+      val response = createClient.execute(new HttpGet(config.urls.aineistot.dir))
+      val contents = EntityUtils.toString(response.getEntity, "UTF-8")
       val doc = Jsoup.parse(contents, baseUrl.url)
       val links = doc.select("a")
       links.asScala
@@ -43,7 +44,7 @@ object RemoteDatasets {
 
   def getLatestEndTime: Option[Instant] = {
     val dataSets = try {
-      Await.result(RemoteDatasets.index, 30.seconds)
+      RemoteDatasets.indexA
     } catch {
       case err: Throwable =>
         throw RemoteDatasetsException(err)

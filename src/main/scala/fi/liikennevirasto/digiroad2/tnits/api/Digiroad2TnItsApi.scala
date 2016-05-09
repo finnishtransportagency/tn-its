@@ -15,35 +15,32 @@ class Digiroad2TnItsApi extends ScalatraServlet with FutureSupport {
     scala.concurrent.ExecutionContext.global
 
   get("/download/queryDataSets") {
-    new AsyncResult {
-      val is =
-        RemoteDatasets.index.map { dataSetIds =>
-          contentType = "application/xml"
+    contentType = "application/xml"
 
-          val decodedDatasetIds =
-            dataSetIds
-              .map { id => (id, DatasetID.decode(URLDecoder.decode(id, "UTF-8"))) }
-              .sortBy { case (_, id) => id.startDate }
+    val dataSetIds = RemoteDatasets.indexA
 
-          val wantedDataSetIds =
-            if (params.contains("lastValidDatasetId")) {
-              val lastValidDataSetId =
-                params("lastValidDatasetId")
-              val wantedId =
-                DatasetID.decode(lastValidDataSetId)
-              decodedDatasetIds
-                .filter { case (_, id) => id.startDate.isAfter(wantedId.startDate) }
-                .map(_._1)
-            } else {
-              decodedDatasetIds
-                .map(_._1)
-            }
+    val decodedDataSetIds =
+      dataSetIds
+        .map { id => (id, DatasetID.decode(URLDecoder.decode(id, "UTF-8"))) }
+        .sortBy { case (_, id) => id.startDate }
 
-          <rst:ROSATTERestDatasetRefList xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:rst="http://www.ertico.com/en/subprojects/rosatte/rst" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-            {wantedDataSetIds.map(dataSetElement)}
-          </rst:ROSATTERestDatasetRefList>
-        }
-    }
+    val wantedDataSetIds =
+      if (params.contains("lastValidDatasetId")) {
+        val lastValidDataSetId = params("lastValidDatasetId")
+        val wantedId = DatasetID.decode(lastValidDataSetId)
+        decodedDataSetIds
+          .filter { case (_, id) => id.startDate.isAfter(wantedId.startDate) }
+          .map(_._1)
+      } else {
+        decodedDataSetIds
+          .map(_._1)
+      }
+
+    <rst:ROSATTERestDatasetRefList xmlns:xlink="http://www.w3.org/1999/xlink"
+                                   xmlns:rst="http://www.ertico.com/en/subprojects/rosatte/rst"
+                                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      {wantedDataSetIds.map(dataSetElement)}
+    </rst:ROSATTERestDatasetRefList>
   }
 
   get("/download/readDataSet") {
