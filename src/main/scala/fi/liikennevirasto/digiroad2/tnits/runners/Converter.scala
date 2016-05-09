@@ -40,11 +40,13 @@ object Converter {
       AssetType("total_weight_limits", "RestrictionForVehicles", "MaximumLadenWeight", "kg"))
 
     val assets = fetchAllChanges(start, end, assetTypes)
+    writer.println("fetched all changes, starting conversion")
 
     val allRosatteFeatures =
       assetTypes.zip(assets).flatMap { case (assetType, changes) =>
         RosatteConverter.convert(changes, assetType.featureType, assetType.valueType, assetType.unit)
       }
+    writer.println("Conversion done, generating dataset")
 
     val dataSet = RosatteConverter.generateDataSet(allRosatteFeatures, start, end)
     val filename = s"${URLEncoder.encode(dataSet.id, "UTF-8")}.xml"
