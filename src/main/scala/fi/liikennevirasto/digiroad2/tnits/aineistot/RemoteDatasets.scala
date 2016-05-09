@@ -1,22 +1,17 @@
 package fi.liikennevirasto.digiroad2.tnits.aineistot
 
-import java.io.{ByteArrayInputStream, InputStream}
-import java.net._
-import java.io.{OutputStream, ByteArrayInputStream, InputStream}
-import java.net.{URLDecoder, URLEncoder}
+import java.io.{InputStream, OutputStream}
+import java.net.{URLDecoder, URLEncoder, _}
 import java.time.Instant
 
-import com.ning.http.client.ProxyServer
-import com.ning.http.client.ProxyServer.Protocol
 import dispatch.Defaults._
 import dispatch._
 import fi.liikennevirasto.digiroad2.tnits.config
 import fi.liikennevirasto.digiroad2.tnits.rosatte.DatasetID
-import org.apache.commons.net.ftp.FTPClient
+import org.apache.commons.net.ftp.{FTP, FTPClient}
 import org.apache.http.auth.{AuthScope, UsernamePasswordCredentials}
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.{BasicCredentialsProvider, HttpClients}
-import org.apache.commons.net.ftp.{FTP, FTPClient}
 import org.jsoup.Jsoup
 
 import scala.collection.JavaConverters._
