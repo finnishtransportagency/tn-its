@@ -251,7 +251,9 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <args>-feature</args>
+                    <args>
+                        <arg>-feature</arg>
+                    </args>
                 </configuration>
             </plugin>
             <plugin>
