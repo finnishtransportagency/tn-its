@@ -8,7 +8,7 @@ import java.util.concurrent.Executors
 
 import fi.liikennevirasto.digiroad2.tnits.aineistot.RemoteDatasets
 import fi.liikennevirasto.digiroad2.tnits.oth.OTHClient
-import fi.liikennevirasto.digiroad2.tnits.rosatte.{RosatteConverter, features}
+import fi.liikennevirasto.digiroad2.tnits.rosatte.{DatasetID, RosatteConverter, features}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
@@ -42,11 +42,19 @@ object Converter {
     val assets = fetchAllChanges(start, end, assetTypes)
     writer.println("fetched all changes, generating dataset")
 
-    val dataSet = RosatteConverter.generateDataSet(assetTypes.zip(assets), start, end)
-    val filename = s"${URLEncoder.encode(dataSet.id, "UTF-8")}.xml"
-    writer.println(s"Dataset ID: ${dataSet.id}")
+    val dataSetId = DatasetID.encode(DatasetID.LiikennevirastoUUID, start, end)
+    val filename = s"${URLEncoder.encode(dataSetId, "UTF-8")}.xml"
+    val (ftpClient, outputStream) = RemoteDatasets.getOutputStream(filename)
+    val dataSet = RosatteConverter.generateDataSet(assetTypes.zip(assets), start, end, dataSetId, outputStream)
+    writer.println(s"Dataset ID: ${dataSetId}")
     writer.println(s"dataset: $filename")
-    RemoteDatasets.put(filename, dataSet.updates)
+    outputStream.close()
+    if (!ftpClient.completePendingCommand())
+      throw new IllegalStateException(ftpClient.getReplyString)
+    if (!ftpClient.logout())
+      throw new IllegalStateException(ftpClient.getReplyString)
+    ftpClient.disconnect()
+
     writer.println("done!\n")
   }
 

@@ -1,6 +1,6 @@
 package fi.liikennevirasto.digiroad2.tnits.aineistot
 
-import java.io.{ByteArrayInputStream, InputStream}
+import java.io.{OutputStream, ByteArrayInputStream, InputStream}
 import java.net.{URLDecoder, URLEncoder}
 import java.time.Instant
 
@@ -10,7 +10,7 @@ import dispatch.Defaults._
 import dispatch._
 import fi.liikennevirasto.digiroad2.tnits.config
 import fi.liikennevirasto.digiroad2.tnits.rosatte.DatasetID
-import org.apache.commons.net.ftp.FTPClient
+import org.apache.commons.net.ftp.{FTP, FTPClient}
 import org.jsoup.Jsoup
 
 import scala.collection.JavaConverters._
@@ -62,7 +62,7 @@ object RemoteDatasets {
   def get(id: String): Future[InputStream] =
     Http(dataSetUrl(id) OK as.Response(_.getResponseBodyAsStream))
 
-  def put(filename: String, contents: String): Unit = {
+  def getOutputStream(filename: String): (FTPClient, OutputStream) = {
     val client = new FTPClient
     client.connect(config.urls.aineistot.ftp)
     client.enterLocalPassiveMode()
@@ -75,11 +75,10 @@ object RemoteDatasets {
       throw new IllegalStateException(client.getReplyString)
     if (files.contains(filename))
       throw new IllegalArgumentException(s"$filename already exists on server")
-    if (!client.storeFile(filename, new ByteArrayInputStream(contents.getBytes("UTF-8"))))
-      throw new IllegalStateException(s"Error saving file `$filename`: ${client.getReplyString}")
-    if (!client.logout())
+    if (!client.setFileType(FTP.BINARY_FILE_TYPE))
       throw new IllegalStateException(client.getReplyString)
-    client.disconnect()
+
+    (client, client.storeFileStream(filename))
   }
 
   private def dataSetUrl(id: String): Req =

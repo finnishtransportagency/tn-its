@@ -1,5 +1,6 @@
 package fi.liikennevirasto.digiroad2.tnits.rosatte
 
+import java.io.{OutputStreamWriter, BufferedOutputStream, OutputStream}
 import java.time.Instant
 import java.util.UUID
 
@@ -10,33 +11,39 @@ import fi.liikennevirasto.digiroad2.tnits.runners.AssetType
 import scala.util.{Failure, Success, Try}
 
 object RosatteConverter {
-  def generateDataSet(featureMembers: Seq[(AssetType, Seq[features.Asset])], start: Instant, end: Instant): DataSet = {
-    val dataSetId = DatasetID.encode(DatasetID.LiikennevirastoUUID, start, end)
-    val rosatteData = generateChangeData(featureMembers, dataSetId, start, end)
-    DataSet(
-      id = dataSetId,
-      updates = rosatteData.toString)
+  def generateDataSet(featureMembers: Seq[(AssetType, Seq[features.Asset])], start: Instant, end: Instant, dataSetId: String, output: OutputStream) = {
+    generateChangeData(featureMembers, dataSetId, start, end, output)
   }
 
-  def generateChangeData(featureMembers: Seq[(AssetType, Seq[features.Asset])], dataSetId: String, startTime: Instant, endTime: Instant): Any = {
-    <rst:ROSATTESafetyFeatureDataset xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:net="urn:x-inspire:specification:gmlas:Network:3.2" xmlns:openlr="http://www.openlr.org/openlr" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:TPEG="TPEG" xmlns:rst="http://www.ertico.com/en/subprojects/rosatte/rst" xsi:schemaLocation="http://www.ertico.com/en/subprojects/rosatte/rst http://rosatte-no.triona.se/schemas/Rosatte.xsd" gml:id="i0fbf03ad-5c7a-4490-bb7c-64f95a91cb3c">
-      {
-        featureMembers.flatMap { case (assetType, changes) =>
-          convert(changes, assetType.featureType, assetType.valueType, assetType.unit)
-        }
+  def generateChangeData(featureMembers: Seq[(AssetType, Seq[features.Asset])], dataSetId: String, startTime: Instant, endTime: Instant, output: OutputStream): Any = {
+    val writer = new OutputStreamWriter(new BufferedOutputStream(output), "UTF-8")
+    writer.write(
+      s"""<rst:ROSATTESafetyFeatureDataset xmlns:xlink="http://www.w3.org/1999/xlink"
+            xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:gmd="http://www.isotc211.org/2005/gmd"
+            xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:net="urn:x-inspire:specification:gmlas:Network:3.2"
+            xmlns:openlr="http://www.openlr.org/openlr" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns:TPEG="TPEG" xmlns:rst="http://www.ertico.com/en/subprojects/rosatte/rst"
+            xsi:schemaLocation="http://www.ertico.com/en/subprojects/rosatte/rst http://rosatte-no.triona.se/schemas/Rosatte.xsd"
+            gml:id="${UUID.randomUUID().toString}">""")
+
+    featureMembers.foreach { case (assetType, changes) =>
+      // We need to split two-way features into two one-way features because of OpenLR encoding
+      val onlyOneWayFeatures = splitFeaturesApplicableToBothDirections(changes)
+      onlyOneWayFeatures.foreach { feature =>
+        val featureMember = toFeatureMember(feature, assetType.featureType, assetType.valueType, assetType.unit)
+        writer.write(featureMember.toString)
       }
-      <rst:metadata>
-        <rst:datasetId>{dataSetId}</rst:datasetId>
-        <rst:datasetCreationTime>{endTime}</rst:datasetCreationTime>
-      </rst:metadata>
-      <rst:type>Update</rst:type>
-    </rst:ROSATTESafetyFeatureDataset>
-  }
+    }
 
-  def convert(assetFeatures: Seq[features.Asset], featureType: String, valueType: String, unit: String) = {
-    // We need to split two-way features into two one-way features because of OpenLR encoding
-    val onlyOneWayFeatures = splitFeaturesApplicableToBothDirections(assetFeatures)
-    onlyOneWayFeatures.map(toFeatureMember(_, featureType, valueType, unit))
+    writer.write(
+      s"""<rst:metadata>
+            <rst:datasetId>$dataSetId</rst:datasetId>
+            <rst:datasetCreationTime>$endTime</rst:datasetCreationTime>
+          </rst:metadata>
+          <rst:type>Update</rst:type>
+        </rst:ROSATTESafetyFeatureDataset>""")
+
+    writer.flush()
   }
 
   def splitFeaturesApplicableToBothDirections(assets: Seq[features.Asset]): Seq[features.Asset] = {
