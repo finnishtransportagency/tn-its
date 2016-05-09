@@ -24,12 +24,12 @@ object Converter {
 
   case class OTHException(cause: Throwable) extends RuntimeException(cause)
 
-  def convert(writer: PrintWriter): Unit = {
+  def convert(logger: PrintWriter): Unit = {
     val start = RemoteDatasets.getLatestEndTime.getOrElse(Instant.now.minus(1, ChronoUnit.DAYS))
     val end = Instant.now.minus(1, ChronoUnit.MINUTES)
 
-    writer.println(s"start: $start")
-    writer.println(s"end: $end")
+    logger.println(s"start: $start")
+    logger.println(s"end: $end")
 
     val assetTypes = Seq(
       AssetType("speed_limits", "SpeedLimit", "MaximumSpeedLimit", "kmph"),
@@ -40,22 +40,16 @@ object Converter {
       AssetType("total_weight_limits", "RestrictionForVehicles", "MaximumLadenWeight", "kg"))
 
     val assets = fetchAllChanges(start, end, assetTypes)
-    writer.println("fetched all changes, generating dataset")
+    logger.println("fetched all changes, generating dataset")
 
     val dataSetId = DatasetID.encode(DatasetID.LiikennevirastoUUID, start, end)
     val filename = s"${URLEncoder.encode(dataSetId, "UTF-8")}.xml"
-    val (ftpClient, outputStream) = RemoteDatasets.getOutputStream(filename)
-    val dataSet = RosatteConverter.generateDataSet(assetTypes.zip(assets), start, end, dataSetId, outputStream)
-    writer.println(s"Dataset ID: ${dataSetId}")
-    writer.println(s"dataset: $filename")
+    val outputStream = RemoteDatasets.getOutputStream(filename)
+    RosatteConverter.convertDataSet(assetTypes.zip(assets), start, end, dataSetId, outputStream)
+    logger.println(s"Dataset ID: $dataSetId")
+    logger.println(s"dataset: $filename")
     outputStream.close()
-    if (!ftpClient.completePendingCommand())
-      throw new IllegalStateException(ftpClient.getReplyString)
-    if (!ftpClient.logout())
-      throw new IllegalStateException(ftpClient.getReplyString)
-    ftpClient.disconnect()
-
-    writer.println("done!\n")
+    logger.println("done!\n")
   }
 
   def fetchAllChanges(start: Instant, end: Instant, assetTypes: Seq[AssetType]): Seq[Seq[features.Asset]] = {

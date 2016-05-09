@@ -26,16 +26,16 @@ object RemoteDatasets {
     config.urls.aineistot.dir
 
   def index: Seq[String] = {
-      val response = createClient.execute(new HttpGet(config.urls.aineistot.dir))
-      val contents = EntityUtils.toString(response.getEntity, "UTF-8")
-      val doc = Jsoup.parse(contents, baseUrl)
-      val links = doc.select("a")
-      links.asScala
-        .map(_.attr("href"))
-        .filter(_.endsWith(".xml"))
-        .map(_.dropRight(".xml".length))
-        .map(URLDecoder.decode(_, "UTF-8"))
-    }
+    val response = createClient.execute(new HttpGet(config.urls.aineistot.dir))
+    val contents = EntityUtils.toString(response.getEntity, "UTF-8")
+    val doc = Jsoup.parse(contents, baseUrl)
+    val links = doc.select("a")
+    links.asScala
+      .map(_.attr("href"))
+      .filter(_.endsWith(".xml"))
+      .map(_.dropRight(".xml".length))
+      .map(URLDecoder.decode(_, "UTF-8"))
+  }
 
   def getLatestEndTime: Option[Instant] = {
     val dataSets = try {
@@ -62,7 +62,7 @@ object RemoteDatasets {
     response.getEntity.getContent
   }
 
-  def getOutputStream(filename: String): (FTPClient, OutputStream) = {
+  def getOutputStream(filename: String): OutputStream = {
     val client = new FTPClient
     client.connect(config.urls.aineistot.ftp)
     client.enterLocalPassiveMode()
@@ -78,11 +78,31 @@ object RemoteDatasets {
     if (!client.setFileType(FTP.BINARY_FILE_TYPE))
       throw new IllegalStateException(client.getReplyString)
 
-    (client, client.storeFileStream(filename))
+    val output = client.storeFileStream(filename)
+
+    new OutputStream {
+      override def write(b: Int): Unit = output.write(b)
+      override def write(b: Array[Byte]): Unit = output.write(b)
+      override def write(b: Array[Byte], off: Int, len: Int): Unit = output.write(b, off, len)
+
+      override def close(): Unit = {
+        output.close()
+        if (!client.completePendingCommand())
+          throw new IllegalStateException(client.getReplyString)
+        if (!client.logout())
+          throw new IllegalStateException(client.getReplyString)
+        client.disconnect()
+      }
+    }
   }
 
-  private def dataSetUrl(id: String): String =
-    s"$baseUrl/${URLEncoder.encode(id, "UTF-8")}.xml"
+  private def dataSetUrl(id: String): String = {
+    // We need to encode the filename twice, because the concrete filename is in URL-encoded form. So we need the
+    // URL-encoded encoding of the URL-encoded filename.
+    val once = URLEncoder.encode(id, "UTF-8")
+    val twice = URLEncoder.encode(once, "UTF-8")
+    s"$baseUrl/$twice.xml"
+  }
 
   private def createClient = {
     val credentialsProvider = new BasicCredentialsProvider

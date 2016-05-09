@@ -11,11 +11,11 @@ import fi.liikennevirasto.digiroad2.tnits.runners.AssetType
 import scala.util.{Failure, Success, Try}
 
 object RosatteConverter {
-  def generateDataSet(featureMembers: Seq[(AssetType, Seq[features.Asset])], start: Instant, end: Instant, dataSetId: String, output: OutputStream) = {
+  def convertDataSet(featureMembers: Seq[(AssetType, Seq[features.Asset])], start: Instant, end: Instant, dataSetId: String, output: OutputStream): Unit = {
     generateChangeData(featureMembers, dataSetId, start, end, output)
   }
 
-  def generateChangeData(featureMembers: Seq[(AssetType, Seq[features.Asset])], dataSetId: String, startTime: Instant, endTime: Instant, output: OutputStream): Any = {
+  def generateChangeData(featureMembers: Seq[(AssetType, Seq[features.Asset])], dataSetId: String, startTime: Instant, endTime: Instant, output: OutputStream): Unit = {
     val writer = new OutputStreamWriter(new BufferedOutputStream(output), "UTF-8")
     writer.write(
       s"""<rst:ROSATTESafetyFeatureDataset xmlns:xlink="http://www.w3.org/1999/xlink"
