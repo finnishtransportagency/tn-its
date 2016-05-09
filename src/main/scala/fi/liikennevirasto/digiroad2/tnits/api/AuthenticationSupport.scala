@@ -7,6 +7,7 @@ import org.scalatra.ScalatraBase
 import org.scalatra.auth.{ScentryConfig, ScentrySupport}
 import org.scalatra.auth.strategy.{BasicAuthSupport, BasicAuthStrategy}
 
+import scala.language.reflectiveCalls
 
 case class BasicAuthUser(username: String)
 

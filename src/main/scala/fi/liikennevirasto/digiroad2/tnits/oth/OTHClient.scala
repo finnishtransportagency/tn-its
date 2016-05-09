@@ -15,6 +15,7 @@ import org.json4s.{DefaultFormats, Formats}
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.io.Source
+import scala.language.reflectiveCalls
 
 object OTHClient {
   protected implicit val jsonFormats: Formats = DefaultFormats

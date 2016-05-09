@@ -15,8 +15,7 @@ import org.apache.http.impl.client.{BasicCredentialsProvider, HttpClients}
 import org.jsoup.Jsoup
 
 import scala.collection.JavaConverters._
-import scala.concurrent.duration._
-import scala.concurrent.{Await, Future}
+import scala.language.reflectiveCalls
 
 case class RemoteDatasetsException(cause: Throwable) extends RuntimeException(cause)
 
