@@ -5,11 +5,12 @@ import java.util.UUID
 
 import fi.liikennevirasto.digiroad2.tnits.geometry.{CoordinateTransform, Point}
 import fi.liikennevirasto.digiroad2.tnits.openlr.OpenLREncoder
+import fi.liikennevirasto.digiroad2.tnits.runners.AssetType
 
 import scala.util.{Failure, Success, Try}
 
 object RosatteConverter {
-  def generateDataSet(featureMembers: Seq[Any], start: Instant, end: Instant): DataSet = {
+  def generateDataSet(featureMembers: Seq[(AssetType, Seq[features.Asset])], start: Instant, end: Instant): DataSet = {
     val dataSetId = DatasetID.encode(DatasetID.LiikennevirastoUUID, start, end)
     val rosatteData = generateChangeData(featureMembers, dataSetId, start, end)
     DataSet(
@@ -17,9 +18,13 @@ object RosatteConverter {
       updates = rosatteData.toString)
   }
 
-  def generateChangeData(featureMembers: Seq[Any], dataSetId: String, startTime: Instant, endTime: Instant): Any = {
+  def generateChangeData(featureMembers: Seq[(AssetType, Seq[features.Asset])], dataSetId: String, startTime: Instant, endTime: Instant): Any = {
     <rst:ROSATTESafetyFeatureDataset xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:net="urn:x-inspire:specification:gmlas:Network:3.2" xmlns:openlr="http://www.openlr.org/openlr" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:TPEG="TPEG" xmlns:rst="http://www.ertico.com/en/subprojects/rosatte/rst" xsi:schemaLocation="http://www.ertico.com/en/subprojects/rosatte/rst http://rosatte-no.triona.se/schemas/Rosatte.xsd" gml:id="i0fbf03ad-5c7a-4490-bb7c-64f95a91cb3c">
-      {featureMembers}
+      {
+        featureMembers.flatMap { case (assetType, changes) =>
+          convert(changes, assetType.featureType, assetType.valueType, assetType.unit)
+        }
+      }
       <rst:metadata>
         <rst:datasetId>{dataSetId}</rst:datasetId>
         <rst:datasetCreationTime>{endTime}</rst:datasetCreationTime>
