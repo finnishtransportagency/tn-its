@@ -5,18 +5,12 @@ import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.UUID
 
-import fi.liikennevirasto.digiroad2.tnits.geojson
-import com.sun.org.apache.xalan.internal.xsltc.runtime.output.StringOutputBuffer
-import fi.liikennevirasto.digiroad2.tnits.geojson.{Feature, LineString}
 import fi.liikennevirasto.digiroad2.tnits.rosatte.DatasetID.DataSetId
-import fi.liikennevirasto.digiroad2.tnits.rosatte.features.{Asset, AssetProperties, RoadLinkProperties}
+import fi.liikennevirasto.digiroad2.tnits.rosatte.features.Asset
 import fi.liikennevirasto.digiroad2.tnits.runners.AssetType
-import openlr.map.FunctionalRoadClass
-import org.scalatest.FunSuite
 import org.json4s.jackson.JsonMethods._
 import org.json4s.{DefaultFormats, Formats}
-
-import scala.xml.XML
+import org.scalatest.FunSuite
 
 class RosatteSpec extends FunSuite {
   protected implicit val jsonFormats: Formats = DefaultFormats
