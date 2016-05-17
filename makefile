@@ -1,5 +1,5 @@
 mvn  := mvn -q -e
-PORT ?= 8090
+PORT := 8090
 
 usage:
 	@echo "Usage:"
