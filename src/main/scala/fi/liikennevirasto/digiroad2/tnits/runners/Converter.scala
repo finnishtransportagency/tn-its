@@ -16,7 +16,9 @@ import scala.concurrent.{Await, ExecutionContext, Future}
 
 case class AssetType(apiEndPoint: String, featureType: String, valueType: String, unit: String)
 
+/** Runs a conversion batch job. */
 object Converter {
+  /** Runs a conversion from the commandline. */
   def main(args: Array[String]) {
     convert(new PrintWriter(System.out, true))
     System.exit(0) // TODO: Without this, something leaves the program hanging
@@ -24,6 +26,7 @@ object Converter {
 
   case class OTHException(cause: Throwable) extends RuntimeException(cause)
 
+  /** Runs a conversion programmatically. */
   def convert(logger: PrintWriter): Unit = {
     val start = RemoteDatasets.getLatestEndTime.getOrElse(Instant.now.minus(1, ChronoUnit.DAYS))
     val end = Instant.now.minus(1, ChronoUnit.MINUTES)
@@ -60,7 +63,7 @@ object Converter {
     logger.println("done!\n")
   }
 
-  def fetchAllChanges(start: Instant, end: Instant, assetTypes: Seq[AssetType]): Seq[Seq[features.Asset]] = {
+  private def fetchAllChanges(start: Instant, end: Instant, assetTypes: Seq[AssetType]): Seq[Seq[features.Asset]] = {
     try {
       val executor = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(10))
       val responses = Future.sequence(assetTypes.map { asset =>

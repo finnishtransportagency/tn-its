@@ -5,6 +5,7 @@ import java.nio.ByteBuffer
 import java.time.Instant
 import java.util.{Base64, UUID}
 
+/** Manipulates dataset IDs. */
 object DatasetID {
   val LiikennevirastoUUID = UUID.fromString("f90056dc-8945-4885-9860-f0f017855cfd")
 

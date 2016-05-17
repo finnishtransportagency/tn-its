@@ -27,6 +27,6 @@ clean:
 	
 doc:
 	$(mvn) scala:doc
-	open target/site/scaladocs/index.html	
+	open target/site/scaladocs/fi/liikennevirasto/digiroad2/tnits/package.html
 
 .PHONY: build clean run test usage convert doc

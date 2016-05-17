@@ -73,7 +73,7 @@ make doc
 ```
 
 or run the `scala:doc` Maven target.
-The documentation will be generated to [target/site/scaladocs/index.html]().  
+The documentation will be generated to [target/site/scaladocs/fi/liikennevirasto/digiroad2/tnits/package.html]().
 
 ## Deployment
 

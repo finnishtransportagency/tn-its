@@ -10,12 +10,15 @@ import fi.liikennevirasto.digiroad2.tnits.runners.AssetType
 
 import scala.util.{Failure, Success, Try}
 
+/** Generates a dataset. */
 object RosatteConverter {
+  /** Converts given [[fi.liikennevirasto.digiroad2.tnits.rosatte.features.Asset]]s
+    * to Rosatte XML and writes it to the provided stream. */
   def convertDataSet(featureMembers: Seq[(AssetType, Seq[features.Asset])], start: Instant, end: Instant, dataSetId: String, output: OutputStream): Unit = {
     generateChangeData(featureMembers, dataSetId, start, end, output)
   }
 
-  def generateChangeData(featureMembers: Seq[(AssetType, Seq[features.Asset])], dataSetId: String, startTime: Instant, endTime: Instant, output: OutputStream): Unit = {
+  private def generateChangeData(featureMembers: Seq[(AssetType, Seq[features.Asset])], dataSetId: String, startTime: Instant, endTime: Instant, output: OutputStream): Unit = {
     val writer = new OutputStreamWriter(new BufferedOutputStream(output), "UTF-8")
     writer.write(
       s"""<rst:ROSATTESafetyFeatureDataset xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -46,7 +49,7 @@ object RosatteConverter {
     writer.flush()
   }
 
-  def splitFeaturesApplicableToBothDirections(assets: Seq[features.Asset]): Seq[features.Asset] = {
+  private def splitFeaturesApplicableToBothDirections(assets: Seq[features.Asset]): Seq[features.Asset] = {
     assets.flatMap { feature =>
       feature.properties.sideCode match {
         case 1 =>
@@ -58,7 +61,7 @@ object RosatteConverter {
     }
   }
 
-  def toFeatureMember(feature: features.Asset, featureType: String, valueType: String, unit: String) = {
+  private def toFeatureMember(feature: features.Asset, featureType: String, valueType: String, unit: String) = {
     val coordinates = feature.geometry.coordinates.flatMap(_.take(2))
     val transformedCoordinates = CoordinateTransform.convertToWgs84(coordinates)
     val geometry = transformedCoordinates.mkString(" ")
