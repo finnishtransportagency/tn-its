@@ -6,7 +6,18 @@ This repository contains the [Finnish Transport Agency](http://www.liikenneviras
 
 The application is live at http://tn-its.herokuapp.com/rosattedownload/download/queryDataSets.
 
+## Dependencies
+
+- [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html).
+- GNU make ([Windows version](http://gnuwin32.sourceforge.net/packages/make.htm)).
+- [Apache Maven](https://maven.apache.org) (IDEA ships with it).
+
+You can skip make if you're OK with running Maven targets directly.
+
 ## Configuration
+
+All external services are configured with environment variables.
+Those marked "Yes" below need to be set to valid values.
 
 | Environment variable     | Description                                             | Required   | Default   |
 | ------------------------ | -------------                                           | ---------- | --------- |
@@ -16,14 +27,15 @@ The application is live at http://tn-its.herokuapp.com/rosattedownload/download/
 | CHANGE_API_USERNAME      | OTH API username                                        | Yes        |           |
 | CHANGE_API_PASSWORD      | OTH API password                                        | Yes        |           |
 | CHANGE_API_URL           | OTH hostname and path to change API                     | Yes        |           |
-| CONVERTER_API_USERNAME   | Converter endpoint (/conversion) username               | Yes        |           |
+| CONVERTER_API_USERNAME   | Converter endpoint (`/conversion`) username             | Yes        |           |
 | CONVERTER_API_PASSWORD   | Converter password                                      | Yes        |           |
 | QUOTAGUARDSTATIC_URL     | When set, provides static IP for requests to change API | No         |           |
 | PORT                     | Listen on this port                                     | No         | 8090      |
 
 ## Local development
 
-Run the API service:
+First, set the environment variables listed above.
+Then, run the API service:
 
 ```sh
 make run
