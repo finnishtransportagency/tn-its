@@ -6,13 +6,17 @@ This repository contains the [Finnish Transport Agency](http://www.liikenneviras
 
 The application is live at http://tn-its.herokuapp.com/rosattedownload/download/queryDataSets.
 
-## Dependencies
+## Build dependencies
 
-- [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html).
-- GNU make ([Windows version](http://gnuwin32.sourceforge.net/packages/make.htm)).
-- [Apache Maven](https://maven.apache.org) (IDEA ships with it).
+- [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+- GNU make ([Windows version](http://gnuwin32.sourceforge.net/packages/make.htm))
+- [Apache Maven](https://maven.apache.org) (IDEA ships with it)
 
 You can skip make if you're OK with running Maven targets directly.
+
+## Runtime dependencies
+
+- [JRE 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
 
 ## Configuration
 
