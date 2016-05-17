@@ -1,4 +1,4 @@
-# Digiroad2 TN-ITS #
+# Digiroad2 TN-ITS
 
 [![Circle CI](https://circleci.com/gh/finnishtransportagency/tn-its.svg?style=svg)](https://circleci.com/gh/finnishtransportagency/tn-its)
 
@@ -41,3 +41,13 @@ make convert
 
 This repository is deployed automatically to Heroku on each push to the master branch.
 
+## Code
+
+The [fi.liikennevirasto.digiroad2.tnits.runners](src/main/scala/fi/liikennevirasto/digiroad2/tnits/runners) package
+contains the entry points to this project.
+There are two runnable programs:
+[Converter](src/main/scala/fi/liikennevirasto/digiroad2/tnits/runners/Converter.scala)
+and
+[Api](src/main/scala/fi/liikennevirasto/digiroad2/tnits/runners/Api.scala).
+The latter is run in production.
+The former is for development and not required.
