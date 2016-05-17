@@ -44,11 +44,19 @@ object Converter {
 
     val dataSetId = DatasetID.encode(DatasetID.LiikennevirastoUUID, start, end)
     val filename = s"${URLEncoder.encode(dataSetId, "UTF-8")}.xml"
+
+    // Create a stream to the FTP server so we can write the result XML bit by bit instead of
+    // creating it all in memory first. This avoids out of memory situations on Heroku.
     val outputStream = RemoteDatasets.getOutputStream(filename)
-    RosatteConverter.convertDataSet(assetTypes.zip(assets), start, end, dataSetId, outputStream)
+
+    try {
+      RosatteConverter.convertDataSet(assetTypes.zip(assets), start, end, dataSetId, outputStream)
+    } finally {
+      outputStream.close()
+    }
+
     logger.println(s"Dataset ID: $dataSetId")
     logger.println(s"dataset: $filename")
-    outputStream.close()
     logger.println("done!\n")
   }
 
