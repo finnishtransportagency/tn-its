@@ -52,7 +52,13 @@ object OTHClient {
           println(s"[$apiEndpoint] Parsed ${parsed.size} assets")
           parsed
         } else {
-          throw new RuntimeException(s"Request (${get.getURI}) failed with status: ${response.getStatusLine}")
+          throw new RuntimeException(s"""
+                ************************* OTH Request failed *************************
+                Request: ${get.getURI}
+                Status: ${response.getStatusLine}
+                Response body:
+                ${s}
+                ****************** End of failed OTH Request **************************""".stripMargin)
         }
       }
     }(executionContext)
