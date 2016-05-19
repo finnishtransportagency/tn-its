@@ -7,6 +7,9 @@ import java.util.Locale
 import fi.liikennevirasto.digiroad2.tnits.geometry.Point
 import openlr.map._
 
+/**
+  * Implements the Line for the TomTom's OpenLr library representing a one-directional digiroad roadlink
+  */
 case class DigiroadLine(id: Long, geometry: Seq[Point], length: Int, linkType: Int = 1, functionalClass: Int = 1) extends Line {
   override def getGeoCoordinateAlongLine(distanceAlong: Int): GeoCoordinates =
     DigiroadCoordinates(calculatePointFromLinearReference(geometry, distanceAlong.toDouble).get)

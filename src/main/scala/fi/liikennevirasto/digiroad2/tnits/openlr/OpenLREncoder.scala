@@ -9,7 +9,13 @@ import openlr.location.LocationFactory
 
 import scala.util.Try
 
+/**
+  * Provides OpenLR encoding using the TomTom's library, see: http://www.openlr.org/software.html
+  */
 object OpenLREncoder {
+  /**
+    * Returns the Base64 encoded string representing the OpenLR encoding result of the given startMeasure and endMeasure on the given link geometry
+    */
   def encodeAssetOnLink(startMeasure: Double, endMeasure: Double, linkGeometry: Seq[Point], linkLength: Double, functionalClass: Int, linkType: Int, linkId: String): Try[String] = {
     import collection.JavaConverters._
 
