@@ -54,7 +54,7 @@ object OTHClient {
         } else {
           throw new RuntimeException(s"""
                 ************************* OTH Request failed *************************
-                Request: ${get.getURI}
+                Request: ${target.toURI}${get.getURI}
                 Status: ${response.getStatusLine}
                 Response body:
                 ${s}
