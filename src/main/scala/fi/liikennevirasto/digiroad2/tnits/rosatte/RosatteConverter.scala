@@ -12,7 +12,7 @@ import scala.util.{Failure, Success, Try}
 
 /** Generates a dataset. */
 object RosatteConverter {
-  /** Converts given [[fi.liikennevirasto.digiroad2.tnits.rosatte.features.Asset]]s
+  /** Converts the given [[fi.liikennevirasto.digiroad2.tnits.rosatte.features.Asset]]s
     * to Rosatte XML and writes it to the provided stream. */
   def convertDataSet(featureMembers: Seq[(AssetType, Seq[features.Asset])], start: Instant, end: Instant, dataSetId: String, output: OutputStream): Unit = {
     generateChangeData(featureMembers, dataSetId, start, end, output)

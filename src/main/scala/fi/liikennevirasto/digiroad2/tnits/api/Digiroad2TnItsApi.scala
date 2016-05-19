@@ -9,8 +9,7 @@ import org.scalatra._
 
 import scala.concurrent.ExecutionContext
 
-/**
-  * The public TN-ITS API providing endpoints to query and download change dataset's
+/** The public TN-ITS API providing endpoints to query and download change datasets.
   */
 class Digiroad2TnItsApi extends ScalatraServlet with FutureSupport {
 

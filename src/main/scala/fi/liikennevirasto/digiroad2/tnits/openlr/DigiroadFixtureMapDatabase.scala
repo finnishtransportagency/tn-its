@@ -5,8 +5,7 @@ import java.util
 
 import openlr.map.{Line, MapDatabase, Node}
 
-/**
-  * Implements the MapDatabase for the TomTom's OpenLR library
+/** Implements the MapDatabase for the OpenLR library.
   */
 case class DigiroadFixtureMapDatabase(lines: Seq[Line]) extends MapDatabase {
   import collection.JavaConverters._

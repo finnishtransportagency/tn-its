@@ -18,13 +18,19 @@ import scala.language.reflectiveCalls
 
 case class RemoteDatasetsException(cause: Throwable) extends RuntimeException(cause)
 
+/** Accesses the aineistot.liikennevirasto.fi FTP and HTTP service.
+  *
+  * @see [[config.urls.aineistot]]
+  * @see [[config.logins.aineistot]]
+  */
 object RemoteDatasets {
   private val logins =
     config.logins.aineistot
 
-  val baseUrl =
+  private val baseUrl =
     config.urls.aineistot.dir
 
+  /** @return names of all datasets in the configured directory. */
   def index: Seq[String] = {
     val response = createClient.execute(new HttpGet(config.urls.aineistot.dir))
     val contents = EntityUtils.toString(response.getEntity, "UTF-8")
@@ -37,6 +43,7 @@ object RemoteDatasets {
       .map(URLDecoder.decode(_, "UTF-8"))
   }
 
+  /** @return the ending timestamp of the latest dataset. */
   def getLatestEndTime: Option[Instant] = {
     val dataSets = try {
       RemoteDatasets.index
@@ -55,12 +62,14 @@ object RemoteDatasets {
     }
   }
 
+  /** @return a readable stream to a dataset. */
   def get(id: String): InputStream = {
     val get = new HttpGet(dataSetUrl(id))
     val response = createClient.execute(get)
     response.getEntity.getContent
   }
 
+  /** @return a writable stream to a new dataset. */
   def getOutputStream(filename: String): OutputStream = {
     val client = new FTPClient
     client.connect(config.urls.aineistot.ftp)

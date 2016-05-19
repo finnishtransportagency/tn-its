@@ -2,6 +2,7 @@ package fi.liikennevirasto.digiroad2.tnits.rosatte
 
 import fi.liikennevirasto.digiroad2.tnits.geojson
 
+/** GeoJSON types specialized to OTH assets. */
 object features {
   type Asset = geojson.Feature[AssetProperties]
   type RoadLink = geojson.Feature[RoadLinkProperties]

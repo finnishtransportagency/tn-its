@@ -2,7 +2,7 @@ package fi.liikennevirasto.digiroad2.tnits
 
 import java.net.URI
 
-/** Stores configuration values that are read at startup from the environment. */
+/** Configuration values that are read at startup from the environment. */
 object config {
   val logins = new {
     val aineistot = new {

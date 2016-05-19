@@ -2,8 +2,7 @@ package fi.liikennevirasto.digiroad2.tnits.geometry
 
 import org.geotools.referencing.CRS
 
-/**
-  * Transfrom the OTH EPSG:3067 map coordinates (x y meters) to wgs84 geocoordinates (lon lat degrees)
+/** Transforms OTH EPSG:3067 map coordinates ((x, y) meters) to WGS84 geocoordinates ((lon, lat) degrees).
   */
 object CoordinateTransform {
   def convertToWgs84(coordinates: Seq[Double]): Seq[Double] = {
