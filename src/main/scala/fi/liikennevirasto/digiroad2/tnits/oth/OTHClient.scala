@@ -17,6 +17,9 @@ import scala.concurrent.{ExecutionContext, Future}
 import scala.io.Source
 import scala.language.reflectiveCalls
 
+/**
+  * Provides HTTP access to OTH change api
+  */
 object OTHClient {
   protected implicit val jsonFormats: Formats = DefaultFormats
   private val client = createClient
@@ -26,6 +29,10 @@ object OTHClient {
     new HttpHost(changesApiUri.getHost, port, changesApiUri.getScheme)
   }
 
+  /**
+    * Returns a Future that will contain changes as [[Asset]]s
+    * from given OTH change api endpoint upon successful completion
+    */
   def fetchChanges(apiEndpoint: String, since: Instant, until: Instant, executionContext: ExecutionContext): scala.concurrent.Future[Seq[Asset]] = {
     val changesApiUri = URI.create(config.urls.changesApi + "/" + apiEndpoint)
 
