@@ -6,6 +6,10 @@ import org.scalatra._
 
 import scala.concurrent.ExecutionContext
 
+/**
+  * Provides optional way to start the conversion process generating the next Rosatte formatted change data set.
+  * The conversion process can also run from command line, see: [[Converter]]
+  */
 class ConversionApi extends ScalatraServlet with FutureSupport with AuthenticationSupport {
 
   override protected implicit def executor: ExecutionContext =

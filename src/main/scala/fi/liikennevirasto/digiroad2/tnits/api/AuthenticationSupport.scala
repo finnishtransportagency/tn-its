@@ -25,6 +25,9 @@ class IntegrationAuthStrategy(protected override val app: ScalatraBase, realm: S
   }
 }
 
+/**
+  * Basic Auth for the conversion API
+  */
 trait AuthenticationSupport extends ScentrySupport[BasicAuthUser] with BasicAuthSupport[BasicAuthUser] {
   self: ScalatraBase =>
 

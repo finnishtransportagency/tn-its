@@ -9,6 +9,9 @@ import org.scalatra._
 
 import scala.concurrent.ExecutionContext
 
+/**
+  * The public TN-ITS API providing endpoints to query and download change dataset's
+  */
 class Digiroad2TnItsApi extends ScalatraServlet with FutureSupport {
 
   override protected implicit def executor: ExecutionContext =
