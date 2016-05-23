@@ -28,9 +28,10 @@ object OpenLREncoder {
         .`with`(mapDatabase)
         .buildParameter()
 
+      val realEndMeasure = if (linkLength > endMeasure) linkLength - endMeasure else 0
       val lineLocation =
         LocationFactory.createLineLocationWithOffsets(
-          linkId, Seq(line).asJava, startMeasure.floor.toInt, (linkLength - endMeasure).floor.toInt)
+          linkId, Seq(line).asJava, startMeasure.floor.toInt, realEndMeasure.floor.toInt)
 
       val encoded = try
         encoder.encodeLocation(param, lineLocation)
