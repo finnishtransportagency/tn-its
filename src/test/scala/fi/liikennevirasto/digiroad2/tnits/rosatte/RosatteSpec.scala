@@ -299,4 +299,66 @@ class RosatteSpec extends FunSuite {
   def normalize(output: ByteArrayOutputStream): String = {
     output.toString("UTF-8").replaceAll("""gml:id="[^"]+?"""", """gml:id="ID-FOO"""").filterNot(_.isWhitespace)
   }
+
+  test("Split speed limit conversion - offsets have correct signums") {
+    val input =
+      """{"type":"FeatureCollection","features":[
+         {"type":"Feature",
+        "id":19518759,
+        "geometry":{
+        "type":"LineString",
+        "coordinates":[[642052.7582236576,
+        6944410.654797484,
+        80.28025687036987],
+        [642061.0577615625,
+        6944431.353911327,
+        80.48896885649165]]},
+        "properties":{"startMeasure":109.956,
+        "changeType":"Add",
+        "sideCode":1,
+        "link":{"type":"Feature",
+        "id":999571,
+        "geometry":{"type":"LineString",
+        "coordinates":[[642013.1,
+        6944308.109,
+        79.07600000000093],
+        [642020.076,
+        6944326.74,
+        79.3469999999943],
+        [642034.774,
+        6944365.802,
+        79.82799999999406],
+        [642061.059,
+        6944431.357,
+        80.4890000000014]]},
+        "properties":{"functionalClass":3,
+        "type":3,
+        "length":132.25823481878638}},
+        "createdAt":"02.09.2016 12:40:37",
+        "createdBy":"lx054586",
+        "endMeasure":132.258,
+        "modifiedBy":"NULL",
+        "value":30}}
+        ]}
+        """
+
+    val parsed = (parse(input) \ "features").extract[Seq[Asset]]
+    val output = new ByteArrayOutputStream()
+
+    RosatteConverter.convertDataSet(
+      featureMembers = Seq((AssetType("speed_limits", "SpeedLimit", "MaximumSpeedLimit", "kmph"), parsed)),
+      start = Instant.parse("2014-04-22T13:00:00Z"),
+      end = Instant.parse("2014-04-22T15:00:00Z"),
+      dataSetId = "id",
+      output = output
+    )
+
+    val lrPattern = "<rst:base64String>([^<]*)</rst:base64String>".r
+    val outputStrings = lrPattern.findAllIn(normalize(output)).map( str =>
+      str.replaceFirst("<rst:base64String>([^<]*)</rst:base64String>", "$1")
+    )
+
+    assertResult("CxUq3iyEYBNCAgBoAG0TUtM=")(outputStrings.next)
+    assertResult("CxUrDiyEkxNSAv+Y/5MTItM=")(outputStrings.next)
+  }
 }

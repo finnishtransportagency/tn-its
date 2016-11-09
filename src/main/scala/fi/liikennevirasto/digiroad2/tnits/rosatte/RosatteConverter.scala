@@ -140,16 +140,15 @@ object RosatteConverter {
         .map { case Seq(x, y, z) => Point(x, y, z) }
         .toSeq
 
-    val linkGeometry =
-      if (applicableDirection == "inOppositeDirection")
-        points.reverse
-      else
-        points
-
     val linkLength = link.properties.length
     val functionalClass = link.properties.functionalClass
     val linkType = link.properties.`type`
+    val (linkGeometry, startM, endM) =
+      if (applicableDirection == "inOppositeDirection")
+        (points.reverse, linkLength - endMeasure, linkLength - startMeasure)
+      else
+        (points, startMeasure, endMeasure)
 
-    OpenLREncoder.encodeAssetOnLink(startMeasure, endMeasure, linkGeometry, linkLength, functionalClass, linkType, linkId)
+    OpenLREncoder.encodeAssetOnLink(startM, endM, linkGeometry, linkLength, functionalClass, linkType, linkId)
   }
 }
