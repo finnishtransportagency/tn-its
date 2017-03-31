@@ -52,10 +52,15 @@ object Converter {
     // creating it all in memory first. This avoids out of memory situations on Heroku.
     val outputStream = RemoteDatasets.getOutputStream(filename)
 
+    // Create new stream to the SFTP server for replace a stream to the FTP server in the Future
+    val OutputStreamSFTP = RemoteDatasets.getOutputStreamSFTP(filename)
+
     try {
       RosatteConverter.convertDataSet(assetTypes.zip(assets), start, end, dataSetId, outputStream)
+      RosatteConverter.convertDataSet(assetTypes.zip(assets), start, end, dataSetId, OutputStreamSFTP)
     } finally {
       outputStream.close()
+      OutputStreamSFTP.close()
     }
 
     logger.println(s"Dataset ID: $dataSetId")

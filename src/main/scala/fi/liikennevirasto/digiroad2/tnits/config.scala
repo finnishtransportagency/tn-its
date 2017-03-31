@@ -17,9 +17,14 @@ object config {
       val username = env("CONVERTER_API_USERNAME")
       val password = env("CONVERTER_API_PASSWORD")
     }
+    val aineistotSFTP = new {
+      val username = env("AINEISTOT_SFTP_USERNAME")
+      val password = env("AINEISTOT_SFTP_PASSWORD")
+    }
   }
 
   val dir = env("AINEISTOT_DIRECTORY")
+  val dirSFTP = env("AINEISTOT_SFTP_DIRECTORY")
 
   val urls = new {
     val aineistot = new {
@@ -27,12 +32,18 @@ object config {
       val dir = s"http://$domain/digiroad/${config.dir}"
       val ftp = domain
     }
+    val aineistotSFTP = new {
+      val domain = "ava.liikennevirasto.fi"
+      val dir = s"http://$domain/digiroad/${config.dirSFTP}"
+      val sftp = domain
+    }
     val changesApi = env("CHANGE_API_URL")
   }
 
   val optionalProxy = getProxy
 
   val apiPort = optionalEnv("PORT").fold(8090)(_.toInt)
+  val apiPortSFTP = optionalEnv("PORT_SFTP").fold(22)(_.toInt)
 
   private def getProxy = {
     optionalEnv("QUOTAGUARDSTATIC_URL")
