@@ -137,26 +137,24 @@ object RemoteDatasets {
     }
 
     //verify if file already exist, if not, return a exception and continue, if exist, throw IllegalArgumentException
-    if (fileExist(channelSftp, fileName)) {
-      //when file exist
-      throw new IllegalArgumentException(s"$fileName already exists on server")
-    } else {
-      //when file doesn't exist
-      val output = channelSftp.put(fileName)
+    if (fileExist(channelSftp, fileName))
+      throw new IllegalArgumentException(s"$fileName already exists on server") //when file exist
 
-      new OutputStream {
-        override def write(b: Int): Unit = output.write(b)
+    //when file doesn't exist
+    val output = channelSftp.put(fileName)
 
-        override def write(b: Array[Byte]): Unit = output.write(b)
+    new OutputStream {
+      override def write(b: Int): Unit = output.write(b)
 
-        override def write(b: Array[Byte], off: Int, len: Int): Unit = output.write(b, off, len)
+      override def write(b: Array[Byte]): Unit = output.write(b)
 
-        override def close(): Unit = {
-          output.close()
-          channelSftp.exit()
-          channel.disconnect()
-          session.disconnect()
-        }
+      override def write(b: Array[Byte], off: Int, len: Int): Unit = output.write(b, off, len)
+
+      override def close(): Unit = {
+        output.close()
+        channelSftp.exit()
+        channel.disconnect()
+        session.disconnect()
       }
     }
   }
