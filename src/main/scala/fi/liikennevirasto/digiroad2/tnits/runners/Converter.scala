@@ -58,10 +58,6 @@ object Converter {
       outputStream.close()
     }
 
-    logger.println(s"Dataset ID: $dataSetId")
-    logger.println(s"dataset: $filename")
-    logger.println("done!\n")
-
     try {
       // Create new stream to the SFTP server for replace a stream to the FTP server in the Future
       val OutputStreamSFTP = RemoteDatasets.getOutputStreamSFTP(filename)
@@ -75,9 +71,9 @@ object Converter {
       case e: Throwable => logger.println("SFTP OutputStream  Failed with the follow message: ", e.getMessage)
     }
 
-    logger.println(s"Dataset ID for SFTP: $dataSetId")
-    logger.println(s"dataset for SFTP: $filename")
-    logger.println("done for SFTP!\n")
+    logger.println(s"Dataset ID: $dataSetId")
+    logger.println(s"dataset: $filename")
+    logger.println("done!\n")
   }
 
   private def fetchAllChanges(start: Instant, end: Instant, assetTypes: Seq[AssetType]): Seq[Seq[features.Asset]] = {
