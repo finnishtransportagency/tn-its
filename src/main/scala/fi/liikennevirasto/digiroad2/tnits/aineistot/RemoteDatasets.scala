@@ -133,7 +133,7 @@ object RemoteDatasets {
       channelSftp.cd(config.dirSFTP)
     } catch {
       case e: SftpException =>
-        throw new IllegalStateException("No such directory: tn-its")
+        throw new IllegalStateException("Can't change directory to tn-its: " + e.getMessage())
     }
 
     //verify if file already exist, if not, return a exception and continue, if exist, throw IllegalArgumentException
@@ -161,8 +161,7 @@ object RemoteDatasets {
 
   private def fileExist(channelSftp: ChannelSftp, fileName: String): Boolean = {
     try {
-      channelSftp.ls(fileName)
-      true
+      channelSftp.ls(fileName).size > 0
     } catch {
       case sftpe: SftpException if (sftpe.id == 2) => false
     }
