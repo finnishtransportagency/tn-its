@@ -58,6 +58,19 @@ object Converter {
       outputStream.close()
     }
 
+    try {
+      // Create new stream to the SFTP server for replace a stream to the FTP server in the Future
+      val OutputStreamSFTP = RemoteDatasets.getOutputStreamSFTP(filename)
+
+      try {
+        RosatteConverter.convertDataSet(assetTypes.zip(assets), start, end, dataSetId, OutputStreamSFTP)
+      } finally {
+        OutputStreamSFTP.close()
+      }
+    } catch {
+      case e: Throwable => logger.println("SFTP OutputStream  Failed with the follow message: ", e.getMessage)
+    }
+
     logger.println(s"Dataset ID: $dataSetId")
     logger.println(s"dataset: $filename")
     logger.println("done!\n")

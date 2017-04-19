@@ -4,6 +4,7 @@ import java.io.{InputStream, OutputStream}
 import java.net.{URLDecoder, URLEncoder, _}
 import java.time.Instant
 
+import com.jcraft.jsch._
 import fi.liikennevirasto.digiroad2.tnits.config
 import fi.liikennevirasto.digiroad2.tnits.rosatte.DatasetID
 import org.apache.commons.net.ftp.{FTP, FTPClient}
@@ -18,10 +19,12 @@ import scala.language.reflectiveCalls
 
 case class RemoteDatasetsException(cause: Throwable) extends RuntimeException(cause)
 
-/** Accesses the aineistot.liikennevirasto.fi FTP and HTTP service.
+/** Accesses the aineistot.liikennevirasto.fi FTP, the ava.liikennevirasto.fi SFTP and HTTP service.
   *
   * @see [[config.urls.aineistot]]
   * @see [[config.logins.aineistot]]
+  * @see [[config.urls.aineistotSFTP]]
+  * @see [[config.logins.aineistotSFTP]]
   */
 object RemoteDatasets {
   private val logins =
@@ -101,6 +104,66 @@ object RemoteDatasets {
           throw new IllegalStateException(client.getReplyString)
         client.disconnect()
       }
+    }
+  }
+
+  /** @return a writable stream to a new dataset using SFTP transfer process. */
+  def getOutputStreamSFTP(fileName: String): OutputStream = {
+    val jschClient = new JSch()
+
+    val session = jschClient.getSession(config.logins.aineistotSFTP.username, config.urls.aineistotSFTP.sftp, config.apiPortSFTP)
+    session.setPassword(config.logins.aineistotSFTP.password)
+    session.setConfig("StrictHostKeyChecking", "no")
+
+    if (!session.isConnected()) {
+      try {
+        session.connect()
+      } catch {
+        case jsche: JSchException =>
+          throw new IllegalArgumentException("Login failed")
+      }
+    }
+
+    val channel = session.openChannel("sftp")
+    channel.connect()
+
+    val channelSftp = channel.asInstanceOf[ChannelSftp]
+
+    try {
+      channelSftp.cd(config.dirSFTP)
+    } catch {
+      case e: SftpException =>
+        throw new IllegalStateException("Can't change directory to tn-its: " + e.getMessage())
+    }
+
+    //verify if file already exist, if not, return a exception and continue, if exist, throw IllegalArgumentException
+    if (fileExist(channelSftp, fileName))
+      throw new IllegalArgumentException(s"$fileName already exists on server") //when file exist
+
+    //when file doesn't exist
+    val output = channelSftp.put(fileName)
+
+    new OutputStream {
+      override def write(b: Int): Unit = output.write(b)
+
+      override def write(b: Array[Byte]): Unit = output.write(b)
+
+      override def write(b: Array[Byte], off: Int, len: Int): Unit = output.write(b, off, len)
+
+      override def close(): Unit = {
+        output.close()
+        channelSftp.exit()
+        channel.disconnect()
+        session.disconnect()
+      }
+    }
+  }
+
+  private def fileExist(channelSftp: ChannelSftp, fileName: String): Boolean = {
+    try {
+      channelSftp.ls(fileName).size > 0
+    } catch {
+      case sftpe: SftpException if (sftpe.id == 2) => false
     }
   }
 
