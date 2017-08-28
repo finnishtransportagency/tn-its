@@ -10,7 +10,7 @@ object features {
   case class AssetProperties(
     sideCode: Int,
     changeType: String,
-    value: Int,
+    value: Any,
     startMeasure: Double,
     endMeasure: Double,
     link: RoadLink)

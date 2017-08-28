@@ -40,7 +40,8 @@ object Converter {
       AssetType("length_limits", "RestrictionForVehicles", "MaximumLength", "cm"),
       AssetType("width_limits", "RestrictionForVehicles", "MaximumWidth", "cm"),
       AssetType("height_limits", "RestrictionForVehicles", "MaximumHeight", "cm"),
-      AssetType("total_weight_limits", "RestrictionForVehicles", "MaximumLadenWeight", "kg"))
+      AssetType("total_weight_limits", "RestrictionForVehicles", "MaximumLadenWeight", "kg"),
+      AssetType("road_names", "RoadName", "RoadName", ""))
 
     val assets = fetchAllChanges(start, end, assetTypes)
     logger.println("fetched all changes, generating dataset")
@@ -60,12 +61,12 @@ object Converter {
 
     try {
       // Create new stream to the SFTP server for replace a stream to the FTP server in the Future
-      val OutputStreamSFTP = RemoteDatasets.getOutputStreamSFTP(filename)
+      val outputStreamSFTP = RemoteDatasets.getOutputStreamSFTP(filename)
 
       try {
-        RosatteConverter.convertDataSet(assetTypes.zip(assets), start, end, dataSetId, OutputStreamSFTP)
+        RosatteConverter.convertDataSet(assetTypes.zip(assets), start, end, dataSetId, outputStreamSFTP)
       } finally {
-        OutputStreamSFTP.close()
+        outputStreamSFTP.close()
       }
     } catch {
       case e: Throwable => logger.println("SFTP OutputStream  Failed with the follow message: ", e.getMessage)
