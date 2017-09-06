@@ -40,8 +40,8 @@ object Converter {
       AssetType("length_limits", "RestrictionForVehicles", "MaximumLength", "cm"),
       AssetType("width_limits", "RestrictionForVehicles", "MaximumWidth", "cm"),
       AssetType("height_limits", "RestrictionForVehicles", "MaximumHeight", "cm"),
-      AssetType("total_weight_limits", "RestrictionForVehicles", "MaximumLadenWeight", "kg"),
-      AssetType("road_names", "RoadName", "RoadName", ""))
+      AssetType("total_weight_limits", "RestrictionForVehicles", "MaximumLadenWeight", "kg"))
+      //AssetType("road_names", "RoadName", "RoadName", ""),
       //AssetType("road_numbers", "RoadNumber", "RoadNumber", ""))
 
     val assets = fetchAllChanges(start, end, assetTypes)
