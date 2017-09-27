@@ -12,7 +12,7 @@ import org.scalatra.servlet.ScalatraListener
   */
 object Api {
   def main(args: Array[String]) {
-    val server = new Server(config.apiPort)
+    val server = new Server(config.apiPortSFTP)
     val context = new WebAppContext()
     context.setContextPath("/")
     context.setResourceBase("src/main/webapp")
