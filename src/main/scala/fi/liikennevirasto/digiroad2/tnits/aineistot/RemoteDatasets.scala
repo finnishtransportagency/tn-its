@@ -93,7 +93,7 @@ object RemoteDatasets {
     val channelSftp = channel.asInstanceOf[ChannelSftp]
 
     try {
-      channelSftp.cd(config.dirSFTP)
+      channelSftp.cd(config.baseDirSFTP)
     } catch {
       case e: SftpException =>
         throw new IllegalStateException("Can't change directory to tn-its: " + e.getMessage())
