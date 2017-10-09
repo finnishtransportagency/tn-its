@@ -21,21 +21,19 @@ case class RemoteDatasetsException(cause: Throwable) extends RuntimeException(ca
 
 /** Accesses the aineistot.liikennevirasto.fi FTP, the ava.liikennevirasto.fi SFTP and HTTP service.
   *
-  * @see [[config.urls.aineistot]]
-  * @see [[config.logins.aineistot]]
   * @see [[config.urls.aineistotSFTP]]
   * @see [[config.logins.aineistotSFTP]]
   */
 object RemoteDatasets {
   private val logins =
-    config.logins.aineistot
+    config.logins.aineistotSFTP
 
   private val baseUrl =
-    config.urls.aineistot.dir
+    config.urls.aineistotSFTP.dir
 
   /** @return names of all datasets in the configured directory. */
   def index: Seq[String] = {
-    val response = createClient.execute(new HttpGet(config.urls.aineistot.dir))
+    val response = createClient.execute(new HttpGet(config.urls.aineistotSFTP.dir))
     val contents = EntityUtils.toString(response.getEntity, "UTF-8")
     val doc = Jsoup.parse(contents, baseUrl)
     val links = doc.select("a")
@@ -72,41 +70,6 @@ object RemoteDatasets {
     response.getEntity.getContent
   }
 
-  /** @return a writable stream to a new dataset. */
-  def getOutputStream(filename: String): OutputStream = {
-    val client = new FTPClient
-    client.connect(config.urls.aineistot.ftp)
-    client.enterLocalPassiveMode()
-    if (!client.login(logins.username, logins.password))
-      throw new IllegalArgumentException("Login failed")
-    if (!client.changeWorkingDirectory(config.dir))
-      throw new IllegalStateException("No such directory: tn-its")
-    val files = client.listNames()
-    if (files == null)
-      throw new IllegalStateException(client.getReplyString)
-    if (files.contains(filename))
-      throw new IllegalArgumentException(s"$filename already exists on server")
-    if (!client.setFileType(FTP.BINARY_FILE_TYPE))
-      throw new IllegalStateException(client.getReplyString)
-
-    val output = client.storeFileStream(filename)
-
-    new OutputStream {
-      override def write(b: Int): Unit = output.write(b)
-      override def write(b: Array[Byte]): Unit = output.write(b)
-      override def write(b: Array[Byte], off: Int, len: Int): Unit = output.write(b, off, len)
-
-      override def close(): Unit = {
-        output.close()
-        if (!client.completePendingCommand())
-          throw new IllegalStateException(client.getReplyString)
-        if (!client.logout())
-          throw new IllegalStateException(client.getReplyString)
-        client.disconnect()
-      }
-    }
-  }
-
   /** @return a writable stream to a new dataset using SFTP transfer process. */
   def getOutputStreamSFTP(fileName: String): OutputStream = {
     val jschClient = new JSch()
@@ -130,7 +93,7 @@ object RemoteDatasets {
     val channelSftp = channel.asInstanceOf[ChannelSftp]
 
     try {
-      channelSftp.cd(config.dirSFTP)
+      channelSftp.cd(config.baseDirSFTP)
     } catch {
       case e: SftpException =>
         throw new IllegalStateException("Can't change directory to tn-its: " + e.getMessage())
@@ -177,10 +140,10 @@ object RemoteDatasets {
 
   private def createClient = {
     val credentialsProvider = new BasicCredentialsProvider
-    val dataSetsUri = URI.create(config.urls.aineistot.dir)
+    val dataSetsUri = URI.create(config.urls.aineistotSFTP.dir)
     credentialsProvider.setCredentials(
       new AuthScope(dataSetsUri.getHost, dataSetsUri.getPort),
-      new UsernamePasswordCredentials(config.logins.aineistot.username, config.logins.aineistot.password))
+      new UsernamePasswordCredentials(config.logins.aineistotSFTP.username, config.logins.aineistotSFTP.password))
 
     HttpClients.custom().setDefaultCredentialsProvider(credentialsProvider).setMaxConnPerRoute(10).build()
   }
