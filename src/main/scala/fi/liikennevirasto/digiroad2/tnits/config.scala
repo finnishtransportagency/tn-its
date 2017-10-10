@@ -25,11 +25,12 @@ object config {
 
   val dir = env("AINEISTOT_DIRECTORY")
   val dirSFTP = env("AINEISTOT_SFTP_DIRECTORY")
+  val baseDirSFTP = env("AINEISTOT_SFTP_BASE_DIRECTORY") + "/" + env("AINEISTOT_SFTP_DIRECTORY")
 
   val urls = new {
     val aineistot = new {
-      val domain = "aineistot.liikennevirasto.fi"
-      val dir = s"http://$domain/digiroad/${config.dir}"
+      val domain = env("AINEISTOT_SFTP_DOMAIN")
+      val dir = s"https://$domain/${config.dirSFTP}"
       val ftp = domain
     }
     val aineistotSFTP = new {
