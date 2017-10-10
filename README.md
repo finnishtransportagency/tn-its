@@ -23,23 +23,18 @@ You can skip make if you're OK with running Maven targets directly.
 All external services are configured with environment variables.
 Those marked "Yes" below need to be set to valid values.
 
-| Environment variable          | Description                                             | Required   | Default   |
-| ----------------------------- | -------------                                           | ---------- | --------- |
-| AINEISTOT_USERNAME            | Dataset FTP username                                    | Yes        |           |
-| AINEISTOT_PASSWORD            |                                                         | Yes        |           |
-| AINEISTOT_DIRECTORY           |                                                         | Yes        |           |
-| AINEISTOT_SFTP_USERNAME       | Dataset SFTP username                                   | Yes        |           |
-| AINEISTOT_SFTP_PASSWORD       |                                                         | Yes        |           |
-| AINEISTOT_SFTP_DIRECTORY      | Directory with the extracted files                      | Yes        |           |
-| AINEISTOT_SFTP_BASE_DIRECTORY | Base Directory needed because when not used with https  | Yes        |           |
-| AINEISTOT_SFTP_DOMAIN         | Domain Of SFTP Server                                   | Yes        |           |
-| CHANGE_API_USERNAME           | OTH API username                                        | Yes        |           |
-| CHANGE_API_PASSWORD           | OTH API password                                        | Yes        |           |
-| CHANGE_API_URL                | OTH hostname and path to change API                     | Yes        |           |
-| CONVERTER_API_USERNAME        | Converter endpoint (`/conversion`) username             | Yes        |           |
-| CONVERTER_API_PASSWORD        | Converter password                                      | Yes        |           |
-| QUOTAGUARDSTATIC_URL          | When set, provides static IP for requests to change API | No         |           |
-| PORT                          | Listen on this port                                     | No         | 8090      |
+| Environment variable     | Description                                             | Required   | Default   |
+| ------------------------ | -------------                                           | ---------- | --------- |
+| AINEISTOT_USERNAME       | Dataset FTP username                                    | Yes        |           |
+| AINEISTOT_PASSWORD       |                                                         | Yes        |           |
+| AINEISTOT_DIRECTORY      |                                                         | Yes        |           |
+| CHANGE_API_USERNAME      | OTH API username                                        | Yes        |           |
+| CHANGE_API_PASSWORD      | OTH API password                                        | Yes        |           |
+| CHANGE_API_URL           | OTH hostname and path to change API                     | Yes        |           |
+| CONVERTER_API_USERNAME   | Converter endpoint (`/conversion`) username             | Yes        |           |
+| CONVERTER_API_PASSWORD   | Converter password                                      | Yes        |           |
+| QUOTAGUARDSTATIC_URL     | When set, provides static IP for requests to change API | No         |           |
+| PORT                     | Listen on this port                                     | No         | 8090      |
 
 ## Local development
 
