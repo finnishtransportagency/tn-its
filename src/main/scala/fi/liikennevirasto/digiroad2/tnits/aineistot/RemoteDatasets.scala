@@ -72,41 +72,6 @@ object RemoteDatasets {
     response.getEntity.getContent
   }
 
-  /** @return a writable stream to a new dataset. */
-  def getOutputStream(filename: String): OutputStream = {
-    val client = new FTPClient
-    client.connect(config.urls.aineistot.ftp)
-    client.enterLocalPassiveMode()
-    if (!client.login(logins.username, logins.password))
-      throw new IllegalArgumentException("Login failed")
-    if (!client.changeWorkingDirectory(config.dir))
-      throw new IllegalStateException("No such directory: tn-its")
-    val files = client.listNames()
-    if (files == null)
-      throw new IllegalStateException(client.getReplyString)
-    if (files.contains(filename))
-      throw new IllegalArgumentException(s"$filename already exists on server")
-    if (!client.setFileType(FTP.BINARY_FILE_TYPE))
-      throw new IllegalStateException(client.getReplyString)
-
-    val output = client.storeFileStream(filename)
-
-    new OutputStream {
-      override def write(b: Int): Unit = output.write(b)
-      override def write(b: Array[Byte]): Unit = output.write(b)
-      override def write(b: Array[Byte], off: Int, len: Int): Unit = output.write(b, off, len)
-
-      override def close(): Unit = {
-        output.close()
-        if (!client.completePendingCommand())
-          throw new IllegalStateException(client.getReplyString)
-        if (!client.logout())
-          throw new IllegalStateException(client.getReplyString)
-        client.disconnect()
-      }
-    }
-  }
-
   /** @return a writable stream to a new dataset using SFTP transfer process. */
   def getOutputStreamSFTP(fileName: String): OutputStream = {
     val jschClient = new JSch()
