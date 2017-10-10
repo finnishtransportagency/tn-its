@@ -21,8 +21,6 @@ case class RemoteDatasetsException(cause: Throwable) extends RuntimeException(ca
 
 /** Accesses the aineistot.liikennevirasto.fi FTP, the ava.liikennevirasto.fi SFTP and HTTP service.
   *
-  * @see [[config.urls.aineistot]]
-  * @see [[config.logins.aineistot]]
   * @see [[config.urls.aineistotSFTP]]
   * @see [[config.logins.aineistotSFTP]]
   */
@@ -76,7 +74,7 @@ object RemoteDatasets {
   def getOutputStreamSFTP(fileName: String): OutputStream = {
     val jschClient = new JSch()
 
-    val session = jschClient.getSession(config.logins.aineistotSFTP.username, config.urls.aineistotSFTP.sftp, config.apiPortSFTP)
+    val session = jschClient.getSession(config.logins.aineistotSFTP.username, config.urls.aineistotSFTP.sftp, config.sftpServerPort)
     session.setPassword(config.logins.aineistotSFTP.password)
     session.setConfig("StrictHostKeyChecking", "no")
 
