@@ -43,7 +43,7 @@ object config {
 
   val optionalProxy = getProxy
 
-  val apiPort = optionalEnv("PORT").fold(8090)(_.toInt)
+  val apiPort = optionalEnv("PORT").fold(22)(_.toInt)
   val apiPortSFTP = optionalEnv("PORT_SFTP").fold(22)(_.toInt)
 
   private def getProxy = {
