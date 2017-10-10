@@ -28,14 +28,14 @@ case class RemoteDatasetsException(cause: Throwable) extends RuntimeException(ca
   */
 object RemoteDatasets {
   private val logins =
-    config.logins.aineistot
+    config.logins.aineistotSFTP
 
   private val baseUrl =
-    config.urls.aineistot.dir
+    config.urls.aineistotSFTP.dir
 
   /** @return names of all datasets in the configured directory. */
   def index: Seq[String] = {
-    val response = createClient.execute(new HttpGet(config.urls.aineistot.dir))
+    val response = createClient.execute(new HttpGet(config.urls.aineistotSFTP.dir))
     val contents = EntityUtils.toString(response.getEntity, "UTF-8")
     val doc = Jsoup.parse(contents, baseUrl)
     val links = doc.select("a")
@@ -142,10 +142,10 @@ object RemoteDatasets {
 
   private def createClient = {
     val credentialsProvider = new BasicCredentialsProvider
-    val dataSetsUri = URI.create(config.urls.aineistot.dir)
+    val dataSetsUri = URI.create(config.urls.aineistotSFTP.dir)
     credentialsProvider.setCredentials(
       new AuthScope(dataSetsUri.getHost, dataSetsUri.getPort),
-      new UsernamePasswordCredentials(config.logins.aineistot.username, config.logins.aineistot.password))
+      new UsernamePasswordCredentials(config.logins.aineistotSFTP.username, config.logins.aineistotSFTP.password))
 
     HttpClients.custom().setDefaultCredentialsProvider(credentialsProvider).setMaxConnPerRoute(10).build()
   }

@@ -29,13 +29,13 @@ object config {
 
   val urls = new {
     val aineistot = new {
-      val domain = env("AINEISTOT_SFTP_DOMAIN")
-      val dir = s"https://$domain/${config.dirSFTP}"
+      val domain = "aineistot.liikennevirasto.fi"
+      val dir = s"http://$domain/digiroad/${config.dir}"
       val ftp = domain
     }
     val aineistotSFTP = new {
-      val domain = "ava.liikennevirasto.fi"
-      val dir = s"http://$domain/digiroad/${config.dirSFTP}"
+      val domain = env("AINEISTOT_SFTP_DOMAIN")
+      val dir = s"https://$domain/${config.dirSFTP}"
       val sftp = domain
     }
     val changesApi = env("CHANGE_API_URL")
@@ -43,7 +43,7 @@ object config {
 
   val optionalProxy = getProxy
 
-  val apiPort = optionalEnv("PORT").fold(22)(_.toInt)
+  val apiPort = optionalEnv("PORT").fold(8090)(_.toInt)
   val apiPortSFTP = optionalEnv("PORT_SFTP").fold(22)(_.toInt)
 
   private def getProxy = {
