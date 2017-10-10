@@ -5,10 +5,6 @@ import java.net.URI
 /** Configuration values that are read at startup from the environment. */
 object config {
   val logins = new {
-    val aineistot = new {
-      val username = env("AINEISTOT_USERNAME")
-      val password = env("AINEISTOT_PASSWORD")
-    }
     val oth = new {
       val username = env("CHANGE_API_USERNAME")
       val password = env("CHANGE_API_PASSWORD")
@@ -23,18 +19,13 @@ object config {
     }
   }
 
-  val dir = env("AINEISTOT_DIRECTORY")
   val dirSFTP = env("AINEISTOT_SFTP_DIRECTORY")
+  val baseDirSFTP = env("AINEISTOT_SFTP_BASE_DIRECTORY") + "/" + env("AINEISTOT_SFTP_DIRECTORY")
 
   val urls = new {
-    val aineistot = new {
-      val domain = "aineistot.liikennevirasto.fi"
-      val dir = s"http://$domain/digiroad/${config.dir}"
-      val ftp = domain
-    }
     val aineistotSFTP = new {
-      val domain = "ava.liikennevirasto.fi"
-      val dir = s"http://$domain/digiroad/${config.dirSFTP}"
+      val domain = env("AINEISTOT_SFTP_DOMAIN")
+      val dir = s"https://$domain/${config.dirSFTP}"
       val sftp = domain
     }
     val changesApi = env("CHANGE_API_URL")
@@ -43,7 +34,7 @@ object config {
   val optionalProxy = getProxy
 
   val apiPort = optionalEnv("PORT").fold(8090)(_.toInt)
-  val apiPortSFTP = optionalEnv("PORT_SFTP").fold(22)(_.toInt)
+  val sftpServerPort = optionalEnv("PORT_SFTP").fold(22)(_.toInt)
 
   private def getProxy = {
     optionalEnv("QUOTAGUARDSTATIC_URL")
