@@ -42,6 +42,7 @@ object RemoteDatasets {
       .filter(_.endsWith(".xml"))
       .map(_.dropRight(".xml".length))
       .map(URLDecoder.decode(_, "UTF-8"))
+      .distinct
   }
 
   /** @return the ending timestamp of the latest dataset. */
