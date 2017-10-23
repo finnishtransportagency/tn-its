@@ -74,7 +74,7 @@ object Converter {
       val responses = Future.sequence(assetTypes.map { asset =>
         OTHClient.fetchChanges(asset.apiEndPoint, start, end, executor)
       })
-      Await.result(responses, 15.minutes)
+      Await.result(responses, 30.minutes)
     } catch {
       case err: Throwable =>
         throw OTHException(err)
