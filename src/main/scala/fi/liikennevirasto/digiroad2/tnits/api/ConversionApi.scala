@@ -1,6 +1,10 @@
 package fi.liikennevirasto.digiroad2.tnits.api
 
-import java.io.{PrintWriter, OutputStream}
+import java.io.{OutputStream, PrintWriter}
+import java.time.Instant
+import java.time.temporal.ChronoUnit
+
+import fi.liikennevirasto.digiroad2.tnits.aineistot.RemoteDatasets
 import fi.liikennevirasto.digiroad2.tnits.runners.Converter
 import org.scalatra._
 
@@ -17,6 +21,26 @@ class ConversionApi extends ScalatraServlet with FutureSupport with Authenticati
 
   before() {
     basicAuth
+  }
+
+  post("/:endDate") {
+    val startDate = RemoteDatasets.getLatestEndTime.getOrElse(Instant.now.minus(1, ChronoUnit.DAYS))
+    val endDate = Instant.parse(params("endDate"))
+
+    if(startDate.isAfter(endDate)  || endDate.isAfter(Instant.now))
+      throw new RuntimeException(s"Wrong date period startDate - $startDate / endDate - $endDate ")
+
+    val numberOfDays = startDate.until(endDate, ChronoUnit.DAYS)
+
+    for (counter <- 1 to numberOfDays.toInt) {
+      val writer = response.writer
+      val keepAlive = keepConnectionAlive(writer)
+      Converter.convert(writer, Some(startDate.plus(counter - 1, ChronoUnit.DAYS)), Some(startDate.plus(counter, ChronoUnit.DAYS)))
+      keepAlive.cancel()
+      writer.println("OK")
+      writer.flush()
+      Unit
+    }
   }
 
   post("/") {
