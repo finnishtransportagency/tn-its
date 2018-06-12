@@ -27,10 +27,10 @@ object Converter {
   case class OTHException(cause: Throwable) extends RuntimeException(cause)
 
   /** Runs a conversion programmatically. */
-  def convert(logger: PrintWriter, since: Option[Instant] = None, until: Option[Instant] = None ): Unit = {
-    val (start, end) =  (since, until) match {
+  def convert(logger: PrintWriter, fromDate: Option[Instant] = None, toDate: Option[Instant] = None ): Unit = {
+    val (start, end) =  (fromDate, toDate) match {
       case (Some(startDate), Some(endDate)) => (startDate, endDate)
-      case (_ , _) => (RemoteDatasets.getLatestEndTime.getOrElse(Instant.now.minus(1, ChronoUnit.DAYS)),
+      case _ => (RemoteDatasets.getLatestEndTime.getOrElse(Instant.now.minus(1, ChronoUnit.DAYS)),
         Instant.now.minus(1, ChronoUnit.MINUTES))
     }
 
