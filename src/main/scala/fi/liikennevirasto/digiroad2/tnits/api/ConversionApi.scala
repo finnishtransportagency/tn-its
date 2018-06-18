@@ -28,7 +28,7 @@ class ConversionApi extends ScalatraServlet with FutureSupport with Authenticati
     val endDate = Instant.parse(params("endDate"))
 
     if(startDate.isAfter(endDate)  || endDate.isAfter(Instant.now))
-      throw new RuntimeException(s"Wrong date period startDate - $startDate / endDate - $endDate ")
+      halt(BadRequest(s"Wrong date period startDate - $startDate / endDate - $endDate "))
 
     val numberOfDays = startDate.until(endDate, ChronoUnit.DAYS)
 
