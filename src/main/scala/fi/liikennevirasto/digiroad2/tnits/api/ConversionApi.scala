@@ -32,15 +32,17 @@ class ConversionApi extends ScalatraServlet with FutureSupport with Authenticati
 
     val numberOfDays = startDate.until(endDate, ChronoUnit.DAYS)
 
+    val writer = response.writer
+    val keepAlive = keepConnectionAlive(writer)
+
     for (counter <- 1 to numberOfDays.toInt) {
-      val writer = response.writer
-      val keepAlive = keepConnectionAlive(writer)
       Converter.convert(writer, Some(startDate.plus(counter - 1, ChronoUnit.DAYS)), Some(startDate.plus(counter, ChronoUnit.DAYS)))
-      keepAlive.cancel()
-      writer.println("OK")
-      writer.flush()
-      Unit
     }
+
+    keepAlive.cancel()
+    writer.println("OK")
+    writer.flush()
+    Unit
   }
 
   post("/") {
