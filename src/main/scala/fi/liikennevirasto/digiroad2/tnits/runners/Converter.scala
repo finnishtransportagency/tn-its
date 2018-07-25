@@ -7,14 +7,14 @@ import java.time.temporal.ChronoUnit
 import java.util.concurrent.Executors
 
 import fi.liikennevirasto.digiroad2.tnits.aineistot.RemoteDatasets
-import fi.liikennevirasto.digiroad2.tnits.oth.OTHClient
+import fi.liikennevirasto.digiroad2.tnits.oth.{Client, OTHClient, ViiteClient}
 import fi.liikennevirasto.digiroad2.tnits.rosatte.{DatasetID, RosatteConverter, features}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 import scala.concurrent.{Await, ExecutionContext, Future}
 
-case class AssetType(apiEndPoint: String, featureType: String, valueType: String, unit: String)
+case class AssetType(apiEndPoint: String, featureType: String, valueType: String, unit: String, client: Client)
 
 /** Runs a conversion batch job. */
 object Converter {
@@ -38,14 +38,14 @@ object Converter {
     logger.println(s"end: $end")
 
     val assetTypes = Seq(
-      AssetType("speed_limits", "SpeedLimit", "MaximumSpeedLimit", "kmph"),
-      AssetType("axle_weight_limits", "RestrictionForVehicles", "MaximumWeightPerSingleAxle", "kg"),
-      AssetType("length_limits", "RestrictionForVehicles", "MaximumLength", "cm"),
-      AssetType("width_limits", "RestrictionForVehicles", "MaximumWidth", "cm"),
-      AssetType("height_limits", "RestrictionForVehicles", "MaximumHeight", "cm"),
-      AssetType("total_weight_limits", "RestrictionForVehicles", "MaximumLadenWeight", "kg"),
+      AssetType("speed_limits", "SpeedLimit", "MaximumSpeedLimit", "kmph", OTHClient),
+      AssetType("axle_weight_limits", "RestrictionForVehicles", "MaximumWeightPerSingleAxle", "kg", OTHClient),
+      AssetType("length_limits", "RestrictionForVehicles", "MaximumLength", "cm", OTHClient),
+      AssetType("width_limits", "RestrictionForVehicles", "MaximumWidth", "cm", OTHClient),
+      AssetType("height_limits", "RestrictionForVehicles", "MaximumHeight", "cm", OTHClient),
+      AssetType("total_weight_limits", "RestrictionForVehicles", "MaximumLadenWeight", "kg", OTHClient),
       //AssetType("road_names", "RoadName", "RoadName", ""),
-      AssetType("road_numbers", "RoadNumber", "RoadNumber", ""))
+      AssetType("road_numbers", "RoadNumber", "RoadNumber", "", ViiteClient))
 
     val assets = fetchAllChanges(start, end, assetTypes)
     logger.println("fetched all changes, generating dataset")
@@ -75,7 +75,7 @@ object Converter {
     try {
       val executor = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(10))
       val responses = Future.sequence(assetTypes.map { asset =>
-        OTHClient.fetchChanges(asset.apiEndPoint, start, end, executor)
+        asset.client.fetchChanges(asset.apiEndPoint, start, end, executor)
       })
       Await.result(responses, 120.minutes)
     } catch {

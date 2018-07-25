@@ -29,6 +29,7 @@ object config {
       val sftp = domain
     }
     val changesApi = env("CHANGE_API_URL")
+    val viiteChangeApi = env("VIITE_CHANGE_API_URL")
   }
 
   val optionalProxy = getProxy
