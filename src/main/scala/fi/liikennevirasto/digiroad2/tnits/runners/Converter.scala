@@ -38,12 +38,12 @@ object Converter {
     logger.println(s"end: $end")
 
     val assetTypes = Seq(
-      AssetType("speed_limits", "SpeedLimit", "MaximumSpeedLimit", "kmph", OTHClient),
-      AssetType("axle_weight_limits", "RestrictionForVehicles", "MaximumWeightPerSingleAxle", "kg", OTHClient),
-      AssetType("length_limits", "RestrictionForVehicles", "MaximumLength", "cm", OTHClient),
-      AssetType("width_limits", "RestrictionForVehicles", "MaximumWidth", "cm", OTHClient),
-      AssetType("height_limits", "RestrictionForVehicles", "MaximumHeight", "cm", OTHClient),
-      AssetType("total_weight_limits", "RestrictionForVehicles", "MaximumLadenWeight", "kg", OTHClient),
+      //AssetType("speed_limits", "SpeedLimit", "MaximumSpeedLimit", "kmph", OTHClient),
+      //AssetType("axle_weight_limits", "RestrictionForVehicles", "MaximumWeightPerSingleAxle", "kg", OTHClient),
+      //AssetType("length_limits", "RestrictionForVehicles", "MaximumLength", "cm", OTHClient),
+      //AssetType("width_limits", "RestrictionForVehicles", "MaximumWidth", "cm", OTHClient),
+      //AssetType("height_limits", "RestrictionForVehicles", "MaximumHeight", "cm", OTHClient),
+      //AssetType("total_weight_limits", "RestrictionForVehicles", "MaximumLadenWeight", "kg", OTHClient),
       //AssetType("road_names", "RoadName", "RoadName", ""),
       AssetType("road_numbers", "RoadNumber", "RoadNumber", "", ViiteClient))
 
