@@ -50,24 +50,24 @@ object Converter {
     val assets = fetchAllChanges(start, end, assetTypes)
     logger.println("fetched all changes, generating dataset")
 
-    val dataSetId = DatasetID.encode(DatasetID.LiikennevirastoUUID, start, end)
-    val filename = s"${URLEncoder.encode(dataSetId, "UTF-8")}.xml"
-
-    try {
-      // Create new stream to the SFTP server for replace a stream to the FTP server in the Future
-      val outputStreamSFTP = RemoteDatasets.getOutputStreamSFTP(filename)
-
-      try {
-        RosatteConverter.convertDataSet(assetTypes.zip(assets), start, end, dataSetId, outputStreamSFTP)
-      } finally {
-        outputStreamSFTP.close()
-      }
-    } catch {
-      case e: Throwable => logger.println("SFTP OutputStream  Failed with the follow message: ", e.getMessage)
-    }
-
-    logger.println(s"Dataset ID: $dataSetId")
-    logger.println(s"dataset: $filename")
+//    val dataSetId = DatasetID.encode(DatasetID.LiikennevirastoUUID, start, end)
+//    val filename = s"${URLEncoder.encode(dataSetId, "UTF-8")}.xml"
+//
+//    try {
+//      // Create new stream to the SFTP server for replace a stream to the FTP server in the Future
+//      val outputStreamSFTP = RemoteDatasets.getOutputStreamSFTP(filename)
+//
+//      try {
+//        RosatteConverter.convertDataSet(assetTypes.zip(assets), start, end, dataSetId, outputStreamSFTP)
+//      } finally {
+//        outputStreamSFTP.close()
+//      }
+//    } catch {
+//      case e: Throwable => logger.println("SFTP OutputStream  Failed with the follow message: ", e.getMessage)
+//    }
+//
+//    logger.println(s"Dataset ID: $dataSetId")
+//    logger.println(s"dataset: $filename")
     logger.println("done!\n")
   }
 
