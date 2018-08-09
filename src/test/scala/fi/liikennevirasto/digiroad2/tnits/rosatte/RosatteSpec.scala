@@ -5,6 +5,7 @@ import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.UUID
 
+import fi.liikennevirasto.digiroad2.tnits.oth.OTHClient
 import fi.liikennevirasto.digiroad2.tnits.rosatte.DatasetID.DataSetId
 import fi.liikennevirasto.digiroad2.tnits.rosatte.features.Asset
 import fi.liikennevirasto.digiroad2.tnits.runners.AssetType
@@ -35,7 +36,7 @@ class RosatteSpec extends FunSuite {
     val output = new ByteArrayOutputStream()
 
     RosatteConverter.convertDataSet(
-      featureMembers = Seq((AssetType("speed_limits", "SpeedLimit", "MaximumSpeedLimit", "kmph"), parsed)),
+      featureMembers = Seq((AssetType("speed_limits", "SpeedLimit", "MaximumSpeedLimit", "kmph", OTHClient), parsed)),
       start = Instant.parse("2014-04-22T13:00:00Z"),
       end = Instant.parse("2014-04-22T15:00:00Z"),
       dataSetId = "id",
@@ -176,7 +177,7 @@ class RosatteSpec extends FunSuite {
     val output = new ByteArrayOutputStream()
 
     RosatteConverter.convertDataSet(
-      featureMembers = Seq((AssetType("speed_limits", "SpeedLimit", "MaximumSpeedLimit", "kmph"), parsed)),
+      featureMembers = Seq((AssetType("speed_limits", "SpeedLimit", "MaximumSpeedLimit", "kmph", OTHClient), parsed)),
       start = Instant.parse("2014-04-22T13:00:00Z"),
       end = Instant.parse("2014-04-22T15:00:00Z"),
       dataSetId = "id",
@@ -346,7 +347,7 @@ class RosatteSpec extends FunSuite {
     val output = new ByteArrayOutputStream()
 
     RosatteConverter.convertDataSet(
-      featureMembers = Seq((AssetType("speed_limits", "SpeedLimit", "MaximumSpeedLimit", "kmph"), parsed)),
+      featureMembers = Seq((AssetType("speed_limits", "SpeedLimit", "MaximumSpeedLimit", "kmph", OTHClient), parsed)),
       start = Instant.parse("2014-04-22T13:00:00Z"),
       end = Instant.parse("2014-04-22T15:00:00Z"),
       dataSetId = "id",

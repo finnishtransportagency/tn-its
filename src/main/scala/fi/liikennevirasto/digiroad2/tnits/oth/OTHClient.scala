@@ -17,13 +17,14 @@ import scala.concurrent.{ExecutionContext, Future}
 import scala.io.Source
 import scala.language.reflectiveCalls
 
-/** HTTP access to OTH change API.
-  */
-object OTHClient {
+trait Client {
   protected implicit val jsonFormats: Formats = DefaultFormats
+
+  protected def changeApi: String
+
   private val client = createClient
   private val target = {
-    val changesApiUri = URI.create(config.urls.changesApi)
+    val changesApiUri = URI.create(changeApi)
     val port = if (changesApiUri.getPort == -1) { if (changesApiUri.getScheme == "http") 80 else 443 } else { changesApiUri.getPort }
     new HttpHost(changesApiUri.getHost, port, changesApiUri.getScheme)
   }
@@ -32,7 +33,7 @@ object OTHClient {
     * @return a Future that will contain changes as [[Asset]]s from the given OTH change API endpoint.
     */
   def fetchChanges(apiEndpoint: String, since: Instant, until: Instant, executionContext: ExecutionContext): scala.concurrent.Future[Seq[Asset]] = {
-    val changesApiUri = URI.create(config.urls.changesApi + "/" + apiEndpoint)
+    val changesApiUri = URI.create(changeApi + "/" + apiEndpoint)
 
     val get = new HttpGet(changesApiUri.getPath + s"?since=$since&until=$until")
     get.setConfig(config.optionalProxy.fold(RequestConfig.DEFAULT) { proxy =>
@@ -82,7 +83,7 @@ object OTHClient {
         new AuthScope(proxy.host, proxy.port),
         new UsernamePasswordCredentials(proxy.username, proxy.password))
     }
-    val changesApiUri = URI.create(config.urls.changesApi)
+    val changesApiUri = URI.create(changeApi)
     credentialsProvider.setCredentials(
       new AuthScope(changesApiUri.getHost, changesApiUri.getPort),
       new UsernamePasswordCredentials(config.logins.oth.username, config.logins.oth.password))
@@ -90,3 +91,18 @@ object OTHClient {
     HttpClients.custom().setDefaultCredentialsProvider(credentialsProvider).setMaxConnPerRoute(10).build()
   }
 }
+
+/** HTTP access to OTH change API.
+  */
+object OTHClient extends Client{
+
+  override def changeApi: String = config.urls.changesApi
+}
+
+/** HTTP access to VIITE change API.
+  */
+object ViiteClient extends Client{
+
+  override def changeApi: String = config.urls.viiteChangeApi
+}
+
