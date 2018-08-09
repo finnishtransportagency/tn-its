@@ -38,36 +38,36 @@ object Converter {
     logger.println(s"end: $end")
 
     val assetTypes = Seq(
-      //AssetType("speed_limits", "SpeedLimit", "MaximumSpeedLimit", "kmph", OTHClient),
-      //AssetType("axle_weight_limits", "RestrictionForVehicles", "MaximumWeightPerSingleAxle", "kg", OTHClient),
-      //AssetType("length_limits", "RestrictionForVehicles", "MaximumLength", "cm", OTHClient),
-      //AssetType("width_limits", "RestrictionForVehicles", "MaximumWidth", "cm", OTHClient),
-      //AssetType("height_limits", "RestrictionForVehicles", "MaximumHeight", "cm", OTHClient),
-      //AssetType("total_weight_limits", "RestrictionForVehicles", "MaximumLadenWeight", "kg", OTHClient),
+      AssetType("speed_limits", "SpeedLimit", "MaximumSpeedLimit", "kmph", OTHClient),
+      AssetType("axle_weight_limits", "RestrictionForVehicles", "MaximumWeightPerSingleAxle", "kg", OTHClient),
+      AssetType("length_limits", "RestrictionForVehicles", "MaximumLength", "cm", OTHClient),
+      AssetType("width_limits", "RestrictionForVehicles", "MaximumWidth", "cm", OTHClient),
+      AssetType("height_limits", "RestrictionForVehicles", "MaximumHeight", "cm", OTHClient),
+      AssetType("total_weight_limits", "RestrictionForVehicles", "MaximumLadenWeight", "kg", OTHClient),
       //AssetType("road_names", "RoadName", "RoadName", ""),
       AssetType("road_numbers", "RoadNumber", "RoadNumber", "", ViiteClient))
 
     val assets = fetchAllChanges(start, end, assetTypes)
     logger.println("fetched all changes, generating dataset")
 
-//    val dataSetId = DatasetID.encode(DatasetID.LiikennevirastoUUID, start, end)
-//    val filename = s"${URLEncoder.encode(dataSetId, "UTF-8")}.xml"
-//
-//    try {
-//      // Create new stream to the SFTP server for replace a stream to the FTP server in the Future
-//      val outputStreamSFTP = RemoteDatasets.getOutputStreamSFTP(filename)
-//
-//      try {
-//        RosatteConverter.convertDataSet(assetTypes.zip(assets), start, end, dataSetId, outputStreamSFTP)
-//      } finally {
-//        outputStreamSFTP.close()
-//      }
-//    } catch {
-//      case e: Throwable => logger.println("SFTP OutputStream  Failed with the follow message: ", e.getMessage)
-//    }
-//
-//    logger.println(s"Dataset ID: $dataSetId")
-//    logger.println(s"dataset: $filename")
+    val dataSetId = DatasetID.encode(DatasetID.LiikennevirastoUUID, start, end)
+    val filename = s"${URLEncoder.encode(dataSetId, "UTF-8")}.xml"
+
+    try {
+      // Create new stream to the SFTP server for replace a stream to the FTP server in the Future
+      val outputStreamSFTP = RemoteDatasets.getOutputStreamSFTP(filename)
+
+      try {
+        RosatteConverter.convertDataSet(assetTypes.zip(assets), start, end, dataSetId, outputStreamSFTP)
+      } finally {
+        outputStreamSFTP.close()
+      }
+    } catch {
+      case e: Throwable => logger.println("SFTP OutputStream  Failed with the follow message: ", e.getMessage)
+    }
+
+    logger.println(s"Dataset ID: $dataSetId")
+    logger.println(s"dataset: $filename")
     logger.println("done!\n")
   }
 
