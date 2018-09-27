@@ -1,6 +1,6 @@
 package fi.liikennevirasto.digiroad2.tnits.rosatte
 
-import java.io.{OutputStreamWriter, BufferedOutputStream, OutputStream}
+import java.io.{BufferedOutputStream, OutputStream, OutputStreamWriter}
 import java.time.Instant
 import java.util.UUID
 
@@ -12,6 +12,62 @@ import scala.util.{Failure, Success, Try}
 
 /** Generates a dataset. */
 object RosatteConverter {
+  case class ProhibitionValue (typeId: Int, validityPeriods: Seq[ValidityPeriods], exceptions: Set[Int]) {
+    val mapVehicleType = Map((3, Seq("AllVehicle"))
+      ,(2	, Seq("AllVehicle"))
+      ,(12 , Seq("Pedestrian"))
+      ,(11 , Seq("Bicycle"))
+      ,(10 , Seq("Moped"))
+      ,(9	, Seq("Motorcycle"))
+      ,(5	, Seq("PublicBus", "PrivateBus"))
+      ,(8	, Seq("Taxi"))
+      ,(7 , Seq("PassangerCar"))
+      ,(6	, Seq("DeliveryTruck"))
+      ,(4	, Seq("TransportTruck"))
+      ,(19 , Seq("MilitaryVehicle"))
+      ,(13 , Seq("CarWithTrailer"))
+      ,(14 , Seq("FarmVehicle"))
+      ,(21 , Seq("DeliveryTruck", "EmergencyVehicle", "FacilityVehicle", "MailVehicle"))
+      ,(22 , Seq("ResidentialVehicle")))
+
+    def vehicleConditionExceptions(): Set[String] = {
+      val excludedType = Set(23, 26, 27, 15)
+
+      exceptions.intersect(excludedType).flatMap { exception =>
+        mapVehicleType(exception)
+      }
+    }
+
+    def vehicleConditionType(): Set[String] = {
+      val excludedType = Set(23, 26, 27, 15, 21, 22)
+
+      exceptions.intersect(excludedType).flatMap { exception =>
+        mapVehicleType(exception)
+      }
+    }
+  }
+
+  case class ValidityPeriods(startHour: Int, endHour: Int, days: String, startMinute: Int, endMinute: Int) {
+    def weekday(): (Int, Int) = { //(start, length)
+      days match {
+        case "Saturday" => (7, 1)
+        case "Sunday" => (6, 1)
+        case _ => (1, 5)
+      }
+    }
+
+    def duration(): Int = {
+      val startHourAndMinutes: Double = (startMinute / 60.0) + startHour
+      val endHourAndMinutes: Double = (endMinute / 60.0) + endHour
+
+      if (endHourAndMinutes > startHourAndMinutes) {
+        Math.ceil(endHourAndMinutes - startHourAndMinutes).toInt
+      } else {
+        Math.ceil(24 - startHourAndMinutes + endHourAndMinutes).toInt
+      }
+    }
+  }
+
   /** Converts the given [[fi.liikennevirasto.digiroad2.tnits.rosatte.features.Asset]]s
     * to Rosatte XML and writes it to the provided stream. */
   def convertDataSet(featureMembers: Seq[(AssetType, Seq[features.Asset])], start: Instant, end: Instant, dataSetId: String, output: OutputStream): Unit = {
@@ -33,7 +89,7 @@ object RosatteConverter {
       // We need to split two-way features into two one-way features because of OpenLR encoding
       val onlyOneWayFeatures = splitFeaturesApplicableToBothDirections(changes)
       onlyOneWayFeatures.foreach { feature =>
-        val featureMember = toFeatureMember(feature, assetType.featureType, assetType.valueType, assetType.unit)
+        val featureMember = toFeatureMember(feature, assetType.featureType, assetType.valueType, assetType.unit, assetType.apiEndPoint)
         writer.write(featureMember.toString)
       }
     }
@@ -61,7 +117,7 @@ object RosatteConverter {
     }
   }
 
-  private def toFeatureMember(feature: features.Asset, featureType: String, valueType: String, unit: String) = {
+  private def toFeatureMember(feature: features.Asset, featureType: String, valueType: String, unit: String, assetType: String) = {
     val coordinates = feature.geometry.coordinates.flatMap(_.take(2))
     val transformedCoordinates = CoordinateTransform.convertToWgs84(coordinates)
     val geometry = transformedCoordinates.mkString(" ")
@@ -74,6 +130,60 @@ object RosatteConverter {
       case 3 => "inOppositeDirection"
       case _ => ""
     }
+
+    val properties = assetType match {
+
+      case "vehicle_prohibitions" =>
+        val prohibitionValue = feature.properties.value.asInstanceOf[ProhibitionValue]
+          <rst:ConditionSet>
+            <rst:conditions>
+              <rst:VehicleCondition>
+                <rst:negate>false</rst:negate>
+                <rst:vehicleType> { prohibitionValue.typeId } </rst:vehicleType>
+              </rst:VehicleCondition>
+              <rst:VehicleCondition>
+                <rst:negate>true</rst:negate><!-- Poikkeukset -->
+                {prohibitionValue.vehicleConditionExceptions().map { exception =>
+                  <rst:vehicleType>{ exception }</rst:vehicleType>
+                }}
+                </rst:VehicleCondition>
+            </rst:conditions>
+            <rst:operator>AND</rst:operator>
+          </rst:ConditionSet>
+          <rst:ConditionSet>
+            <rst:conditions>
+              <rst:TimeCondition>
+                {prohibitionValue.validityPeriods.map { validityPeriod =>
+                <rst:validityPeriod>
+                  <rst:ValidityPeriod>
+                    <rst:time>
+                      <rst:weekday>
+                        <rst:IntegerInterval>
+                          <rst:start> {validityPeriod.weekday()._1} </rst:start>
+                          <rst:length> {validityPeriod.weekday()._2} </rst:length>
+                        </rst:IntegerInterval>
+                      </rst:weekday>
+                      <rst:begin> {s"${validityPeriod.startHour}:${validityPeriod.startMinute}:00"} </rst:begin>
+                      <rst:lengthSeconds>  {validityPeriod.duration()} </rst:lengthSeconds>
+                    </rst:time>
+                  </rst:ValidityPeriod>
+                </rst:validityPeriod>
+                }}
+              </rst:TimeCondition>
+            </rst:conditions>
+            <rst:operator>OR</rst:operator>
+          </rst:ConditionSet>
+      case _ =>
+        <rst:properties>
+          <rst:SafetyFeaturePropertyValue>
+            <rst:type>{valueType}</rst:type>
+            <rst:propertyValue>
+              <gml:measure uom={unit}>{feature.properties.value}</gml:measure>
+            </rst:propertyValue>
+          </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    }
+
     val openLR = encodeOpenLRLocationString(startMeasure, endMeasure, applicableDirection, link, linkReference)
     openLR match {
       case Failure(reason) =>
@@ -117,14 +227,7 @@ object RosatteConverter {
               </gml:LineString>
             </rst:encodedGeometry>
             <rst:type>{ featureType }</rst:type>
-            <rst:properties>
-              <rst:SafetyFeaturePropertyValue>
-                <rst:type>{ valueType }</rst:type>
-                <rst:propertyValue>
-                  <gml:measure uom={ unit }>{ feature.properties.value }</gml:measure>
-                </rst:propertyValue>
-              </rst:SafetyFeaturePropertyValue>
-            </rst:properties>
+            {properties}
           </rst:GenericSafetyFeature>
         </gml:featureMember>
     }

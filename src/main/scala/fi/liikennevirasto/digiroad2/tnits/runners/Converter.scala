@@ -45,7 +45,8 @@ object Converter {
       AssetType("height_limits", "RestrictionForVehicles", "MaximumHeight", "cm", OTHClient),
       AssetType("total_weight_limits", "RestrictionForVehicles", "MaximumLadenWeight", "kg", OTHClient),
       //AssetType("road_names", "RoadName", "RoadName", ""),
-      AssetType("road_numbers", "RoadNumber", "RoadNumber", "", ViiteClient))
+      AssetType("road_numbers", "RoadNumber", "RoadNumber", "", ViiteClient),
+      AssetType("vehicle_prohibitions", "NoEntry", "NoEntry", "", OTHClient))
 
     val assets = fetchAllChanges(start, end, assetTypes)
     logger.println("fetched all changes, generating dataset")
