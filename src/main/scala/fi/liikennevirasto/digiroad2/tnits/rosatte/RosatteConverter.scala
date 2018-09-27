@@ -6,67 +6,14 @@ import java.util.UUID
 
 import fi.liikennevirasto.digiroad2.tnits.geometry.{CoordinateTransform, Point}
 import fi.liikennevirasto.digiroad2.tnits.openlr.OpenLREncoder
+import fi.liikennevirasto.digiroad2.tnits.rosatte.features.ProhibitionValue
 import fi.liikennevirasto.digiroad2.tnits.runners.AssetType
 
 import scala.util.{Failure, Success, Try}
 
 /** Generates a dataset. */
 object RosatteConverter {
-  case class ProhibitionValue (typeId: Int, validityPeriods: Seq[ValidityPeriods], exceptions: Set[Int]) {
-    val mapVehicleType = Map((3, Seq("AllVehicle"))
-      ,(2	, Seq("AllVehicle"))
-      ,(12 , Seq("Pedestrian"))
-      ,(11 , Seq("Bicycle"))
-      ,(10 , Seq("Moped"))
-      ,(9	, Seq("Motorcycle"))
-      ,(5	, Seq("PublicBus", "PrivateBus"))
-      ,(8	, Seq("Taxi"))
-      ,(7 , Seq("PassangerCar"))
-      ,(6	, Seq("DeliveryTruck"))
-      ,(4	, Seq("TransportTruck"))
-      ,(19 , Seq("MilitaryVehicle"))
-      ,(13 , Seq("CarWithTrailer"))
-      ,(14 , Seq("FarmVehicle"))
-      ,(21 , Seq("DeliveryTruck", "EmergencyVehicle", "FacilityVehicle", "MailVehicle"))
-      ,(22 , Seq("ResidentialVehicle")))
 
-    def vehicleConditionExceptions(): Set[String] = {
-      val excludedType = Set(23, 26, 27, 15)
-
-      exceptions.intersect(excludedType).flatMap { exception =>
-        mapVehicleType(exception)
-      }
-    }
-
-    def vehicleConditionType(): Set[String] = {
-      val excludedType = Set(23, 26, 27, 15, 21, 22)
-
-      exceptions.intersect(excludedType).flatMap { exception =>
-        mapVehicleType(exception)
-      }
-    }
-  }
-
-  case class ValidityPeriods(startHour: Int, endHour: Int, days: String, startMinute: Int, endMinute: Int) {
-    def weekday(): (Int, Int) = { //(start, length)
-      days match {
-        case "Saturday" => (7, 1)
-        case "Sunday" => (6, 1)
-        case _ => (1, 5)
-      }
-    }
-
-    def duration(): Int = {
-      val startHourAndMinutes: Double = (startMinute / 60.0) + startHour
-      val endHourAndMinutes: Double = (endMinute / 60.0) + endHour
-
-      if (endHourAndMinutes > startHourAndMinutes) {
-        Math.ceil(endHourAndMinutes - startHourAndMinutes).toInt
-      } else {
-        Math.ceil(24 - startHourAndMinutes + endHourAndMinutes).toInt
-      }
-    }
-  }
 
   /** Converts the given [[fi.liikennevirasto.digiroad2.tnits.rosatte.features.Asset]]s
     * to Rosatte XML and writes it to the provided stream. */
@@ -159,8 +106,8 @@ object RosatteConverter {
                     <rst:time>
                       <rst:weekday>
                         <rst:IntegerInterval>
-                          <rst:start> {validityPeriod.weekday()._1} </rst:start>
-                          <rst:length> {validityPeriod.weekday()._2} </rst:length>
+                          <rst:start> {validityPeriod.fromTimeDomainValue()._1} </rst:start>
+                          <rst:length> {validityPeriod.fromTimeDomainValue()._2} </rst:length>
                         </rst:IntegerInterval>
                       </rst:weekday>
                       <rst:begin> {s"${validityPeriod.startHour}:${validityPeriod.startMinute}:00"} </rst:begin>
