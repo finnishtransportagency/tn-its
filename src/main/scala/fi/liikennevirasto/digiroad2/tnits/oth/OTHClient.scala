@@ -3,15 +3,18 @@ package fi.liikennevirasto.digiroad2.tnits.oth
 import java.net.URI
 import java.time.Instant
 
-import fi.liikennevirasto.digiroad2.tnits.config
-import fi.liikennevirasto.digiroad2.tnits.rosatte.features.Asset
+import fi.liikennevirasto.digiroad2.tnits
+import fi.liikennevirasto.digiroad2.tnits.geojson.Feature
+import fi.liikennevirasto.digiroad2.tnits.rosatte.AssetProperties
+import fi.liikennevirasto.digiroad2.tnits.{config, geojson}
+import fi.liikennevirasto.digiroad2.tnits.rosatte.features.{Asset, NumericAssetProperties, VehicleProhibitionAssetProperties}
 import org.apache.http.HttpHost
 import org.apache.http.auth.{AuthScope, UsernamePasswordCredentials}
 import org.apache.http.client.config.RequestConfig
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.{BasicCredentialsProvider, HttpClients}
 import org.json4s.jackson.JsonMethods._
-import org.json4s.{DefaultFormats, Formats}
+import org.json4s.{DefaultFormats, Formats, JValue}
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.io.Source
@@ -32,7 +35,7 @@ trait Client {
   /**
     * @return a Future that will contain changes as [[Asset]]s from the given OTH change API endpoint.
     */
-  def fetchChanges(apiEndpoint: String, since: Instant, until: Instant, executionContext: ExecutionContext): scala.concurrent.Future[Seq[Asset]] = {
+  def fetchChanges(apiEndpoint: String, since: Instant, until: Instant, executionContext: ExecutionContext): scala.concurrent.Future[Seq[Feature[AssetProperties]]] = {
     val changesApiUri = URI.create(changeApi + "/" + apiEndpoint)
 
     val get = new HttpGet(changesApiUri.getPath + s"?since=$since&until=$until")
@@ -54,7 +57,7 @@ trait Client {
         println(s"[$apiEndpoint] Response: $s")
 
         if (s.nonEmpty && response.getStatusLine.getStatusCode == 200) {
-          val parsed = (parse(s) \ "features").extract[Seq[Asset]]
+          val parsed = extractFeatures(parse(s) \ "features")
           println(s"[$apiEndpoint] Parsed ${parsed.size} assets")
           parsed
         } else {
@@ -69,6 +72,8 @@ trait Client {
       }
     }(executionContext)
   }
+
+  protected def extractFeatures(features: JValue): Seq[Feature[AssetProperties]]
 
   private def using[T <: AutoCloseable, R](resource: T)(f: T => R) =
     try {
@@ -95,8 +100,20 @@ trait Client {
 /** HTTP access to OTH change API.
   */
 object OTHClient extends Client{
-
   override def changeApi: String = config.urls.changesApi
+
+  override protected def extractFeatures(features: JValue): Seq[Feature[AssetProperties]] = {
+    features.extract[Seq[Feature[NumericAssetProperties]]].asInstanceOf[Seq[Feature[AssetProperties]]]
+  }
+}
+
+object VehicleOTHClient extends Client{
+  override def changeApi: String = config.urls.changesApi
+
+  override protected def extractFeatures(features: JValue): Seq[Feature[AssetProperties]] = {
+    val teste = features.extract[Seq[Feature[VehicleProhibitionAssetProperties]]]
+      teste.asInstanceOf[Seq[Feature[AssetProperties]]]
+  }
 }
 
 /** HTTP access to VIITE change API.
@@ -104,5 +121,9 @@ object OTHClient extends Client{
 object ViiteClient extends Client{
 
   override def changeApi: String = config.urls.viiteChangeApi
+
+  override protected def extractFeatures(features: JValue): Seq[Feature[AssetProperties]] = {
+    features.extract[Seq[Feature[NumericAssetProperties]]].asInstanceOf[Seq[Feature[AssetProperties]]]
+  }
 }
 

@@ -4,9 +4,10 @@ import java.io.{BufferedOutputStream, OutputStream, OutputStreamWriter}
 import java.time.Instant
 import java.util.UUID
 
+import fi.liikennevirasto.digiroad2.tnits.geojson.Feature
 import fi.liikennevirasto.digiroad2.tnits.geometry.{CoordinateTransform, Point}
 import fi.liikennevirasto.digiroad2.tnits.openlr.OpenLREncoder
-import fi.liikennevirasto.digiroad2.tnits.rosatte.features.ProhibitionValue
+import fi.liikennevirasto.digiroad2.tnits.rosatte.features.ValidityPeriods
 import fi.liikennevirasto.digiroad2.tnits.runners.AssetType
 
 import scala.util.{Failure, Success, Try}
@@ -17,11 +18,11 @@ object RosatteConverter {
 
   /** Converts the given [[fi.liikennevirasto.digiroad2.tnits.rosatte.features.Asset]]s
     * to Rosatte XML and writes it to the provided stream. */
-  def convertDataSet(featureMembers: Seq[(AssetType, Seq[features.Asset])], start: Instant, end: Instant, dataSetId: String, output: OutputStream): Unit = {
+  def convertDataSet(featureMembers: Seq[(AssetType, Seq[Feature[AssetProperties]])], start: Instant, end: Instant, dataSetId: String, output: OutputStream): Unit = {
     generateChangeData(featureMembers, dataSetId, start, end, output)
   }
 
-  private def generateChangeData(featureMembers: Seq[(AssetType, Seq[features.Asset])], dataSetId: String, startTime: Instant, endTime: Instant, output: OutputStream): Unit = {
+  private def generateChangeData(featureMembers: Seq[(AssetType, Seq[Feature[AssetProperties]])], dataSetId: String, startTime: Instant, endTime: Instant, output: OutputStream): Unit = {
     val writer = new OutputStreamWriter(new BufferedOutputStream(output), "UTF-8")
     writer.write(
       s"""<rst:ROSATTESafetyFeatureDataset xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -52,19 +53,19 @@ object RosatteConverter {
     writer.flush()
   }
 
-  private def splitFeaturesApplicableToBothDirections(assets: Seq[features.Asset]): Seq[features.Asset] = {
+  private def splitFeaturesApplicableToBothDirections(assets: Seq[Feature[AssetProperties]]): Seq[Feature[AssetProperties]] = {
     assets.flatMap { feature =>
       feature.properties.sideCode match {
         case 1 =>
-          Seq(feature.copy(properties = feature.properties.copy(sideCode = 2)),
-            feature.copy(properties = feature.properties.copy(sideCode = 3)))
+          Seq(feature.copy(properties = feature.properties.setSideCode(sideCode = 2)),
+            feature.copy(properties = feature.properties.setSideCode(sideCode = 3)))
         case _ =>
           Seq(feature)
       }
     }
   }
 
-  private def toFeatureMember(feature: features.Asset, featureType: String, valueType: String, unit: String, assetType: String) = {
+  private def toFeatureMember(feature: Feature[AssetProperties], featureType: String, valueType: String, unit: String, assetType: String) = {
     val coordinates = feature.geometry.coordinates.flatMap(_.take(2))
     val transformedCoordinates = CoordinateTransform.convertToWgs84(coordinates)
     val geometry = transformedCoordinates.mkString(" ")
@@ -81,7 +82,8 @@ object RosatteConverter {
     val properties = assetType match {
 
       case "vehicle_prohibitions" =>
-        val prohibitionValue = feature.properties.value.asInstanceOf[ProhibitionValue]
+        val teste = feature.properties.value
+        val prohibitionValue = feature.properties.value.asInstanceOf[Prohibitions].prohibitions.head
           <rst:ConditionSet>
             <rst:conditions>
               <rst:VehicleCondition>
@@ -90,7 +92,7 @@ object RosatteConverter {
               </rst:VehicleCondition>
               <rst:VehicleCondition>
                 <rst:negate>true</rst:negate><!-- Poikkeukset -->
-                {prohibitionValue.vehicleConditionExceptions().map { exception =>
+                {prohibitionValue.exceptions.map { exception =>
                   <rst:vehicleType>{ exception }</rst:vehicleType>
                 }}
                 </rst:VehicleCondition>
@@ -106,12 +108,12 @@ object RosatteConverter {
                     <rst:time>
                       <rst:weekday>
                         <rst:IntegerInterval>
-                          <rst:start> {validityPeriod.fromTimeDomainValue()._1} </rst:start>
-                          <rst:length> {validityPeriod.fromTimeDomainValue()._2} </rst:length>
+                          <rst:start> {ValidityPeriods(validityPeriod.startHour, validityPeriod.endHour, validityPeriod.days.value ,validityPeriod.startMinute, validityPeriod.endMinute).fromTimeDomainValue()._1} </rst:start>
+                          <rst:length> {ValidityPeriods(validityPeriod.startHour, validityPeriod.endHour, validityPeriod.days.value ,validityPeriod.startMinute, validityPeriod.endMinute).fromTimeDomainValue()._2} </rst:length>
                         </rst:IntegerInterval>
                       </rst:weekday>
                       <rst:begin> {s"${validityPeriod.startHour}:${validityPeriod.startMinute}:00"} </rst:begin>
-                      <rst:lengthSeconds>  {validityPeriod.duration()} </rst:lengthSeconds>
+                      <rst:lengthSeconds>  {ValidityPeriods(validityPeriod.startHour, validityPeriod.endHour, validityPeriod.days.value ,validityPeriod.startMinute, validityPeriod.endMinute).duration()} </rst:lengthSeconds>
                     </rst:time>
                   </rst:ValidityPeriod>
                 </rst:validityPeriod>
