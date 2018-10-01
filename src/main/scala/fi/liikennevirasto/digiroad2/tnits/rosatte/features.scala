@@ -12,8 +12,8 @@ case class NumericValue(value: Int) extends Value {
 }
 
 case class ValidityPeriodDayOfWeek(value: Int)
-case class ValidityPeriod(val startHour: Int, val endHour: Int, val days: ValidityPeriodDayOfWeek, val startMinute: Int = 0, val endMinute: Int = 0)
-case class ProhibitionValue(typeId: Int, validityPeriods: Set[ValidityPeriod], exceptions: Set[Int], additionalInfo: String = "")
+case class ValidityPeriod(startHour: Int, endHour: Int, days: Int, startMinute: Int = 0, endMinute: Int = 0)
+case class ProhibitionValue(typeId: Int, validityPeriod: Set[ValidityPeriod], exceptions: Set[Int], additionalInfo: String = "")
 case class Prohibitions(prohibitions: Seq[ProhibitionValue]) extends Value {
   override def toJson: Any = prohibitions
 }
@@ -21,7 +21,7 @@ case class Prohibitions(prohibitions: Seq[ProhibitionValue]) extends Value {
 trait AssetProperties {
   val sideCode: Int
   val changeType: String
-  val value: Value
+  val value: Any
   val startMeasure: Double
   val endMeasure: Double
   val link: RoadLink
@@ -37,7 +37,7 @@ object features {
   case class NumericAssetProperties(
     sideCode: Int,
     changeType: String,
-    value: NumericValue,
+    value: Int,
     startMeasure: Double,
     endMeasure: Double,
     link: RoadLink) extends  AssetProperties {
@@ -47,7 +47,7 @@ object features {
   case class VehicleProhibitionAssetProperties(
       sideCode: Int,
       changeType: String,
-      value: Prohibitions,
+      value: Seq[ProhibitionValue],
       startMeasure: Double,
       endMeasure: Double,
       link: RoadLink) extends  AssetProperties {
@@ -59,42 +59,42 @@ object features {
     `type`: Int,
     length: Double)
 
-//  case class ProhibitionValue (typeId: Int, validityPeriods: Seq[ValidityPeriods], exceptions: Set[Int]) {
-//    val mapVehicleType = Map((3, Seq("AllVehicle"))
-//      ,(2	, Seq("AllVehicle"))
-//      ,(12 , Seq("Pedestrian"))
-//      ,(11 , Seq("Bicycle"))
-//      ,(10 , Seq("Moped"))
-//      ,(9	, Seq("Motorcycle"))
-//      ,(5	, Seq("PublicBus", "PrivateBus"))
-//      ,(8	, Seq("Taxi"))
-//      ,(7 , Seq("PassangerCar"))
-//      ,(6	, Seq("DeliveryTruck"))
-//      ,(4	, Seq("TransportTruck"))
-//      ,(19 , Seq("MilitaryVehicle"))
-//      ,(13 , Seq("CarWithTrailer"))
-//      ,(14 , Seq("FarmVehicle"))
-//      ,(21 , Seq("DeliveryTruck", "EmergencyVehicle", "FacilityVehicle", "MailVehicle"))
-//      ,(22 , Seq("ResidentialVehicle")))
-//
-//    def vehicleConditionExceptions(): Set[String] = {
-//      val excludedType = Set(23, 26, 27, 15)
-//
-//      exceptions.intersect(excludedType).flatMap { exception =>
-//        mapVehicleType(exception)
-//      }
-//    }
-//
-//    def vehicleConditionType(): Set[String] = {
-//      val excludedType = Set(23, 26, 27, 15, 21, 22)
-//
-//      exceptions.intersect(excludedType).flatMap { exception =>
-//        mapVehicleType(exception)
-//      }
-//    }
-//  }
-//
-  case class ValidityPeriods(startHour: Int, endHour: Int, days: Int, startMinute: Int, endMinute: Int) {
+  case class ProhibitionTypesOperations(typeId: Int, exceptions: Set[Int]) {
+    val mapVehicleType = Map((3, Seq("AllVehicle"))
+      ,(2	, Seq("AllVehicle"))
+      ,(12 , Seq("Pedestrian"))
+      ,(11 , Seq("Bicycle"))
+      ,(10 , Seq("Moped"))
+      ,(9	, Seq("Motorcycle"))
+      ,(5	, Seq("PublicBus", "PrivateBus"))
+      ,(8	, Seq("Taxi"))
+      ,(7 , Seq("PassangerCar"))
+      ,(6	, Seq("DeliveryTruck"))
+      ,(4	, Seq("TransportTruck"))
+      ,(19 , Seq("MilitaryVehicle"))
+      ,(13 , Seq("CarWithTrailer"))
+      ,(14 , Seq("FarmVehicle"))
+      ,(21 , Seq("DeliveryTruck", "EmergencyVehicle", "FacilityVehicle", "MailVehicle"))
+      ,(22 , Seq("ResidentialVehicle")))
+
+    def vehicleConditionExceptions(): Set[String] = {
+      val excludedType = Set(23, 26, 27, 15)
+
+      exceptions.diff(excludedType).flatMap { exception =>
+        mapVehicleType(exception)
+      }
+    }
+
+    def vehicleConditionType(): Set[String] = {
+      val excludedType = Set(23, 26, 27, 15, 21, 22)
+      if(!excludedType.contains(typeId))
+        mapVehicleType(typeId).toSet
+
+      else Set.empty
+    }
+  }
+
+  case class ValidityPeriodOperations(startHour: Int, endHour: Int, days: Int, startMinute: Int, endMinute: Int) {
     def fromTimeDomainValue() : (Int, Int)  =
       days match {
       case 1 => (6, 1)
@@ -103,13 +103,15 @@ object features {
     }
 
     def duration(): Int = {
-      val startHourAndMinutes: Double = (startMinute / 60.0) + startHour
-      val endHourAndMinutes: Double = (endMinute / 60.0) + endHour
+      val startTotalMinutes = startMinute + (startHour * 60)
+      val endTotalMinutes = endMinute + (endHour * 60)
 
-      if (endHourAndMinutes > startHourAndMinutes) {
-        Math.ceil(endHourAndMinutes - startHourAndMinutes).toInt
+      if (endTotalMinutes > startTotalMinutes) {
+        val duration = endTotalMinutes - startTotalMinutes
+        duration * 60
       } else {
-        Math.ceil(24 - startHourAndMinutes + endHourAndMinutes).toInt
+        val duration = 1440 - startTotalMinutes + endTotalMinutes
+        duration * 60
       }
     }
   }

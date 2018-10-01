@@ -7,7 +7,7 @@ import java.util.UUID
 import fi.liikennevirasto.digiroad2.tnits.geojson.Feature
 import fi.liikennevirasto.digiroad2.tnits.geometry.{CoordinateTransform, Point}
 import fi.liikennevirasto.digiroad2.tnits.openlr.OpenLREncoder
-import fi.liikennevirasto.digiroad2.tnits.rosatte.features.ValidityPeriods
+import fi.liikennevirasto.digiroad2.tnits.rosatte.features.{ProhibitionTypesOperations, ValidityPeriodOperations}
 import fi.liikennevirasto.digiroad2.tnits.runners.AssetType
 
 import scala.util.{Failure, Success, Try}
@@ -82,46 +82,58 @@ object RosatteConverter {
     val properties = assetType match {
 
       case "vehicle_prohibitions" =>
-        val teste = feature.properties.value
-        val prohibitionValue = feature.properties.value.asInstanceOf[Prohibitions].prohibitions.head
-          <rst:ConditionSet>
+        feature.properties.value.asInstanceOf[Seq[ProhibitionValue]].map { prohibitionValue =>
+          <rst:condition>
+
+            <rst:ConditionSet>
             <rst:conditions>
               <rst:VehicleCondition>
                 <rst:negate>false</rst:negate>
-                <rst:vehicleType> { prohibitionValue.typeId } </rst:vehicleType>
+                <rst:vehicleType>
+                  {ProhibitionTypesOperations(prohibitionValue.typeId, prohibitionValue.exceptions).vehicleConditionType()}
+                </rst:vehicleType>
               </rst:VehicleCondition>
               <rst:VehicleCondition>
-                <rst:negate>true</rst:negate><!-- Poikkeukset -->
-                {prohibitionValue.exceptions.map { exception =>
-                  <rst:vehicleType>{ exception }</rst:vehicleType>
-                }}
-                </rst:VehicleCondition>
+                <rst:negate>true</rst:negate> <!-- Poikkeukset -->
+                {ProhibitionTypesOperations(prohibitionValue.typeId, prohibitionValue.exceptions).vehicleConditionExceptions().map{ exception => <rst:vehicleType> {exception} </rst:vehicleType> }}
+              </rst:VehicleCondition>
             </rst:conditions>
             <rst:operator>AND</rst:operator>
           </rst:ConditionSet>
-          <rst:ConditionSet>
-            <rst:conditions>
-              <rst:TimeCondition>
-                {prohibitionValue.validityPeriods.map { validityPeriod =>
-                <rst:validityPeriod>
-                  <rst:ValidityPeriod>
-                    <rst:time>
-                      <rst:weekday>
-                        <rst:IntegerInterval>
-                          <rst:start> {ValidityPeriods(validityPeriod.startHour, validityPeriod.endHour, validityPeriod.days.value ,validityPeriod.startMinute, validityPeriod.endMinute).fromTimeDomainValue()._1} </rst:start>
-                          <rst:length> {ValidityPeriods(validityPeriod.startHour, validityPeriod.endHour, validityPeriod.days.value ,validityPeriod.startMinute, validityPeriod.endMinute).fromTimeDomainValue()._2} </rst:length>
-                        </rst:IntegerInterval>
-                      </rst:weekday>
-                      <rst:begin> {s"${validityPeriod.startHour}:${validityPeriod.startMinute}:00"} </rst:begin>
-                      <rst:lengthSeconds>  {ValidityPeriods(validityPeriod.startHour, validityPeriod.endHour, validityPeriod.days.value ,validityPeriod.startMinute, validityPeriod.endMinute).duration()} </rst:lengthSeconds>
-                    </rst:time>
-                  </rst:ValidityPeriod>
-                </rst:validityPeriod>
+            <rst:ConditionSet>
+              <rst:conditions>
+                <rst:TimeCondition>
+                  {prohibitionValue.validityPeriod.map { validityPeriod =>
+                  <rst:validityPeriod>
+                    <rst:ValidityPeriod>
+                      <rst:time>
+                        <rst:weekday>
+                          <rst:IntegerInterval>
+                            <rst:start>
+                              {ValidityPeriodOperations(validityPeriod.startHour, validityPeriod.endHour, validityPeriod.days, validityPeriod.startMinute, validityPeriod.endMinute).fromTimeDomainValue()._1}
+                            </rst:start>
+                            <rst:length>
+                              {ValidityPeriodOperations(validityPeriod.startHour, validityPeriod.endHour, validityPeriod.days, validityPeriod.startMinute, validityPeriod.endMinute).fromTimeDomainValue()._2}
+                            </rst:length>
+                          </rst:IntegerInterval>
+                        </rst:weekday>
+                        <rst:begin>
+                          {s"${validityPeriod.startHour}:${validityPeriod.startMinute}:00"}
+                        </rst:begin>
+                        <rst:lengthSeconds>
+                          {ValidityPeriodOperations(validityPeriod.startHour, validityPeriod.endHour, validityPeriod.days, validityPeriod.startMinute, validityPeriod.endMinute).duration()}
+                        </rst:lengthSeconds>
+                      </rst:time>
+                    </rst:ValidityPeriod>
+                  </rst:validityPeriod>
                 }}
-              </rst:TimeCondition>
-            </rst:conditions>
-            <rst:operator>OR</rst:operator>
+                </rst:TimeCondition>
+              </rst:conditions>
+              <rst:operator>OR</rst:operator>
           </rst:ConditionSet>
+          </rst:condition>
+
+        }
       case _ =>
         <rst:properties>
           <rst:SafetyFeaturePropertyValue>
