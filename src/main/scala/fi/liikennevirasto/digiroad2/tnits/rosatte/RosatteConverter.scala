@@ -84,22 +84,21 @@ object RosatteConverter {
       case "vehicle_prohibitions" =>
         feature.properties.value.asInstanceOf[Seq[ProhibitionValue]].map { prohibitionValue =>
           <rst:condition>
-
             <rst:ConditionSet>
-            <rst:conditions>
-              <rst:VehicleCondition>
-                <rst:negate>false</rst:negate>
-                <rst:vehicleType>
-                  {ProhibitionTypesOperations(prohibitionValue.typeId, prohibitionValue.exceptions).vehicleConditionType()}
-                </rst:vehicleType>
-              </rst:VehicleCondition>
-              <rst:VehicleCondition>
-                <rst:negate>true</rst:negate>
-                {ProhibitionTypesOperations(prohibitionValue.typeId, prohibitionValue.exceptions).vehicleConditionExceptions().map{ exception => <rst:vehicleType> {exception} </rst:vehicleType> }}
-              </rst:VehicleCondition>
-            </rst:conditions>
-            <rst:operator>AND</rst:operator>
-          </rst:ConditionSet>
+              <rst:conditions>
+                <rst:VehicleCondition>
+                  <rst:negate>false</rst:negate>
+                  <rst:vehicleType>
+                    {ProhibitionTypesOperations(prohibitionValue.typeId, prohibitionValue.exceptions).vehicleConditionType()}
+                  </rst:vehicleType>
+                </rst:VehicleCondition>
+                <rst:VehicleCondition>
+                  <rst:negate>true</rst:negate>
+                  {ProhibitionTypesOperations(prohibitionValue.typeId, prohibitionValue.exceptions).vehicleConditionExceptions().map{ exception => <rst:vehicleType> {exception} </rst:vehicleType> }}
+                </rst:VehicleCondition>
+              </rst:conditions>
+              <rst:operator>AND</rst:operator>
+            </rst:ConditionSet>
             <rst:ConditionSet>
               <rst:conditions>
                 <rst:TimeCondition>
@@ -130,7 +129,7 @@ object RosatteConverter {
                 </rst:TimeCondition>
               </rst:conditions>
               <rst:operator>OR</rst:operator>
-          </rst:ConditionSet>
+            </rst:ConditionSet>
           </rst:condition>
         }
       case _ =>
