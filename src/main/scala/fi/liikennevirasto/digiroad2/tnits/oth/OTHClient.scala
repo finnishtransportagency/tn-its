@@ -103,7 +103,8 @@ object OTHClient extends Client{
   override def changeApi: String = config.urls.changesApi
 
   override protected def extractFeatures(features: JValue): Seq[Feature[AssetProperties]] = {
-    features.extract[Seq[Feature[NumericAssetProperties]]].asInstanceOf[Seq[Feature[AssetProperties]]]
+    val extrated = features.extract[Seq[Feature[NumericAssetProperties]]]
+    extrated.asInstanceOf[Seq[Feature[AssetProperties]]]
   }
 }
 
@@ -111,8 +112,8 @@ object VehicleOTHClient extends Client{
   override def changeApi: String = config.urls.changesApi
 
   override protected def extractFeatures(features: JValue): Seq[Feature[AssetProperties]] = {
-    val teste = features.extract[Seq[Feature[VehicleProhibitionAssetProperties]]]
-      teste.asInstanceOf[Seq[Feature[AssetProperties]]]
+    val extrated = features.extract[Seq[Feature[VehicleProhibitionAssetProperties]]]
+    extrated.asInstanceOf[Seq[Feature[AssetProperties]]]
   }
 }
 

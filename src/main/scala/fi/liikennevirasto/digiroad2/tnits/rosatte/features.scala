@@ -3,20 +3,9 @@ package fi.liikennevirasto.digiroad2.tnits.rosatte
 import fi.liikennevirasto.digiroad2.tnits.geojson
 import fi.liikennevirasto.digiroad2.tnits.rosatte.features.{RoadLink}
 
-sealed trait Value {
-  def toJson: Any
-}
-
-case class NumericValue(value: Int) extends Value {
-  override def toJson: Any = value
-}
-
 case class ValidityPeriodDayOfWeek(value: Int)
 case class ValidityPeriod(startHour: Int, endHour: Int, days: Int, startMinute: Int = 0, endMinute: Int = 0)
 case class ProhibitionValue(typeId: Int, validityPeriod: Set[ValidityPeriod], exceptions: Set[Int], additionalInfo: String = "")
-case class Prohibitions(prohibitions: Seq[ProhibitionValue]) extends Value {
-  override def toJson: Any = prohibitions
-}
 
 trait AssetProperties {
   val sideCode: Int

@@ -94,7 +94,7 @@ object RosatteConverter {
                 </rst:vehicleType>
               </rst:VehicleCondition>
               <rst:VehicleCondition>
-                <rst:negate>true</rst:negate> <!-- Poikkeukset -->
+                <rst:negate>true</rst:negate>
                 {ProhibitionTypesOperations(prohibitionValue.typeId, prohibitionValue.exceptions).vehicleConditionExceptions().map{ exception => <rst:vehicleType> {exception} </rst:vehicleType> }}
               </rst:VehicleCondition>
             </rst:conditions>
@@ -132,7 +132,6 @@ object RosatteConverter {
               <rst:operator>OR</rst:operator>
           </rst:ConditionSet>
           </rst:condition>
-
         }
       case _ =>
         <rst:properties>
