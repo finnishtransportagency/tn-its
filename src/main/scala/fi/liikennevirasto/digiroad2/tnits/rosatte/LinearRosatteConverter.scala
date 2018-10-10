@@ -155,4 +155,12 @@ object LinearRosatteConverter extends AssetRosatteConverter {
     }.asInstanceOf[Seq[FeatureLinear[LinearAssetProperties]]]
   }
 
+  override def applicableDirection(sideCode: Int) : String = {
+    sideCode match  {
+      case 2 => "inDirection"
+      case 3 => "inOppositeDirection"
+      case _ => ""
+    }
+  }
+
 }

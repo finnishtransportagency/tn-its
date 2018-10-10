@@ -96,13 +96,7 @@ trait AssetRosatteConverter {
 
   def locationReference(feature: FeatureType, reference: String ) : NodeBuffer
 
-  def applicableDirection(sideCode: Int) : String = {
-    sideCode match  {
-      case 2 => "inDirection"
-      case 3 => "inOppositeDirection"
-      case _ => ""
-    }
-  }
+  def applicableDirection(sideCode: Int) : String
 
   def encodeOpenLRLocationString(feature: FeatureType): Try[String]
 

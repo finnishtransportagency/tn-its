@@ -66,24 +66,21 @@ object PointRosatteConverter extends AssetRosatteConverter {
     val linkLength = link.properties.length
     val functionalClass = link.properties.functionalClass
     val linkType = link.properties.`type`
-    val (linkGeometry, endM) =
-      if (properties.sideCode == 3) //inOppositeDirection
-        (points.reverse, linkLength - properties.endMeasure)
-      else
-        (points, properties.endMeasure)
 
-    OpenLREncoder.encodeAssetOnLink(endM, endM, linkGeometry, linkLength, functionalClass, linkType,  DefaultLinkReference + link.id)
+    OpenLREncoder.encodeAssetOnLink(properties.endMeasure, properties.endMeasure, points, linkLength, functionalClass, linkType,  DefaultLinkReference + link.id)
   }
 
   override def splitFeaturesApplicableToBothDirections(assets: Seq[FeaturePoint[PointAssetProperties]], assetType : AssetType): Seq[FeaturePoint[PointAssetProperties]] = {
-    assets.flatMap { feature =>
-      feature.properties.sideCode match {
-        case 1 =>
-          Seq(feature.copy(properties = feature.properties.setSideCode(sideCode = 2)),
-            feature.copy(properties = feature.properties.setSideCode(sideCode = 3)))
-        case _ =>
-          Seq(feature)
-      }
+    assets
+  }
+
+  override def applicableDirection(sideCode: Int) : String = {
+    sideCode match  {
+      case 1 => "bothDirection"
+      case 2 => "inDirection"
+      case 3 => "inOppositeDirection"
+      case _ => ""
     }
-  }.asInstanceOf[Seq[FeaturePoint[PointAssetProperties]]]
+  }
+
 }
