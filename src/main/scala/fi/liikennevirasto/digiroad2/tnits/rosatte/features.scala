@@ -67,7 +67,7 @@ object features {
       ,(22 , Seq("ResidentialVehicle")))
 
     def vehicleConditionExceptions(): Set[String] = {
-      val excludedType = Set(23, 26, 27, 15)
+      val excludedType = Set(23, 26, 27, 28, 15)
 
       exceptions.diff(excludedType).flatMap { exception =>
         mapVehicleType(exception)
@@ -75,7 +75,7 @@ object features {
     }
 
     def vehicleConditionType(): Set[String] = {
-      val excludedType = Set(23, 26, 27, 15, 21, 22)
+      val excludedType = Set(23, 26, 27, 28, 15, 21, 22)
       if(!excludedType.contains(typeId))
         mapVehicleType(typeId).toSet
 
@@ -86,9 +86,9 @@ object features {
   case class ValidityPeriodOperations(startHour: Int, endHour: Int, days: Int, startMinute: Int, endMinute: Int) {
     def fromTimeDomainValue() : (Int, Int)  =
       days match {
-      case 1 => (6, 1)
-      case 2 => (1, 5)
-      case 7 => (7, 1)
+      case 1 => (1, 5) //Weekday
+      case 2 => (6, 1) //Saturday
+      case 3 => (7, 1) //Sunday
     }
 
     def duration(): Int = {

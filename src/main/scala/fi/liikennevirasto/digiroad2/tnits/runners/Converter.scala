@@ -22,7 +22,7 @@ case class AssetType(apiEndPoint: String, featureType: String, valueType: String
 object Converter {
   /** Runs a conversion from the commandline. */
   def main(args: Array[String]) {
-    convert(new PrintWriter(System.out, true), fromDate = Some(Instant.now.minus(7, ChronoUnit.DAYS)), toDate = Some(Instant.now))
+    convert(new PrintWriter(System.out, true))
     System.exit(0) // TODO: Without this, something leaves the program hanging
   }
 
