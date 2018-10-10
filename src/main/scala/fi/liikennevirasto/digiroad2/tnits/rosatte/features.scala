@@ -10,6 +10,15 @@ case class ProhibitionValue(typeId: Int, validityPeriod: Set[ValidityPeriod], ex
 trait AssetProperties {
   val sideCode: Int
   val changeType: String
+  val endMeasure: Double
+  val link: RoadLink
+
+  def setSideCode(sideCode: Int): AssetProperties
+}
+
+trait LinearAssetProperties extends AssetProperties {
+  val sideCode: Int
+  val changeType: String
   val value: Any
   val startMeasure: Double
   val endMeasure: Double
@@ -18,23 +27,14 @@ trait AssetProperties {
   def setSideCode(sideCode: Int): AssetProperties
 }
 
-//case class LinearAssetProperties (sideCode: Int, changeType: String, value: Any, startMeasure: Double, endMeasure: Double, link: RoadLink) extends AssetProperties {
-//  override def setSideCode(sideCode: Int): AssetProperties = copy(sideCode = sideCode)
-//}
-//
-//case class PointAssetProperties (sideCode: Int, changeType: String, value: Any, startMeasure: Double, endMeasure: Double, link: RoadLink) extends AssetProperties {
-//  override def setSideCode(sideCode: Int): AssetProperties = copy(sideCode = sideCode)
-//}
-//
-//sealed trait Value {
-//  def toJson: Any
-//}
-//case class NumericValue(value: Int) extends Value {
-//  override def toJson: Any = value
-//}
-//case class TextualValue(value: String) extends Value {
-//  override def toJson: Any = value
-//}
+trait PointAssetProperties extends AssetProperties {
+  val sideCode: Int
+  val changeType: String
+  val endMeasure: Double
+  val link: RoadLink
+
+  def setSideCode(sideCode: Int): AssetProperties
+}
 
 /** GeoJSON types specialized to OTH assets. */
 object features {
@@ -47,8 +47,8 @@ object features {
     value: Int,
     startMeasure: Double,
     endMeasure: Double,
-    link: RoadLink) extends  AssetProperties {
-    override def setSideCode(sideCode: Int): AssetProperties = copy(sideCode = sideCode)
+    link: RoadLink) extends  LinearAssetProperties {
+    override def setSideCode(sideCode: Int): LinearAssetProperties = copy(sideCode = sideCode)
   }
 
   case class VehicleProhibitionAssetProperties(
@@ -57,18 +57,16 @@ object features {
       value: Seq[ProhibitionValue],
       startMeasure: Double,
       endMeasure: Double,
-      link: RoadLink) extends  AssetProperties {
-    override def setSideCode(sideCode: Int): AssetProperties = copy(sideCode = sideCode)
+      link: RoadLink) extends  LinearAssetProperties {
+    override def setSideCode(sideCode: Int): LinearAssetProperties = copy(sideCode = sideCode)
   }
 
-  case class PointAssetProperties(
+  case class PedestrianCrossingAssetProperties(
       sideCode: Int,
       changeType: String,
-      value: String,
-      startMeasure: Double,
       endMeasure: Double,
-      link: RoadLink) extends  AssetProperties {
-    override def setSideCode(sideCode: Int): AssetProperties = copy(sideCode = sideCode)
+      link: RoadLink) extends  PointAssetProperties {
+    override def setSideCode(sideCode: Int): PointAssetProperties = copy(sideCode = sideCode)
   }
 
   case class RoadLinkProperties(

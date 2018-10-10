@@ -4,11 +4,11 @@ import java.io.{BufferedOutputStream, OutputStream, OutputStreamWriter}
 import java.time.Instant
 import java.util.UUID
 
-import fi.liikennevirasto.digiroad2.tnits.geojson.{Feature, FeatureLinear}
+import fi.liikennevirasto.digiroad2.tnits.geojson.Feature
 import fi.liikennevirasto.digiroad2.tnits.runners.AssetType
 
 import scala.util.{Failure, Success, Try}
-import scala.xml.{Elem, NodeBuffer, NodeSeq}
+import scala.xml.{NodeBuffer, NodeSeq}
 
 /** Generates a dataset. */
 object RosatteConverter {
@@ -32,9 +32,9 @@ object RosatteConverter {
 
     featureMembers.foreach { case (assetType, changes) =>
       // We need to split two-way features into two one-way features because of OpenLR encoding
-      val onlyOneWayFeatures = splitFeaturesApplicableToBothDirections(changes, assetType)
+      val onlyOneWayFeatures = assetType.service.splitFeaturesApplicableToBothDirections(changes.asInstanceOf[Seq[assetType.service.FeatureType]], assetType)
       onlyOneWayFeatures.foreach { feature =>
-        val featureMember = assetType.service.toFeatureMember(feature.asInstanceOf[assetType.service.FeatureType], assetType, writer)
+        val featureMember = assetType.service.toFeatureMember(feature, assetType, writer)
         writer.write(featureMember.toString)
       }
     }
@@ -49,25 +49,13 @@ object RosatteConverter {
 
     writer.flush()
   }
-
-  def splitFeaturesApplicableToBothDirections(assets: Seq[Feature[AssetProperties]], assetType : AssetType): Seq[Feature[AssetProperties]] = {
-    assets.flatMap { feature =>
-      feature.asInstanceOf[assetType.service.FeatureType].properties.sideCode match {
-        case 1 =>
-          assetType.service.duplicateFeature(feature.asInstanceOf[assetType.service.FeatureType])
-        case _ =>
-          Seq(feature)
-      }
-    }
-  }
 }
 
 trait AssetRosatteConverter {
-  type FeatureType <: Feature[AssetProperties]
-//  type AssetPropertiesType <: AssetProperties
-  val DefaultLinkReference = "FI.1000018."
+  type AssetPropertiesType <: AssetProperties
+  type FeatureType <: Feature[AssetPropertiesType]
 
-//  def toFeature(feature: Feature[AssetProperties], assetType: AssetType): Any
+  val DefaultLinkReference = "FI.1000018."
 
   def toFeatureMember(feature: FeatureType, assetType: AssetType, writer: OutputStreamWriter) : Any = {
     val openLR = encodeOpenLRLocationString(feature)
@@ -108,11 +96,17 @@ trait AssetRosatteConverter {
 
   def locationReference(feature: FeatureType, reference: String ) : NodeBuffer
 
-  def applicableDirection(sideCode: Int) : String
+  def applicableDirection(sideCode: Int) : String = {
+    sideCode match  {
+      case 2 => "inDirection"
+      case 3 => "inOppositeDirection"
+      case _ => ""
+    }
+  }
 
   def encodeOpenLRLocationString(feature: FeatureType): Try[String]
 
   def geometry(feature: FeatureType) : String
 
-  def duplicateFeature(feature: FeatureType) : Seq[FeatureType]
+  def splitFeaturesApplicableToBothDirections(assets: Seq[FeatureType], assetType : AssetType): Seq[FeatureType]
 }

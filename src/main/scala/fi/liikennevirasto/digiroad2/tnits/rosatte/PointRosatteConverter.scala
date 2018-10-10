@@ -1,31 +1,21 @@
 package fi.liikennevirasto.digiroad2.tnits.rosatte
 
-import java.io.OutputStreamWriter
 import java.util.UUID
 
-import fi.liikennevirasto.digiroad2.tnits.geojson.{Feature, FeatureLinear, FeaturePoint}
+import fi.liikennevirasto.digiroad2.tnits.geojson.FeaturePoint
 import fi.liikennevirasto.digiroad2.tnits.geometry.{CoordinateTransform, Point}
 import fi.liikennevirasto.digiroad2.tnits.openlr.OpenLREncoder
 import fi.liikennevirasto.digiroad2.tnits.runners.AssetType
 
 import scala.util.Try
-import scala.xml.{Elem, NodeBuffer, NodeSeq}
+import scala.xml.{NodeBuffer, NodeSeq}
 
 /** Generates a dataset. */
 object PointRosatteConverter extends AssetRosatteConverter {
-  type FeatureType = FeaturePoint[AssetProperties]
-//  type AssetPropertiesType = PointAssetProperties
+  override type AssetPropertiesType = PointAssetProperties
+  override type FeatureType = FeaturePoint[AssetPropertiesType]
 
-  override def applicableDirection(sideCode: Int) : String = {
-    sideCode match {
-      case 1 => "bothDirection"
-      case 2 => "inDirection"
-      case 3 => "inOppositeDirection"
-      case _ => ""
-    }
-  }
-
-  override def locationReference(feature: FeaturePoint[AssetProperties], reference: String) : NodeBuffer   = {
+  override def locationReference(feature: FeaturePoint[PointAssetProperties], reference: String) : NodeBuffer   = {
     val properties = feature.properties
 
       <rst:locationReference>
@@ -33,7 +23,7 @@ object PointRosatteConverter extends AssetRosatteConverter {
         <net:SimpleLinearReference>
           <net:element xlink:href= { DefaultLinkReference + properties.link.id }/>
           <net:applicableDirection> { applicableDirection(properties.sideCode) }</net:applicableDirection>
-          <net:atPosition uom="meter"> { properties.startMeasure }</net:atPosition>
+          <net:atPosition uom="meter"> { properties.endMeasure }</net:atPosition>
         </net:SimpleLinearReference>
       </rst:INSPIRELinearLocation>
     </rst:locationReference>
@@ -46,13 +36,13 @@ object PointRosatteConverter extends AssetRosatteConverter {
 
   }
 
-  override def geometry(feature: FeaturePoint[AssetProperties] ) : String = {
+  override def geometry(feature: FeaturePoint[PointAssetProperties] ) : String = {
     val coordinates = Seq(feature.geometry.coordinates).flatMap(_.take(2))
     val transformedCoordinates = CoordinateTransform.convertToWgs84(coordinates)
     transformedCoordinates.mkString(" ")
   }
 
-  override def properties(assetType: AssetType, feature: FeaturePoint[AssetProperties]) : NodeSeq  = {
+  override def properties(assetType: AssetType, feature: FeaturePoint[PointAssetProperties]) : NodeSeq  = {
     <rst:properties>
       <rst:SafetyFeaturePropertyValue>
         <rst:type>
@@ -62,33 +52,38 @@ object PointRosatteConverter extends AssetRosatteConverter {
     </rst:properties>
   }
 
-  override def encodeOpenLRLocationString(feature: FeaturePoint[AssetProperties]): Try[String] = {
+  override def encodeOpenLRLocationString(feature: FeaturePoint[PointAssetProperties]): Try[String] = {
     val properties = feature.properties
     val link = properties.link
 
     val coordinates = link.geometry.coordinates.flatten
 
-    val points =
-      coordinates
-        .grouped(3)
-        .map { case Seq(x, y, z) => Point(x, y, z) }
-        .toSeq
+    val points = coordinates
+      .grouped(3)
+      .map { case Seq(x, y, z) => Point(x, y, z) }
+      .toSeq
 
     val linkLength = link.properties.length
     val functionalClass = link.properties.functionalClass
     val linkType = link.properties.`type`
-    val (linkGeometry, startM) =
+    val (linkGeometry, endM) =
       if (properties.sideCode == 3) //inOppositeDirection
-        (points.reverse, linkLength - properties.startMeasure)
+        (points.reverse, linkLength - properties.endMeasure)
       else
-        (points, properties.startMeasure)
+        (points, properties.endMeasure)
 
-    OpenLREncoder.encodeAssetOnLink(startM, startM, linkGeometry, linkLength, functionalClass, linkType, DefaultLinkReference + link.id)
+    OpenLREncoder.encodeAssetOnLink(endM, endM, linkGeometry, linkLength, functionalClass, linkType,  DefaultLinkReference + link.id)
   }
 
-  override def duplicateFeature(feature: FeaturePoint[AssetProperties]) : Seq[FeaturePoint[AssetProperties]] = {
-    Seq(feature.copy(properties = feature.properties.setSideCode(sideCode = 2)),
-      feature.copy(properties = feature.properties.setSideCode(sideCode = 3)))
-  }
-
+  override def splitFeaturesApplicableToBothDirections(assets: Seq[FeaturePoint[PointAssetProperties]], assetType : AssetType): Seq[FeaturePoint[PointAssetProperties]] = {
+    assets.flatMap { feature =>
+      feature.properties.sideCode match {
+        case 1 =>
+          Seq(feature.copy(properties = feature.properties.setSideCode(sideCode = 2)),
+            feature.copy(properties = feature.properties.setSideCode(sideCode = 3)))
+        case _ =>
+          Seq(feature)
+      }
+    }
+  }.asInstanceOf[Seq[FeaturePoint[PointAssetProperties]]]
 }

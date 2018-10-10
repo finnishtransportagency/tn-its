@@ -1,13 +1,12 @@
 package fi.liikennevirasto.digiroad2.tnits.rosatte
 
-import java.io.{BufferedOutputStream, OutputStream, OutputStreamWriter}
-import java.time.Instant
+
 import java.util.UUID
 
-import fi.liikennevirasto.digiroad2.tnits.geojson.{Feature, FeatureLinear}
+import fi.liikennevirasto.digiroad2.tnits.geojson.FeatureLinear
 import fi.liikennevirasto.digiroad2.tnits.geometry.{CoordinateTransform, Point}
 import fi.liikennevirasto.digiroad2.tnits.openlr.OpenLREncoder
-import fi.liikennevirasto.digiroad2.tnits.rosatte.features.{NumericAssetProperties, ProhibitionTypesOperations, RoadLink, ValidityPeriodOperations}
+import fi.liikennevirasto.digiroad2.tnits.rosatte.features.{ProhibitionTypesOperations, ValidityPeriodOperations}
 import fi.liikennevirasto.digiroad2.tnits.runners.AssetType
 
 import scala.util.Try
@@ -17,20 +16,12 @@ import scala.xml.{Elem, NodeBuffer, NodeSeq}
 
 
 object LinearRosatteConverter extends AssetRosatteConverter {
-  override type FeatureType = FeatureLinear[AssetProperties]
-//  type AssetPropertiesType = LinearAssetProperties
+  override type AssetPropertiesType = LinearAssetProperties
+  override type FeatureType = FeatureLinear[AssetPropertiesType]
 
-  override def applicableDirection(sideCode: Int) : String = {
-    sideCode match  {
-      case 2 => "inDirection"
-      case 3 => "inOppositeDirection"
-      case _ => ""
-    }
-  }
 
-  override def locationReference(feature: FeatureLinear[AssetProperties], reference: String) : NodeBuffer   = {
+  override def locationReference(feature: FeatureLinear[LinearAssetProperties], reference: String) : NodeBuffer   = {
     val properties = feature.properties
-//    writer.write(
     <rst:locationReference>
     <rst:INSPIRELinearLocation gml:id={ UUID.randomUUID().toString }>
         <net:SimpleLinearReference>
@@ -49,7 +40,29 @@ object LinearRosatteConverter extends AssetRosatteConverter {
       </rst:locationReference>
   }
 
-  override def properties(assetType: AssetType, feature: FeatureLinear[AssetProperties]) : NodeSeq = {
+  def encodeOpenLRLocationString(feature: FeatureLinear[LinearAssetProperties]): Try[String] = {
+    val properties = feature.properties
+    val link = properties.link
+
+    val coordinates = link.geometry.coordinates.flatten
+    val points = coordinates
+      .grouped(3)
+      .map { case Seq(x, y, z) => Point(x, y, z) }
+      .toSeq
+
+    val linkLength = link.properties.length
+    val functionalClass = link.properties.functionalClass
+    val linkType = link.properties.`type`
+    val (linkGeometry, startM, endM) =
+      if (properties.sideCode == 3) //inOppositeDirection
+        (points.reverse, linkLength - properties.endMeasure, linkLength - properties.startMeasure)
+      else
+        (points, properties.startMeasure, properties.endMeasure)
+
+    OpenLREncoder.encodeAssetOnLink(startM, endM, linkGeometry, linkLength, functionalClass, linkType,  DefaultLinkReference + link.id)
+  }
+
+  override def properties(assetType: AssetType, feature: FeatureLinear[LinearAssetProperties]) : NodeSeq = {
     assetType.apiEndPoint match {
 
       case "vehicle_prohibitions" =>
@@ -122,53 +135,24 @@ object LinearRosatteConverter extends AssetRosatteConverter {
     }
   }
 
-  override def geometry(feature: FeatureLinear[AssetProperties] ) : String  = {
+  override def geometry(feature: FeatureLinear[LinearAssetProperties] ) : String  = {
     val coordinates = feature.geometry.coordinates.flatMap(_.take(2))
     val transformedCoordinates = CoordinateTransform.convertToWgs84(coordinates)
     transformedCoordinates.mkString(" ")
   }
 
-  override def encodeOpenLRLocationString(feature: FeatureLinear[AssetProperties]): Try[String] = {
-    val properties = feature.properties
-    val link = properties.link
 
-    val coordinates = link.geometry.coordinates.flatten
-    val points = coordinates
-        .grouped(3)
-        .map { case Seq(x, y, z) => Point(x, y, z) }
-        .toSeq
 
-    val linkLength = link.properties.length
-    val functionalClass = link.properties.functionalClass
-    val linkType = link.properties.`type`
-    val (linkGeometry, startM, endM) =
-      if (properties.sideCode == 3) //inOppositeDirection
-        (points.reverse, linkLength - properties.endMeasure, linkLength - properties.startMeasure)
-      else
-        (points, properties.startMeasure, properties.endMeasure)
-
-    OpenLREncoder.encodeAssetOnLink(startM, endM, linkGeometry, linkLength, functionalClass, linkType,  DefaultLinkReference + link.id)
-  }
-
-//  override def toFeature(feature: Feature[AssetProperties], assetType: AssetType): Any = {
-//    toFeatureMember(feature.asInstanceOf[LinearRosatteConverter.FeatureType], assetType)
-//  }
-
-//  override def splitFeaturesApplicableToBothDirections(assets: Seq[FeatureLinear[AssetProperties]]): Seq[FeatureLinear[AssetProperties]] = {
-//    assets.flatMap { feature =>
-//      feature.properties.sideCode match {
-//        case 1 =>
-//          Seq(feature.copy(properties = feature.properties.setSideCode(sideCode = 2)),
-//            feature.copy(properties = feature.properties.setSideCode(sideCode = 3)))
-//        case _ =>
-//          Seq(feature)
-//      }
-//    }
-//  }
-
-  override def duplicateFeature(feature: FeatureLinear[AssetProperties]) : Seq[FeatureLinear[AssetProperties]] = {
-    Seq(feature.copy(properties = feature.properties.setSideCode(sideCode = 2)),
-                feature.copy(properties = feature.properties.setSideCode(sideCode = 3)))
+  override def splitFeaturesApplicableToBothDirections(assets: Seq[FeatureLinear[LinearAssetProperties]], assetType : AssetType): Seq[FeatureLinear[LinearAssetProperties]] = {
+    assets.flatMap { feature =>
+      feature.properties.sideCode match {
+        case 1 =>
+          Seq(feature.copy(properties = feature.properties.setSideCode(sideCode = 2)),
+              feature.copy(properties = feature.properties.setSideCode(sideCode = 3)))
+        case _ =>
+          Seq(feature)
+      }
+    }.asInstanceOf[Seq[FeatureLinear[LinearAssetProperties]]]
   }
 
 }

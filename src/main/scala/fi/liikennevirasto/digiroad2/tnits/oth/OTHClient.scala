@@ -5,8 +5,8 @@ import java.time.Instant
 
 import fi.liikennevirasto.digiroad2.tnits.geojson.{Feature, FeatureLinear, FeaturePoint}
 import fi.liikennevirasto.digiroad2.tnits.rosatte.AssetProperties
-import fi.liikennevirasto.digiroad2.tnits.{config, geojson}
-import fi.liikennevirasto.digiroad2.tnits.rosatte.features.{Asset, NumericAssetProperties, PointAssetProperties, VehicleProhibitionAssetProperties}
+import fi.liikennevirasto.digiroad2.tnits.config
+import fi.liikennevirasto.digiroad2.tnits.rosatte.features._
 import org.apache.http.HttpHost
 import org.apache.http.auth.{AuthScope, UsernamePasswordCredentials}
 import org.apache.http.client.config.RequestConfig
@@ -116,11 +116,11 @@ object VehicleOTHClient extends Client{
   }
 }
 
-object PointOTHClient extends Client{
+object PedestrianCrossingOTHClient extends Client{
   override def changeApi: String = config.urls.changesApi
 
   override protected def extractFeatures(features: JValue): Seq[FeaturePoint[AssetProperties]] = {
-    val extrated = features.extract[Seq[FeaturePoint[PointAssetProperties]]]
+    val extrated = features.extract[Seq[FeaturePoint[PedestrianCrossingAssetProperties]]]
     extrated.asInstanceOf[Seq[FeaturePoint[AssetProperties]]]
   }
 }
