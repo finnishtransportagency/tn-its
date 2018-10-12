@@ -125,6 +125,15 @@ object PedestrianCrossingOTHClient extends Client{
   }
 }
 
+object ObstacleOTHClient extends Client{
+  override def changeApi: String = config.urls.changesApi
+
+  override protected def extractFeatures(features: JValue): Seq[FeaturePoint[AssetProperties]] = {
+//    val extracted = features.extract[Seq[FeaturePoint[ObstacleAssetProperties]]]
+    features.asInstanceOf[Seq[FeaturePoint[AssetProperties]]]
+  }
+}
+
 /** HTTP access to VIITE change API.
   */
 object ViiteClient extends Client{

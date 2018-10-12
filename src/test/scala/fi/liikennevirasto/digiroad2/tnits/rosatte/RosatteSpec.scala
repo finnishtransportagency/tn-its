@@ -5,9 +5,10 @@ import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.UUID
 
+import fi.liikennevirasto.digiroad2.tnits.geojson.{Feature, FeatureLinear}
 import fi.liikennevirasto.digiroad2.tnits.oth.OTHClient
 import fi.liikennevirasto.digiroad2.tnits.rosatte.DatasetID.DataSetId
-import fi.liikennevirasto.digiroad2.tnits.rosatte.features.Asset
+import fi.liikennevirasto.digiroad2.tnits.rosatte.features.{Asset, NumericAssetProperties}
 import fi.liikennevirasto.digiroad2.tnits.runners.AssetType
 import org.json4s.jackson.JsonMethods._
 import org.json4s.{DefaultFormats, Formats}
@@ -173,7 +174,7 @@ class RosatteSpec extends FunSuite {
         },
         "type": "Feature"}]}"""
 
-    val parsed = (parse(input) \ "features").extract[Seq[Asset]]
+    val parsed = (parse(input) \ "features").extract[Seq[FeatureLinear[NumericAssetProperties]]].asInstanceOf[Seq[Feature[AssetProperties]]]
     val output = new ByteArrayOutputStream()
 
     RosatteConverter.convertDataSet(
@@ -343,7 +344,7 @@ class RosatteSpec extends FunSuite {
         ]}
         """
 
-    val parsed = (parse(input) \ "features").extract[Seq[Asset]]
+    val parsed = (parse(input) \ "features").extract[Seq[FeatureLinear[NumericAssetProperties]]].asInstanceOf[Seq[Feature[AssetProperties]]]
     val output = new ByteArrayOutputStream()
 
     RosatteConverter.convertDataSet(
