@@ -10,7 +10,6 @@ case class ProhibitionValue(typeId: Int, validityPeriod: Set[ValidityPeriod], ex
 trait AssetProperties {
   val sideCode: Int
   val changeType: String
-  val endMeasure: Double
   val link: RoadLink
 
   def setSideCode(sideCode: Int): AssetProperties
@@ -30,8 +29,8 @@ trait LinearAssetProperties extends AssetProperties {
 trait PointAssetProperties extends AssetProperties {
   val sideCode: Int
   val changeType: String
-  val endMeasure: Double
   val link: RoadLink
+  val mValue: Double
 
   def setSideCode(sideCode: Int): AssetProperties
 }
@@ -64,7 +63,7 @@ object features {
   case class PedestrianCrossingAssetProperties(
       sideCode: Int,
       changeType: String,
-      endMeasure: Double,
+      mValue: Double,
       link: RoadLink) extends  PointAssetProperties {
     override def setSideCode(sideCode: Int): PointAssetProperties = copy(sideCode = sideCode)
   }
