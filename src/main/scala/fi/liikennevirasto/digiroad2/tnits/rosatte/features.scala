@@ -68,6 +68,40 @@ object features {
     override def setSideCode(sideCode: Int): PointAssetProperties = copy(sideCode = sideCode)
   }
 
+  case class WarningSignProperties(
+      sideCode: Int,
+      changeType: String,
+      mValue: Double,
+      `type`: Int,
+      link: RoadLink) extends  PointAssetProperties {
+    override def setSideCode(sideCode: Int): PointAssetProperties = copy(sideCode = sideCode)
+  }
+
+  case class TrafficSigns(typeId: Int) {
+    def warningSign: String = {
+      val warningSignType = Map(
+        39 -> "DangerousCurve",
+        40 -> "Slope",
+        41 -> "Slope",
+        42 -> "UnevenRoadSurface",
+        43 -> "ChildrenPlaying",
+        82 -> "NarrowingRoad",
+        83 -> "TwoWayTraffic",
+        84 -> "MovingBridge",
+        85 -> "ConstructionWork",
+        86 -> "SlipperyRoad",
+        87 -> "PedestriansCrossing",
+        88 -> "CyclistsCrossing",
+        89 -> "DangerousIntersection",
+        90 -> "TrafficLightsAhead",
+        91 -> "RailwayCrossing",
+        92 -> "Rockfall",
+        93 -> "SideWind"
+      )
+      warningSignType(typeId)
+    }
+  }
+
   case class RoadLinkProperties(
     functionalClass: Int,
     `type`: Int,

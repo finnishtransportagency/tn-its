@@ -77,7 +77,7 @@ trait AssetRosatteConverter {
                 <rst:type>{ feature.properties.changeType }</rst:type>
               </rst:UpdateInfo>
             </rst:updateInfo>
-            <rst:source>Regulation</rst:source>
+            <rst:source>{assetType.source}</rst:source>
             <rst:encodedGeometry>
               <gml:LineString gml:id={ UUID.randomUUID().toString } srsDimension="2">
                 <gml:posList>

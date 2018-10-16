@@ -5,13 +5,14 @@ import java.util.UUID
 import fi.liikennevirasto.digiroad2.tnits.geojson.FeaturePoint
 import fi.liikennevirasto.digiroad2.tnits.geometry.{CoordinateTransform, Point}
 import fi.liikennevirasto.digiroad2.tnits.openlr.OpenLREncoder
+import fi.liikennevirasto.digiroad2.tnits.rosatte.features.{TrafficSigns, WarningSignProperties}
 import fi.liikennevirasto.digiroad2.tnits.runners.AssetType
 
 import scala.util.Try
 import scala.xml.{NodeBuffer, NodeSeq}
 
 /** Generates a dataset. */
-object PointRosatteConverter extends AssetRosatteConverter {
+class PointRosatteConverter extends AssetRosatteConverter {
   override type AssetPropertiesType = PointAssetProperties
   override type FeatureType = FeaturePoint[AssetPropertiesType]
 
@@ -43,13 +44,7 @@ object PointRosatteConverter extends AssetRosatteConverter {
   }
 
   override def properties(assetType: AssetType, feature: FeaturePoint[PointAssetProperties]) : NodeSeq  = {
-    <rst:properties>
-      <rst:SafetyFeaturePropertyValue>
-        <rst:type>
-          {assetType.valueType}
-        </rst:type>
-      </rst:SafetyFeaturePropertyValue>
-    </rst:properties>
+    NodeSeq.Empty
   }
 
   override def encodeOpenLRLocationString(feature: FeaturePoint[PointAssetProperties]): Try[String] = {
@@ -82,5 +77,25 @@ object PointRosatteConverter extends AssetRosatteConverter {
       case _ => ""
     }
   }
+}
 
+class PointValueRosatteConverter extends PointRosatteConverter {
+
+ override def properties(assetType: AssetType, feature: FeaturePoint[PointAssetProperties]) : NodeSeq  = {
+    assetType.apiEndPoint match {
+      case "warning_signs_group" =>
+        <rst:properties>
+          <rst:SafetyFeaturePropertyValue>
+            <rst:type>
+              {assetType.valueType}
+            </rst:type>
+            <rst:propertyValue>
+              {TrafficSigns(feature.properties.asInstanceOf[WarningSignProperties].`type`).warningSign}
+            </rst:propertyValue>
+          </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+      case _ =>
+        NodeSeq.Empty
+    }
+  }
 }
