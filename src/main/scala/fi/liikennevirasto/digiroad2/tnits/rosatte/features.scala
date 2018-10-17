@@ -29,8 +29,8 @@ trait LinearAssetProperties extends AssetProperties {
 trait PointAssetProperties extends AssetProperties {
   val sideCode: Int
   val changeType: String
-  val link: RoadLink
   val mValue: Double
+  val link: RoadLink
 
   def setSideCode(sideCode: Int): AssetProperties
 }
@@ -61,6 +61,14 @@ object features {
   }
 
   case class PedestrianCrossingAssetProperties(
+      sideCode: Int,
+      changeType: String,
+      mValue: Double,
+      link: RoadLink) extends  PointAssetProperties {
+    override def setSideCode(sideCode: Int): PointAssetProperties = copy(sideCode = sideCode)
+  }
+
+  case class ObstacleAssetProperties(
       sideCode: Int,
       changeType: String,
       mValue: Double,

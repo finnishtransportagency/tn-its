@@ -47,7 +47,7 @@ class PointRosatteConverter extends AssetRosatteConverter {
     transformedCoordinates.mkString(" ")
   }
 
-  override def properties(assetType: AssetType, feature: FeaturePoint[PointAssetProperties]): NodeSeq = {
+  override def properties(assetType: AssetType, feature: FeaturePoint[PointAssetProperties]) : NodeSeq  = {
     NodeSeq.Empty
   }
 
@@ -66,7 +66,7 @@ class PointRosatteConverter extends AssetRosatteConverter {
     val functionalClass = link.properties.functionalClass
     val linkType = link.properties.`type`
 
-    OpenLREncoder.encodeAssetOnLink(properties.mValue, properties.mValue, points, linkLength, functionalClass, linkType, DefaultLinkReference + link.id)
+    OpenLREncoder.encodeAssetOnLink(properties.mValue, properties.mValue, points, linkLength, functionalClass, linkType,  DefaultLinkReference + link.id)
   }
 
   override def splitFeaturesApplicableToBothDirections(assets: Seq[FeaturePoint[PointAssetProperties]], assetType: AssetType): Seq[FeaturePoint[PointAssetProperties]] = {
