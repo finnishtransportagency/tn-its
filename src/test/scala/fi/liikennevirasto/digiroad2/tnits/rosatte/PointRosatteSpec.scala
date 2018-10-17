@@ -79,7 +79,7 @@ class PointRosatteSpec extends FunSuite {
     val output = new ByteArrayOutputStream()
 
     RosatteConverter.convertDataSet(
-      featureMembers = Seq((AssetType("pedestrian_crossing", "PedestrianCrossing", "PedestrianCrossing", "", PedestrianCrossingOTHClient, PointRosatteConverter), parsed)),
+      featureMembers = Seq((AssetType("pedestrian_crossing", "PedestrianCrossing", "PedestrianCrossing", "", PedestrianCrossingOTHClient, new PointRosatteConverter), parsed)),
       start = Instant.parse("2014-04-22T13:00:00Z"),
       end = Instant.parse("2014-04-22T15:00:00Z"),
       dataSetId = "id",
