@@ -15,7 +15,8 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 import scala.concurrent.{Await, ExecutionContext, Future}
 
-case class AssetType(apiEndPoint: String, featureType: String, valueType: String, unit: String, client: Client, service: AssetRosatteConverter)
+case class AssetType(apiEndPoint: String, featureType: String, valueType: String, unit: String, client: Client, service: AssetRosatteConverter, source: String = "Regulation")
+
 
 /** Runs a conversion batch job. */
 object Converter {
@@ -48,8 +49,8 @@ object Converter {
 //      AssetType("road_names", "RoadName", "RoadName", ""),
       AssetType("road_numbers", "RoadNumber", "RoadNumber", "", ViiteClient, LinearRosatteConverter),
       AssetType("vehicle_prohibitions", "NoEntry", "NoEntry", "", VehicleOTHClient, LinearRosatteConverter),
-      AssetType("pedestrian_crossing", "PedestrianCrossing", "PedestrianCrossing", "", PedestrianCrossingOTHClient, PointRosatteConverter))
-
+      AssetType("pedestrian_crossing", "PedestrianCrossing", "PedestrianCrossing", "", PedestrianCrossingOTHClient, new PointRosatteConverter),
+      AssetType("warning_signs_group", "WarningSign", "WarningSign", "", WarningSignOTHClient, new PointValueRosatteConverter, "FixedTrafficSign"))
     val assets = fetchAllChanges(start, end, assetTypes)
     logger.println("fetched all changes, generating dataset")
 
