@@ -8,7 +8,7 @@ import fi.liikennevirasto.digiroad2.tnits.geojson.Feature
 import fi.liikennevirasto.digiroad2.tnits.runners.AssetType
 
 import scala.util.{Failure, Success, Try}
-import scala.xml.{NodeBuffer, NodeSeq}
+import scala.xml.{Elem, NodeBuffer, NodeSeq}
 
 /** Generates a dataset. */
 object RosatteConverter {
@@ -96,7 +96,7 @@ trait AssetRosatteConverter {
 
   def locationReference(feature: FeatureType, reference: String ) : NodeBuffer
 
-  def applicableDirection(sideCode: Int) : String
+  def applicableDirection(sideCode: Int) : Elem
 
   def encodeOpenLRLocationString(feature: FeatureType): Try[String]
 

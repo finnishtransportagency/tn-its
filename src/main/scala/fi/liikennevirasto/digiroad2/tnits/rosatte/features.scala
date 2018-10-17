@@ -72,7 +72,7 @@ object features {
       sideCode: Int,
       changeType: String,
       mValue: Double,
-      `type`: Int,
+      typeValue: Int,
       link: RoadLink) extends  PointAssetProperties {
     override def setSideCode(sideCode: Int): PointAssetProperties = copy(sideCode = sideCode)
   }
@@ -80,6 +80,9 @@ object features {
   case class TrafficSigns(typeId: Int) {
     def warningSign: String = {
       val warningSignType = Map(
+        36 -> "DangerousCurve",
+        37 -> "DangerousCurve",
+        38 -> "DangerousCurve",
         39 -> "DangerousCurve",
         40 -> "Slope",
         41 -> "Slope",
