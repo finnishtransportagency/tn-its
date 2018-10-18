@@ -50,7 +50,7 @@ object features {
     override def setSideCode(sideCode: Int): LinearAssetProperties = copy(sideCode = sideCode)
   }
 
-  case class VehicleProhibitionAssetProperties(
+  case class VehicleProhibitionProperties(
       sideCode: Int,
       changeType: String,
       value: Seq[ProhibitionValue],
@@ -60,7 +60,7 @@ object features {
     override def setSideCode(sideCode: Int): LinearAssetProperties = copy(sideCode = sideCode)
   }
 
-  case class PedestrianCrossingAssetProperties(
+  case class PedestrianCrossingProperties(
       sideCode: Int,
       changeType: String,
       mValue: Double,
@@ -68,7 +68,7 @@ object features {
     override def setSideCode(sideCode: Int): PointAssetProperties = copy(sideCode = sideCode)
   }
 
-  case class ObstacleAssetProperties(
+  case class ObstacleProperties(
       sideCode: Int,
       changeType: String,
       mValue: Double,
@@ -88,6 +88,7 @@ object features {
   case class TrafficSigns(typeId: Int) {
     def warningSign: String = {
       val warningSignType = Map(
+        9 -> "Danger",
         36 -> "DangerousCurve",
         37 -> "DangerousCurve",
         38 -> "DangerousCurve",

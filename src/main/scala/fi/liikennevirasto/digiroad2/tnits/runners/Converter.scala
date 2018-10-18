@@ -51,7 +51,7 @@ object Converter {
       AssetType("vehicle_prohibitions", "NoEntry", "NoEntry", "", VehicleOTHClient, LinearRosatteConverter),
       AssetType("pedestrian_crossing", "PedestrianCrossing", "PedestrianCrossing", "", PedestrianCrossingOTHClient, new PointRosatteConverter),
       AssetType("obstacles", "ClosedToAllVehiclesInBothDirection", "ClosedToAllVehiclesInBothDirection", "", ObstacleOTHClient, new PointRosatteConverter),
-      AssetType("warning_signs_group", "WarningSign", "WarningSign", "", WarningSignOTHClient, new PointValueRosatteConverter, "FixedTrafficSign"))
+      AssetType("warning_signs_group", "WarningSign", "WarningSignType", "", WarningSignOTHClient, new PointValueRosatteConverter, "FixedTrafficSign"))
     val assets = fetchAllChanges(start, end, assetTypes)
     logger.println("fetched all changes, generating dataset")
 
