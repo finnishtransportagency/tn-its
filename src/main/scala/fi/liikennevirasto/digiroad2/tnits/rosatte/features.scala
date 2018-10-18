@@ -40,48 +40,32 @@ object features {
   type Asset = geojson.Feature[AssetProperties]
   type RoadLink = geojson.FeatureLinear[RoadLinkProperties]
 
-  case class NumericAssetProperties(
-    sideCode: Int,
-    changeType: String,
-    value: Int,
-    startMeasure: Double,
-    endMeasure: Double,
-    link: RoadLink) extends  LinearAssetProperties {
+  case class LinearNumericAssetProperties(
+                                           sideCode: Int,
+                                           changeType: String,
+                                           value: Int,
+                                           startMeasure: Double,
+                                           endMeasure: Double,
+                                           link: RoadLink) extends LinearAssetProperties {
     override def setSideCode(sideCode: Int): LinearAssetProperties = copy(sideCode = sideCode)
   }
 
   case class VehicleProhibitionAssetProperties(
-      sideCode: Int,
-      changeType: String,
-      value: Seq[ProhibitionValue],
-      startMeasure: Double,
-      endMeasure: Double,
-      link: RoadLink) extends  LinearAssetProperties {
+                                                sideCode: Int,
+                                                changeType: String,
+                                                value: Seq[ProhibitionValue],
+                                                startMeasure: Double,
+                                                endMeasure: Double,
+                                                link: RoadLink) extends LinearAssetProperties {
     override def setSideCode(sideCode: Int): LinearAssetProperties = copy(sideCode = sideCode)
   }
 
-  case class PedestrianCrossingAssetProperties(
-      sideCode: Int,
-      changeType: String,
-      mValue: Double,
-      link: RoadLink) extends  PointAssetProperties {
-    override def setSideCode(sideCode: Int): PointAssetProperties = copy(sideCode = sideCode)
-  }
-
-  case class ObstacleAssetProperties(
-      sideCode: Int,
-      changeType: String,
-      mValue: Double,
-      link: RoadLink) extends  PointAssetProperties {
-    override def setSideCode(sideCode: Int): PointAssetProperties = copy(sideCode = sideCode)
-  }
-
-  case class WarningSignProperties(
-      sideCode: Int,
-      changeType: String,
-      mValue: Double,
-      typeValue: Int,
-      link: RoadLink) extends  PointAssetProperties {
+  case class IncomingPointAssetProperties(
+                                           sideCode: Int,
+                                           changeType: String,
+                                           typeValue: Option[Int],
+                                           mValue: Double,
+                                           link: RoadLink) extends PointAssetProperties {
     override def setSideCode(sideCode: Int): PointAssetProperties = copy(sideCode = sideCode)
   }
 

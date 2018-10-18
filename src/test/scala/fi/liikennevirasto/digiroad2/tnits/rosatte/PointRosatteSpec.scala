@@ -5,7 +5,7 @@ import java.time.Instant
 
 import fi.liikennevirasto.digiroad2.tnits.geojson.{Feature, FeaturePoint}
 import fi.liikennevirasto.digiroad2.tnits.oth.PedestrianCrossingOTHClient
-import fi.liikennevirasto.digiroad2.tnits.rosatte.features.PedestrianCrossingAssetProperties
+import fi.liikennevirasto.digiroad2.tnits.rosatte.features.{IncomingPointAssetProperties}
 import fi.liikennevirasto.digiroad2.tnits.runners.AssetType
 import org.json4s.jackson.JsonMethods._
 import org.json4s.{DefaultFormats, Formats}
@@ -75,7 +75,7 @@ class PointRosatteSpec extends FunSuite {
       }
     ]}"""
 
-    val parsed = (parse(input) \ "features").extract[Seq[FeaturePoint[PedestrianCrossingAssetProperties]]].asInstanceOf[Seq[Feature[AssetProperties]]]
+    val parsed = (parse(input) \ "features").extract[Seq[FeaturePoint[IncomingPointAssetProperties]]].asInstanceOf[Seq[Feature[AssetProperties]]]
     val output = new ByteArrayOutputStream()
 
     RosatteConverter.convertDataSet(

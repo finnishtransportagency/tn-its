@@ -5,7 +5,7 @@ import java.util.UUID
 import fi.liikennevirasto.digiroad2.tnits.geojson.FeaturePoint
 import fi.liikennevirasto.digiroad2.tnits.geometry.{CoordinateTransform, Point}
 import fi.liikennevirasto.digiroad2.tnits.openlr.OpenLREncoder
-import fi.liikennevirasto.digiroad2.tnits.rosatte.features.{TrafficSigns, WarningSignProperties}
+import fi.liikennevirasto.digiroad2.tnits.rosatte.features.{IncomingPointAssetProperties, TrafficSigns}
 import fi.liikennevirasto.digiroad2.tnits.runners.AssetType
 
 import scala.util.Try
@@ -100,7 +100,7 @@ class PointValueRosatteConverter extends PointRosatteConverter {
               {assetType.valueType}
             </rst:type>
             <rst:propertyValue>
-              {TrafficSigns(feature.properties.asInstanceOf[WarningSignProperties].typeValue).warningSign}
+              {TrafficSigns(feature.properties.asInstanceOf[IncomingPointAssetProperties].typeValue.get).warningSign}
             </rst:propertyValue>
           </rst:SafetyFeaturePropertyValue>
         </rst:properties>
