@@ -72,6 +72,7 @@ object features {
   case class TrafficSigns(typeId: Int) {
     def warningSign: String = {
       val warningSignType = Map(
+        9 -> "Danger",
         36 -> "DangerousCurve",
         37 -> "DangerousCurve",
         38 -> "DangerousCurve",
