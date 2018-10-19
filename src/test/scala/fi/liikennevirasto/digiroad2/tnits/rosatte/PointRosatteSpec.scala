@@ -5,7 +5,6 @@ import java.time.Instant
 
 import fi.liikennevirasto.digiroad2.tnits.geojson.{Feature, FeaturePoint}
 import fi.liikennevirasto.digiroad2.tnits.oth.{PedestrianCrossingOTHClient, WarningSignOTHClient}
-import fi.liikennevirasto.digiroad2.tnits.rosatte.features.{PedestrianCrossingProperties, WarningSignProperties}
 import fi.liikennevirasto.digiroad2.tnits.oth.PedestrianCrossingOTHClient
 import fi.liikennevirasto.digiroad2.tnits.rosatte.features.{IncomingPointAssetProperties}
 import fi.liikennevirasto.digiroad2.tnits.runners.AssetType
@@ -202,7 +201,7 @@ class PointRosatteSpec extends FunSuite {
       }
     ]}"""
 
-    val parsed = (parse(input) \ "features").extract[Seq[FeaturePoint[WarningSignProperties]]].asInstanceOf[Seq[Feature[AssetProperties]]]
+    val parsed = (parse(input) \ "features").extract[Seq[FeaturePoint[IncomingPointAssetProperties]]].asInstanceOf[Seq[Feature[AssetProperties]]]
     val output = new ByteArrayOutputStream()
 
     RosatteConverter.convertDataSet(
@@ -332,7 +331,7 @@ class PointRosatteSpec extends FunSuite {
         }
       }
     ]}"""
-    val parsed = (parse(input) \ "features").extract[Seq[FeaturePoint[WarningSignProperties]]].asInstanceOf[Seq[Feature[AssetProperties]]]
+    val parsed = (parse(input) \ "features").extract[Seq[FeaturePoint[IncomingPointAssetProperties]]].asInstanceOf[Seq[Feature[AssetProperties]]]
     val output = new ByteArrayOutputStream()
 
     RosatteConverter.convertDataSet(

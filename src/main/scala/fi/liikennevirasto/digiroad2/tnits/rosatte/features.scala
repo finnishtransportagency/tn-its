@@ -50,13 +50,13 @@ object features {
     override def setSideCode(sideCode: Int): LinearAssetProperties = copy(sideCode = sideCode)
   }
 
-  case class VehicleProhibitionAssetProperties(
-                                                sideCode: Int,
-                                                changeType: String,
-                                                value: Seq[ProhibitionValue],
-                                                startMeasure: Double,
-                                                endMeasure: Double,
-                                                link: RoadLink) extends LinearAssetProperties {
+  case class VehicleProhibitionProperties(
+                                           sideCode: Int,
+                                           changeType: String,
+                                           value: Seq[ProhibitionValue],
+                                           startMeasure: Double,
+                                           endMeasure: Double,
+                                           link: RoadLink) extends LinearAssetProperties {
     override def setSideCode(sideCode: Int): LinearAssetProperties = copy(sideCode = sideCode)
   }
 
@@ -99,9 +99,9 @@ object features {
   }
 
   case class RoadLinkProperties(
-    functionalClass: Int,
-    `type`: Int,
-    length: Double)
+                                 functionalClass: Int,
+                                 `type`: Int,
+                                 length: Double)
 
   case class ProhibitionTypesOperations(typeId: Int, exceptions: Set[Int]) {
     val mapVehicleType = Map((3, Seq("AllVehicle"))
@@ -141,10 +141,10 @@ object features {
   case class ValidityPeriodOperations(startHour: Int, endHour: Int, days: Int, startMinute: Int, endMinute: Int) {
     def fromTimeDomainValue() : (Int, Int)  =
       days match {
-      case 1 => (1, 5) //Weekday
-      case 2 => (6, 1) //Saturday
-      case 3 => (7, 1) //Sunday
-    }
+        case 1 => (1, 5) //Weekday
+        case 2 => (6, 1) //Saturday
+        case 3 => (7, 1) //Sunday
+      }
 
     def duration(): Int = {
       val startTotalMinutes = startMinute + (startHour * 60)
