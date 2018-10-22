@@ -103,11 +103,11 @@ class PointRosatteSpec extends FunSuite {
             </rst:id>
             <rst:locationReference>
               <rst:INSPIRELinearLocation gml:id="ID-FOO">
-                <net:SimpleLinearReference>
+                <net:SimplePointReference>
                   <net:element xlink:href="FI.1000018.5170291"/>
                   <net:applicableDirection>bothDirection</net:applicableDirection>
                   <net:atPosition uom="meter">5.005</net:atPosition>
-                </net:SimpleLinearReference>
+                </net:SimplePointReference>
               </rst:INSPIRELinearLocation>
             </rst:locationReference>
             <rst:locationReference>
@@ -123,11 +123,11 @@ class PointRosatteSpec extends FunSuite {
             </rst:updateInfo>
             <rst:source>Regulation</rst:source>
             <rst:encodedGeometry>
-              <gml:LineString gml:id="ID-FOO" srsDimension="2">
-                <gml:posList>
+              <gml:Point gml:id="ID-FOO" srsDimension="2">
+                <gml:pos>
                   27.637756287723434 63.073971313222586
-                  </gml:posList>
-              </gml:LineString>
+                  </gml:pos>
+              </gml:Point>
             </rst:encodedGeometry>
             <rst:type>PedestrianCrossing</rst:type>
           </rst:GenericSafetyFeature>
