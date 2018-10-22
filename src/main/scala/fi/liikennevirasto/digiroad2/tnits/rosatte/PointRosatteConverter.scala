@@ -8,7 +8,7 @@ import fi.liikennevirasto.digiroad2.tnits.openlr.OpenLREncoder
 import fi.liikennevirasto.digiroad2.tnits.runners.AssetType
 
 import scala.util.Try
-import scala.xml.{NodeBuffer, NodeSeq}
+import scala.xml.{Elem, NodeBuffer, NodeSeq}
 
 /** Generates a dataset. */
 object PointRosatteConverter extends AssetRosatteConverter {
@@ -77,7 +77,7 @@ object PointRosatteConverter extends AssetRosatteConverter {
     }
   }
 
-  override def encodedGeometry(feature: FeaturePoint[PointAssetProperties]) : NodeBuffer   = {
+  override def encodedGeometry(feature: FeaturePoint[PointAssetProperties]) : Elem   = {
     <rst:encodedGeometry>
       <gml:LineString gml:id={UUID.randomUUID().toString} srsDimension="2">
         <gml:posList>

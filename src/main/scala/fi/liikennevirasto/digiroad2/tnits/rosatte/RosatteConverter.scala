@@ -8,7 +8,7 @@ import fi.liikennevirasto.digiroad2.tnits.geojson.Feature
 import fi.liikennevirasto.digiroad2.tnits.runners.AssetType
 
 import scala.util.{Failure, Success, Try}
-import scala.xml.{NodeBuffer, NodeSeq}
+import scala.xml.{Elem, NodeBuffer, NodeSeq}
 
 /** Generates a dataset. */
 object RosatteConverter {
@@ -98,5 +98,5 @@ trait AssetRosatteConverter {
 
   def splitFeaturesApplicableToBothDirections(assets: Seq[FeatureType], assetType : AssetType): Seq[FeatureType]
 
-  def encodedGeometry(feature: FeatureType) : NodeBuffer
+  def encodedGeometry(feature: FeatureType) : Elem
 }
