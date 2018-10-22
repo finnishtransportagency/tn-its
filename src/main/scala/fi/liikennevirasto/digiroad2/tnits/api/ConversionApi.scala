@@ -24,7 +24,7 @@ class ConversionApi extends ScalatraServlet with FutureSupport with Authenticati
   }
 
   post("/:endDate") {
-    val startDate =/* RemoteDatasets.getLatestEndTime.getOrElse(*/Instant.now.minus(2, ChronoUnit.DAYS)/*)*/
+    val startDate = RemoteDatasets.getLatestEndTime.getOrElse(Instant.now.minus(1, ChronoUnit.DAYS))
     val endDate = Instant.parse(params("endDate"))
 
     if(startDate.isAfter(endDate)  || endDate.isAfter(Instant.now))
