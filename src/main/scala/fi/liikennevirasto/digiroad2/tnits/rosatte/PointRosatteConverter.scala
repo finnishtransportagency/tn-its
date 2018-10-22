@@ -79,11 +79,11 @@ object PointRosatteConverter extends AssetRosatteConverter {
 
   override def encodedGeometry(feature: FeaturePoint[PointAssetProperties]) : Elem   = {
     <rst:encodedGeometry>
-      <gml:LineString gml:id={UUID.randomUUID().toString} srsDimension="2">
-        <gml:posList>
+      <gml:Point gml:id={UUID.randomUUID().toString} srsDimension="2">
+        <gml:pos>
           {geometry(feature)}
-        </gml:posList>
-      </gml:LineString>
+        </gml:pos>
+      </gml:Point>
     </rst:encodedGeometry>
   }
 }
