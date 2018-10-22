@@ -19,15 +19,13 @@ class PointRosatteConverter extends AssetRosatteConverter {
   override def locationReference(feature: FeaturePoint[PointAssetProperties], reference: String): NodeBuffer = {
     val properties = feature.properties
 
-    <rst:locationReference>
-      <rst:INSPIRELinearLocation gml:id={UUID.randomUUID().toString}>
-        <net:SimpleLinearReference>
-          <net:element xlink:href={DefaultLinkReference + properties.link.id}/>
-          {applicableDirection(properties.sideCode)}
-          <net:atPosition uom="meter">
-            {properties.mValue}
-          </net:atPosition>
-        </net:SimpleLinearReference>
+      <rst:locationReference>
+      <rst:INSPIRELinearLocation gml:id= { UUID.randomUUID().toString }>
+        <net:SimplePointReference>
+          <net:element xlink:href= { DefaultLinkReference + properties.link.id }/>
+          {applicableDirection(properties.sideCode) }
+          <net:atPosition uom="meter"> { properties.mValue }</net:atPosition>
+        </net:SimplePointReference>
       </rst:INSPIRELinearLocation>
     </rst:locationReference>
       <rst:locationReference>
@@ -108,5 +106,13 @@ class PointValueRosatteConverter extends PointRosatteConverter {
         NodeSeq.Empty
     }
 
+  override def encodedGeometry(feature: FeaturePoint[PointAssetProperties]) : Elem   = {
+    <rst:encodedGeometry>
+      <gml:Point gml:id={UUID.randomUUID().toString} srsDimension="2">
+        <gml:pos>
+          {geometry(feature)}
+        </gml:pos>
+      </gml:Point>
+    </rst:encodedGeometry>
   }
 }

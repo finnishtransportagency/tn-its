@@ -164,4 +164,13 @@ object LinearRosatteConverter extends AssetRosatteConverter {
     <net:applicableDirection>{direction}</net:applicableDirection>
   }
 
+  override def encodedGeometry(feature: FeatureLinear[LinearAssetProperties]) : Elem   = {
+    <rst:encodedGeometry>
+      <gml:LineString  gml:id={UUID.randomUUID().toString} srsDimension="2">
+        <gml:posList>
+          {geometry(feature)}
+        </gml:posList>
+      </gml:LineString >
+    </rst:encodedGeometry>
+  }
 }
