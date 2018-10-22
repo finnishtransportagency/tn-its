@@ -26,7 +26,7 @@ object LinearRosatteConverter extends AssetRosatteConverter {
     <rst:INSPIRELinearLocation gml:id={ UUID.randomUUID().toString }>
         <net:SimpleLinearReference>
           <net:element xlink:href= { DefaultLinkReference + properties.link.id } />
-          <net:applicableDirection> { applicableDirection(properties.sideCode) }</net:applicableDirection>
+          { applicableDirection(properties.sideCode) }
           <net:fromPosition uom="meter"> { properties.startMeasure }</net:fromPosition>
           <net:toPosition uom="meter"> { properties.endMeasure }</net:toPosition>
         </net:SimpleLinearReference>
