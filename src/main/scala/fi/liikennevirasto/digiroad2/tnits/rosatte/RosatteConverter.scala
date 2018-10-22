@@ -78,13 +78,7 @@ trait AssetRosatteConverter {
               </rst:UpdateInfo>
             </rst:updateInfo>
             <rst:source>Regulation</rst:source>
-            <rst:encodedGeometry>
-              <gml:LineString gml:id={ UUID.randomUUID().toString } srsDimension="2">
-                <gml:posList>
-                  { geometry(feature) }
-                </gml:posList>
-              </gml:LineString>
-            </rst:encodedGeometry>
+            {encodedGeometry(feature)}
             <rst:type>{ assetType.featureType }</rst:type>
             {properties(assetType, feature)}
           </rst:GenericSafetyFeature>
@@ -103,4 +97,6 @@ trait AssetRosatteConverter {
   def geometry(feature: FeatureType) : String
 
   def splitFeaturesApplicableToBothDirections(assets: Seq[FeatureType], assetType : AssetType): Seq[FeatureType]
+
+  def encodedGeometry(feature: FeatureType) : NodeBuffer
 }
