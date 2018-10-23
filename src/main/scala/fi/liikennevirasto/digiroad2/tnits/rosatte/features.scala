@@ -108,7 +108,9 @@ object features {
         90 -> "TrafficLightsAhead",
         91 -> "RailwayCrossing",
         92 -> "Rockfall",
-        93 -> "SideWind"
+        93 -> "SideWind",
+        125 -> "Moose",
+        126 -> "Reindeer"
       )
       warningSignType(typeId)
     }
