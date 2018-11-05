@@ -1,7 +1,7 @@
 package fi.liikennevirasto.digiroad2.tnits.rosatte
 
 import fi.liikennevirasto.digiroad2.tnits.geojson
-import fi.liikennevirasto.digiroad2.tnits.rosatte.features.{RoadLink}
+import fi.liikennevirasto.digiroad2.tnits.rosatte.features.RoadLink
 
 case class ValidityPeriodDayOfWeek(value: Int)
 case class ValidityPeriod(startHour: Int, endHour: Int, days: Int, startMinute: Int = 0, endMinute: Int = 0)
@@ -49,22 +49,24 @@ object features {
     length: Double)
 
   case class ProhibitionTypesOperations(typeId: Int, exceptions: Set[Int]) {
-    val mapVehicleType = Map((3, Seq("AllVehicle"))
-      ,(2	, Seq("AllVehicle"))
-      ,(12 , Seq("Pedestrian"))
-      ,(11 , Seq("Bicycle"))
-      ,(10 , Seq("Moped"))
-      ,(9	, Seq("Motorcycle"))
-      ,(5	, Seq("PublicBus", "PrivateBus"))
-      ,(8	, Seq("Taxi"))
-      ,(7 , Seq("PassangerCar"))
-      ,(6	, Seq("DeliveryTruck"))
-      ,(4	, Seq("TransportTruck"))
-      ,(19 , Seq("MilitaryVehicle"))
-      ,(13 , Seq("CarWithTrailer"))
-      ,(14 , Seq("FarmVehicle"))
-      ,(21 , Seq("DeliveryTruck", "EmergencyVehicle", "FacilityVehicle", "MailVehicle"))
-      ,(22 , Seq("ResidentialVehicle")))
+    val mapVehicleType: Map[Int, Seq[String]] = Map(
+      3 -> Seq("AllVehicle"),
+      2	-> Seq("AllVehicle"),
+      12 -> Seq("Pedestrian"),
+      11 -> Seq("Bicycle"),
+      10 -> Seq("Moped"),
+      9	-> Seq("Motorcycle"),
+      5	-> Seq("PublicBus", "PrivateBus"),
+      8	-> Seq("Taxi"),
+      7 -> Seq("PassangerCar"),
+      6	-> Seq("DeliveryTruck"),
+      4	-> Seq("TransportTruck"),
+      19 -> Seq("MilitaryVehicle"),
+      13 -> Seq("CarWithTrailer"),
+      14 -> Seq("FarmVehicle"),
+      21 -> Seq("DeliveryTruck", "EmergencyVehicle", "FacilityVehicle", "MailVehicle"),
+      22 -> Seq("ResidentialVehicle"))
+
 
     def vehicleConditionExceptions(): Set[String] = {
       val excludedType = Set(23, 26, 27, 28, 15)
