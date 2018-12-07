@@ -8,8 +8,6 @@ import java.util.UUID
 import fi.liikennevirasto.digiroad2.tnits.oth.OTHClient
 import fi.liikennevirasto.digiroad2.tnits.rosatte.DatasetID.DataSetId
 import fi.liikennevirasto.digiroad2.tnits.rosatte.features.{Asset, NumericAssetProperties}
-import fi.liikennevirasto.digiroad2.tnits.geojson.{Feature, FeatureLinear}
-import fi.liikennevirasto.digiroad2.tnits.rosatte.features.{Asset, NumericAssetProperties}
 import fi.liikennevirasto.digiroad2.tnits.geojson.Feature
 import fi.liikennevirasto.digiroad2.tnits.runners.AssetType
 import org.json4s.jackson.JsonMethods._
