@@ -8,15 +8,14 @@ import java.util.concurrent.Executors
 
 import fi.liikennevirasto.digiroad2.tnits.aineistot.RemoteDatasets
 import fi.liikennevirasto.digiroad2.tnits.geojson.Feature
-import fi.liikennevirasto.digiroad2.tnits.oth.{Client, OTHClient, VehicleOTHClient, ViiteClient}
-import fi.liikennevirasto.digiroad2.tnits.rosatte.features.{Asset, VehicleProhibitionAssetProperties}
-import fi.liikennevirasto.digiroad2.tnits.rosatte.{AssetProperties, DatasetID, RosatteConverter, features}
+import fi.liikennevirasto.digiroad2.tnits.oth._
+import fi.liikennevirasto.digiroad2.tnits.rosatte._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 import scala.concurrent.{Await, ExecutionContext, Future}
 
-case class AssetType(apiEndPoint: String, featureType: String, valueType: String, unit: String, client: Client)
+case class AssetType(apiEndPoint: String, featureType: String, valueType: String, unit: String, client: Client, service: AssetRosatteConverter)
 
 /** Runs a conversion batch job. */
 object Converter {
@@ -40,15 +39,16 @@ object Converter {
     logger.println(s"end: $end")
 
     val assetTypes = Seq(
-      AssetType("speed_limits", "SpeedLimit", "MaximumSpeedLimit", "kmph", OTHClient),
-      AssetType("axle_weight_limits", "RestrictionForVehicles", "MaximumWeightPerSingleAxle", "kg", OTHClient),
-      AssetType("length_limits", "RestrictionForVehicles", "MaximumLength", "cm", OTHClient),
-      AssetType("width_limits", "RestrictionForVehicles", "MaximumWidth", "cm", OTHClient),
-      AssetType("height_limits", "RestrictionForVehicles", "MaximumHeight", "cm", OTHClient),
-      AssetType("total_weight_limits", "RestrictionForVehicles", "MaximumLadenWeight", "kg", OTHClient),
+      AssetType("speed_limits", "SpeedLimit", "MaximumSpeedLimit", "kmph", OTHClient, LinearRosatteConverter),
+      AssetType("axle_weight_limits", "RestrictionForVehicles", "MaximumWeightPerSingleAxle", "kg", OTHClient, LinearRosatteConverter),
+      AssetType("length_limits", "RestrictionForVehicles", "MaximumLength", "cm", OTHClient, LinearRosatteConverter),
+      AssetType("width_limits", "RestrictionForVehicles", "MaximumWidth", "cm", OTHClient, LinearRosatteConverter),
+      AssetType("height_limits", "RestrictionForVehicles", "MaximumHeight", "cm", OTHClient, LinearRosatteConverter),
+      AssetType("total_weight_limits", "RestrictionForVehicles", "MaximumLadenWeight", "kg", OTHClient, LinearRosatteConverter),
 //      AssetType("road_names", "RoadName", "RoadName", ""),
-      AssetType("road_numbers", "RoadNumber", "RoadNumber", "", ViiteClient),
-      AssetType("vehicle_prohibitions", "NoEntry", "NoEntry", "", VehicleOTHClient))
+      AssetType("road_numbers", "RoadNumber", "RoadNumber", "", ViiteClient, LinearRosatteConverter),
+      AssetType("vehicle_prohibitions", "NoEntry", "NoEntry", "", VehicleOTHClient, LinearRosatteConverter),
+      AssetType("pedestrian_crossing", "PedestrianCrossing", "PedestrianCrossing", "", PedestrianCrossingOTHClient, PointRosatteConverter))
 
     val assets = fetchAllChanges(start, end, assetTypes)
     logger.println("fetched all changes, generating dataset")
@@ -57,7 +57,7 @@ object Converter {
     val filename = s"${URLEncoder.encode(dataSetId, "UTF-8")}.xml"
 
     try {
-//       Create new stream to the SFTP server for replace a stream to the FTP server in the Future
+      // Create new stream to the SFTP server for replace a stream to the FTP server in the Future
       val outputStreamSFTP = RemoteDatasets.getOutputStreamSFTP(filename)
 
       try {

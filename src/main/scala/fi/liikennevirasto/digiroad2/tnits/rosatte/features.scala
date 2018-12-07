@@ -10,6 +10,14 @@ case class ProhibitionValue(typeId: Int, validityPeriod: Set[ValidityPeriod], ex
 trait AssetProperties {
   val sideCode: Int
   val changeType: String
+  val link: RoadLink
+
+  def setSideCode(sideCode: Int): AssetProperties
+}
+
+trait LinearAssetProperties extends AssetProperties {
+  val sideCode: Int
+  val changeType: String
   val value: Any
   val startMeasure: Double
   val endMeasure: Double
@@ -18,10 +26,19 @@ trait AssetProperties {
   def setSideCode(sideCode: Int): AssetProperties
 }
 
+trait PointAssetProperties extends AssetProperties {
+  val sideCode: Int
+  val changeType: String
+  val link: RoadLink
+  val mValue: Double
+
+  def setSideCode(sideCode: Int): AssetProperties
+}
+
 /** GeoJSON types specialized to OTH assets. */
 object features {
   type Asset = geojson.Feature[AssetProperties]
-  type RoadLink = geojson.Feature[RoadLinkProperties]
+  type RoadLink = geojson.FeatureLinear[RoadLinkProperties]
 
   case class NumericAssetProperties(
     sideCode: Int,
@@ -29,8 +46,8 @@ object features {
     value: Int,
     startMeasure: Double,
     endMeasure: Double,
-    link: RoadLink) extends  AssetProperties {
-    override def setSideCode(sideCode: Int): AssetProperties = copy(sideCode = sideCode)
+    link: RoadLink) extends  LinearAssetProperties {
+    override def setSideCode(sideCode: Int): LinearAssetProperties = copy(sideCode = sideCode)
   }
 
   case class VehicleProhibitionAssetProperties(
@@ -39,8 +56,16 @@ object features {
       value: Seq[ProhibitionValue],
       startMeasure: Double,
       endMeasure: Double,
-      link: RoadLink) extends  AssetProperties {
-    override def setSideCode(sideCode: Int): AssetProperties = copy(sideCode = sideCode)
+      link: RoadLink) extends  LinearAssetProperties {
+    override def setSideCode(sideCode: Int): LinearAssetProperties = copy(sideCode = sideCode)
+  }
+
+  case class PedestrianCrossingAssetProperties(
+      sideCode: Int,
+      changeType: String,
+      mValue: Double,
+      link: RoadLink) extends  PointAssetProperties {
+    override def setSideCode(sideCode: Int): PointAssetProperties = copy(sideCode = sideCode)
   }
 
   case class RoadLinkProperties(

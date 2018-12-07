@@ -3,11 +3,10 @@ package fi.liikennevirasto.digiroad2.tnits.oth
 import java.net.URI
 import java.time.Instant
 
-import fi.liikennevirasto.digiroad2.tnits
-import fi.liikennevirasto.digiroad2.tnits.geojson.Feature
+import fi.liikennevirasto.digiroad2.tnits.geojson.{Feature, FeatureLinear, FeaturePoint}
 import fi.liikennevirasto.digiroad2.tnits.rosatte.AssetProperties
-import fi.liikennevirasto.digiroad2.tnits.{config, geojson}
-import fi.liikennevirasto.digiroad2.tnits.rosatte.features.{Asset, NumericAssetProperties, VehicleProhibitionAssetProperties}
+import fi.liikennevirasto.digiroad2.tnits.config
+import fi.liikennevirasto.digiroad2.tnits.rosatte.features._
 import org.apache.http.HttpHost
 import org.apache.http.auth.{AuthScope, UsernamePasswordCredentials}
 import org.apache.http.client.config.RequestConfig
@@ -102,18 +101,27 @@ trait Client {
 object OTHClient extends Client{
   override def changeApi: String = config.urls.changesApi
 
-  override protected def extractFeatures(features: JValue): Seq[Feature[AssetProperties]] = {
-    val extrated = features.extract[Seq[Feature[NumericAssetProperties]]]
-    extrated.asInstanceOf[Seq[Feature[AssetProperties]]]
+  override protected def extractFeatures(features: JValue): Seq[FeatureLinear[AssetProperties]] = {
+    val extrated = features.extract[Seq[FeatureLinear[NumericAssetProperties]]]
+    extrated.asInstanceOf[Seq[FeatureLinear[AssetProperties]]]
   }
 }
 
 object VehicleOTHClient extends Client{
   override def changeApi: String = config.urls.changesApi
 
-  override protected def extractFeatures(features: JValue): Seq[Feature[AssetProperties]] = {
-    val extrated = features.extract[Seq[Feature[VehicleProhibitionAssetProperties]]]
-    extrated.asInstanceOf[Seq[Feature[AssetProperties]]]
+  override protected def extractFeatures(features: JValue): Seq[FeatureLinear[AssetProperties]] = {
+    val extrated = features.extract[Seq[FeatureLinear[VehicleProhibitionAssetProperties]]]
+    extrated.asInstanceOf[Seq[FeatureLinear[AssetProperties]]]
+  }
+}
+
+object PedestrianCrossingOTHClient extends Client{
+  override def changeApi: String = config.urls.changesApi
+
+  override protected def extractFeatures(features: JValue): Seq[FeaturePoint[AssetProperties]] = {
+    val extrated = features.extract[Seq[FeaturePoint[PedestrianCrossingAssetProperties]]]
+    extrated.asInstanceOf[Seq[FeaturePoint[AssetProperties]]]
   }
 }
 
@@ -123,8 +131,8 @@ object ViiteClient extends Client{
 
   override def changeApi: String = config.urls.viiteChangeApi
 
-  override protected def extractFeatures(features: JValue): Seq[Feature[AssetProperties]] = {
-    features.extract[Seq[Feature[NumericAssetProperties]]].asInstanceOf[Seq[Feature[AssetProperties]]]
+  override protected def extractFeatures(features: JValue): Seq[FeatureLinear[AssetProperties]] = {
+    features.extract[Seq[FeatureLinear[NumericAssetProperties]]].asInstanceOf[Seq[FeatureLinear[AssetProperties]]]
   }
 }
 

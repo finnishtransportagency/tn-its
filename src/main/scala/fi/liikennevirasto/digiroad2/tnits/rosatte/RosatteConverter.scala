@@ -5,16 +5,13 @@ import java.time.Instant
 import java.util.UUID
 
 import fi.liikennevirasto.digiroad2.tnits.geojson.Feature
-import fi.liikennevirasto.digiroad2.tnits.geometry.{CoordinateTransform, Point}
-import fi.liikennevirasto.digiroad2.tnits.openlr.OpenLREncoder
-import fi.liikennevirasto.digiroad2.tnits.rosatte.features.{ProhibitionTypesOperations, ValidityPeriodOperations}
 import fi.liikennevirasto.digiroad2.tnits.runners.AssetType
 
 import scala.util.{Failure, Success, Try}
+import scala.xml.{Elem, NodeBuffer, NodeSeq}
 
 /** Generates a dataset. */
 object RosatteConverter {
-
 
   /** Converts the given [[fi.liikennevirasto.digiroad2.tnits.rosatte.features.Asset]]s
     * to Rosatte XML and writes it to the provided stream. */
@@ -35,9 +32,9 @@ object RosatteConverter {
 
     featureMembers.foreach { case (assetType, changes) =>
       // We need to split two-way features into two one-way features because of OpenLR encoding
-      val onlyOneWayFeatures = splitFeaturesApplicableToBothDirections(changes)
+      val onlyOneWayFeatures = assetType.service.splitFeaturesApplicableToBothDirections(changes.asInstanceOf[Seq[assetType.service.FeatureType]], assetType)
       onlyOneWayFeatures.foreach { feature =>
-        val featureMember = toFeatureMember(feature, assetType.featureType, assetType.valueType, assetType.unit, assetType.apiEndPoint)
+        val featureMember = assetType.service.toFeatureMember(feature, assetType, writer)
         writer.write(featureMember.toString)
       }
     }
@@ -52,98 +49,16 @@ object RosatteConverter {
 
     writer.flush()
   }
+}
 
-  private def splitFeaturesApplicableToBothDirections(assets: Seq[Feature[AssetProperties]]): Seq[Feature[AssetProperties]] = {
-    assets.flatMap { feature =>
-      feature.properties.sideCode match {
-        case 1 =>
-          Seq(feature.copy(properties = feature.properties.setSideCode(sideCode = 2)),
-            feature.copy(properties = feature.properties.setSideCode(sideCode = 3)))
-        case _ =>
-          Seq(feature)
-      }
-    }
-  }
+trait AssetRosatteConverter {
+  type AssetPropertiesType <: AssetProperties
+  type FeatureType <: Feature[AssetPropertiesType]
 
-  private def toFeatureMember(feature: Feature[AssetProperties], featureType: String, valueType: String, unit: String, assetType: String) = {
-    val coordinates = feature.geometry.coordinates.flatMap(_.take(2))
-    val transformedCoordinates = CoordinateTransform.convertToWgs84(coordinates)
-    val geometry = transformedCoordinates.mkString(" ")
-    val startMeasure = feature.properties.startMeasure
-    val endMeasure = feature.properties.endMeasure
-    val link = feature.properties.link
-    val linkReference = "FI.1000018." + link.id
-    val applicableDirection = feature.properties.sideCode match {
-      case 2 => "inDirection"
-      case 3 => "inOppositeDirection"
-      case _ => ""
-    }
+  val DefaultLinkReference = "FI.1000018."
 
-    val properties = assetType match {
-
-      case "vehicle_prohibitions" =>
-        feature.properties.value.asInstanceOf[Seq[ProhibitionValue]].map { prohibitionValue =>
-          <rst:condition>
-            <rst:ConditionSet>
-              <rst:conditions>
-                <rst:VehicleCondition>
-                  <rst:negate>false</rst:negate>
-                  <rst:vehicleType>
-                    {ProhibitionTypesOperations(prohibitionValue.typeId, prohibitionValue.exceptions).vehicleConditionType()}
-                  </rst:vehicleType>
-                </rst:VehicleCondition>
-                <rst:VehicleCondition>
-                  <rst:negate>true</rst:negate>
-                  {ProhibitionTypesOperations(prohibitionValue.typeId, prohibitionValue.exceptions).vehicleConditionExceptions().map{ exception => <rst:vehicleType> {exception} </rst:vehicleType> }}
-                </rst:VehicleCondition>
-              </rst:conditions>
-              <rst:operator>AND</rst:operator>
-            </rst:ConditionSet>
-            <rst:ConditionSet>
-              <rst:conditions>
-                <rst:TimeCondition>
-                  {prohibitionValue.validityPeriod.map { validityPeriod =>
-                  <rst:validityPeriod>
-                    <rst:ValidityPeriod>
-                      <rst:time>
-                        <rst:weekday>
-                          <rst:IntegerInterval>
-                            <rst:start>
-                              {ValidityPeriodOperations(validityPeriod.startHour, validityPeriod.endHour, validityPeriod.days, validityPeriod.startMinute, validityPeriod.endMinute).fromTimeDomainValue()._1}
-                            </rst:start>
-                            <rst:length>
-                              {ValidityPeriodOperations(validityPeriod.startHour, validityPeriod.endHour, validityPeriod.days, validityPeriod.startMinute, validityPeriod.endMinute).fromTimeDomainValue()._2}
-                            </rst:length>
-                          </rst:IntegerInterval>
-                        </rst:weekday>
-                        <rst:begin>
-                          {s"${validityPeriod.startHour}:${validityPeriod.startMinute}:00"}
-                        </rst:begin>
-                        <rst:lengthSeconds>
-                          {ValidityPeriodOperations(validityPeriod.startHour, validityPeriod.endHour, validityPeriod.days, validityPeriod.startMinute, validityPeriod.endMinute).duration()}
-                        </rst:lengthSeconds>
-                      </rst:time>
-                    </rst:ValidityPeriod>
-                  </rst:validityPeriod>
-                }}
-                </rst:TimeCondition>
-              </rst:conditions>
-              <rst:operator>OR</rst:operator>
-            </rst:ConditionSet>
-          </rst:condition>
-        }
-      case _ =>
-        <rst:properties>
-          <rst:SafetyFeaturePropertyValue>
-            <rst:type>{valueType}</rst:type>
-            <rst:propertyValue>
-              <gml:measure uom={unit}>{feature.properties.value}</gml:measure>
-            </rst:propertyValue>
-          </rst:SafetyFeaturePropertyValue>
-        </rst:properties>
-    }
-
-    val openLR = encodeOpenLRLocationString(startMeasure, endMeasure, applicableDirection, link, linkReference)
+  def toFeatureMember(feature: FeatureType, assetType: AssetType, writer: OutputStreamWriter) : Any = {
+    val openLR = encodeOpenLRLocationString(feature)
     openLR match {
       case Failure(reason) =>
         println(reason)
@@ -156,61 +71,32 @@ object RosatteConverter {
                 <rst:id>{feature.id}</rst:id>
               </rst:SafetyFeatureId>
             </rst:id>
-            <rst:locationReference>
-              <rst:INSPIRELinearLocation gml:id={ UUID.randomUUID().toString }>
-                <net:SimpleLinearReference>
-                  <net:element xlink:href={ linkReference }/>
-                  <net:applicableDirection>{ applicableDirection }</net:applicableDirection>
-                  <net:fromPosition uom="meter">{ startMeasure }</net:fromPosition>
-                  <net:toPosition uom="meter">{ endMeasure }</net:toPosition>
-                </net:SimpleLinearReference>
-              </rst:INSPIRELinearLocation>
-            </rst:locationReference>
-            <rst:locationReference>
-              <rst:OpenLRLocationString gml:id={ UUID.randomUUID().toString }>
-                <rst:base64String>{ reference }</rst:base64String>
-                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
-              </rst:OpenLRLocationString>
-            </rst:locationReference>
+             {locationReference(feature, reference)}
             <rst:updateInfo>
               <rst:UpdateInfo>
                 <rst:type>{ feature.properties.changeType }</rst:type>
               </rst:UpdateInfo>
             </rst:updateInfo>
             <rst:source>Regulation</rst:source>
-            <rst:encodedGeometry>
-              <gml:LineString gml:id={ UUID.randomUUID().toString } srsDimension="2">
-                <gml:posList>
-                  { geometry }
-                </gml:posList>
-              </gml:LineString>
-            </rst:encodedGeometry>
-            <rst:type>{ featureType }</rst:type>
-            {properties}
+            {encodedGeometry(feature)}
+            <rst:type>{ assetType.featureType }</rst:type>
+            {properties(assetType, feature)}
           </rst:GenericSafetyFeature>
         </gml:featureMember>
     }
   }
 
-  private def encodeOpenLRLocationString(startMeasure: Double, endMeasure: Double, applicableDirection: String, link: features.RoadLink, linkId: String): Try[String] = {
-    val coordinates =
-      link.geometry.coordinates.flatten
+  def properties(assetType: AssetType, feature: FeatureType) : NodeSeq
 
-    val points =
-      coordinates
-        .grouped(3)
-        .map { case Seq(x, y, z) => Point(x, y, z) }
-        .toSeq
+  def locationReference(feature: FeatureType, reference: String ) : NodeBuffer
 
-    val linkLength = link.properties.length
-    val functionalClass = link.properties.functionalClass
-    val linkType = link.properties.`type`
-    val (linkGeometry, startM, endM) =
-      if (applicableDirection == "inOppositeDirection")
-        (points.reverse, linkLength - endMeasure, linkLength - startMeasure)
-      else
-        (points, startMeasure, endMeasure)
+  def applicableDirection(sideCode: Int) : String
 
-    OpenLREncoder.encodeAssetOnLink(startM, endM, linkGeometry, linkLength, functionalClass, linkType, linkId)
-  }
+  def encodeOpenLRLocationString(feature: FeatureType): Try[String]
+
+  def geometry(feature: FeatureType) : String
+
+  def splitFeaturesApplicableToBothDirections(assets: Seq[FeatureType], assetType : AssetType): Seq[FeatureType]
+
+  def encodedGeometry(feature: FeatureType) : Elem
 }
