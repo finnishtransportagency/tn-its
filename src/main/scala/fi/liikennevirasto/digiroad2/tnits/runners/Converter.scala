@@ -7,8 +7,10 @@ import java.time.temporal.ChronoUnit
 import java.util.concurrent.Executors
 
 import fi.liikennevirasto.digiroad2.tnits.aineistot.RemoteDatasets
-import fi.liikennevirasto.digiroad2.tnits.oth.{Client, OTHClient, ViiteClient}
-import fi.liikennevirasto.digiroad2.tnits.rosatte.{DatasetID, RosatteConverter, features}
+import fi.liikennevirasto.digiroad2.tnits.geojson.Feature
+import fi.liikennevirasto.digiroad2.tnits.oth.{Client, OTHClient, VehicleOTHClient, ViiteClient}
+import fi.liikennevirasto.digiroad2.tnits.rosatte.features.{Asset, VehicleProhibitionAssetProperties}
+import fi.liikennevirasto.digiroad2.tnits.rosatte.{AssetProperties, DatasetID, RosatteConverter, features}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
@@ -44,8 +46,9 @@ object Converter {
       AssetType("width_limits", "RestrictionForVehicles", "MaximumWidth", "cm", OTHClient),
       AssetType("height_limits", "RestrictionForVehicles", "MaximumHeight", "cm", OTHClient),
       AssetType("total_weight_limits", "RestrictionForVehicles", "MaximumLadenWeight", "kg", OTHClient),
-      //AssetType("road_names", "RoadName", "RoadName", ""),
-      AssetType("road_numbers", "RoadNumber", "RoadNumber", "", ViiteClient))
+//      AssetType("road_names", "RoadName", "RoadName", ""),
+      AssetType("road_numbers", "RoadNumber", "RoadNumber", "", ViiteClient),
+      AssetType("vehicle_prohibitions", "NoEntry", "NoEntry", "", VehicleOTHClient))
 
     val assets = fetchAllChanges(start, end, assetTypes)
     logger.println("fetched all changes, generating dataset")
@@ -54,7 +57,7 @@ object Converter {
     val filename = s"${URLEncoder.encode(dataSetId, "UTF-8")}.xml"
 
     try {
-      // Create new stream to the SFTP server for replace a stream to the FTP server in the Future
+//       Create new stream to the SFTP server for replace a stream to the FTP server in the Future
       val outputStreamSFTP = RemoteDatasets.getOutputStreamSFTP(filename)
 
       try {
@@ -71,7 +74,7 @@ object Converter {
     logger.println("done!\n")
   }
 
-  private def fetchAllChanges(start: Instant, end: Instant, assetTypes: Seq[AssetType]): Seq[Seq[features.Asset]] = {
+  private def fetchAllChanges(start: Instant, end: Instant, assetTypes: Seq[AssetType]): Seq[Seq[Feature[AssetProperties]]] = {
     try {
       val executor = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(10))
       val responses = Future.sequence(assetTypes.map { asset =>
