@@ -22,7 +22,7 @@ object PointRosatteConverter extends AssetRosatteConverter {
       <rst:INSPIRELinearLocation gml:id= { UUID.randomUUID().toString }>
         <net:SimplePointReference>
           <net:element xlink:href= { DefaultLinkReference + properties.link.id }/>
-          <net:applicableDirection> { applicableDirection(properties.sideCode) }</net:applicableDirection>
+          <net:applicableDirection> {applicableDirection(properties.sideCode) }</net:applicableDirection>
           <net:atPosition uom="meter"> { properties.mValue }</net:atPosition>
         </net:SimplePointReference>
       </rst:INSPIRELinearLocation>
@@ -43,13 +43,7 @@ object PointRosatteConverter extends AssetRosatteConverter {
   }
 
   override def properties(assetType: AssetType, feature: FeaturePoint[PointAssetProperties]) : NodeSeq  = {
-    <rst:properties>
-      <rst:SafetyFeaturePropertyValue>
-        <rst:type>
-          {assetType.valueType}
-        </rst:type>
-      </rst:SafetyFeaturePropertyValue>
-    </rst:properties>
+    NodeSeq.Empty
   }
 
   override def encodeOpenLRLocationString(feature: FeaturePoint[PointAssetProperties]): Try[String] = {
