@@ -102,7 +102,7 @@ object OTHClient extends Client{
   override def changeApi: String = config.urls.changesApi
 
   override protected def extractFeatures(features: JValue): Seq[FeatureLinear[AssetProperties]] = {
-    val extrated = features.extract[Seq[FeatureLinear[NumericAssetProperties]]]
+    val extrated = features.extract[Seq[FeatureLinear[LinearNumericAssetProperties]]]
     extrated.asInstanceOf[Seq[FeatureLinear[AssetProperties]]]
   }
 }
@@ -120,7 +120,7 @@ object PedestrianCrossingOTHClient extends Client{
   override def changeApi: String = config.urls.changesApi
 
   override protected def extractFeatures(features: JValue): Seq[FeaturePoint[AssetProperties]] = {
-    val extrated = features.extract[Seq[FeaturePoint[PedestrianCrossingProperties]]]
+    val extrated = features.extract[Seq[FeaturePoint[IncomingPointAssetProperties]]]
     extrated.asInstanceOf[Seq[FeaturePoint[AssetProperties]]]
   }
 }
@@ -129,7 +129,7 @@ object ObstacleOTHClient extends Client{
   override def changeApi: String = config.urls.changesApi
 
   override protected def extractFeatures(features: JValue): Seq[FeaturePoint[AssetProperties]] = {
-    val extracted = features.extract[Seq[FeaturePoint[ObstacleProperties]]]
+    val extracted = features.extract[Seq[FeaturePoint[IncomingPointAssetProperties]]]
     extracted.asInstanceOf[Seq[FeaturePoint[AssetProperties]]]
   }
 }
@@ -137,7 +137,15 @@ object ObstacleOTHClient extends Client{
 object WarningSignOTHClient extends Client{
   override def changeApi: String = config.urls.changesApi
   override protected def extractFeatures(features: JValue): Seq[FeaturePoint[AssetProperties]] = {
-    val extrated = features.extract[Seq[FeaturePoint[WarningSignProperties]]]
+    val extrated = features.extract[Seq[FeaturePoint[IncomingPointAssetProperties]]]
+    extrated.asInstanceOf[Seq[FeaturePoint[AssetProperties]]]
+  }
+}
+
+object StopSignOTHClient extends Client{
+  override def changeApi: String = config.urls.changesApi
+  override protected def extractFeatures(features: JValue): Seq[FeaturePoint[AssetProperties]] = {
+    val extrated = features.extract[Seq[FeaturePoint[IncomingPointAssetProperties]]]
     extrated.asInstanceOf[Seq[FeaturePoint[AssetProperties]]]
   }
 }
@@ -149,7 +157,7 @@ object ViiteClient extends Client{
   override def changeApi: String = config.urls.viiteChangeApi
 
   override protected def extractFeatures(features: JValue): Seq[FeatureLinear[AssetProperties]] = {
-    features.extract[Seq[FeatureLinear[NumericAssetProperties]]].asInstanceOf[Seq[FeatureLinear[AssetProperties]]]
+    features.extract[Seq[FeatureLinear[LinearNumericAssetProperties]]].asInstanceOf[Seq[FeatureLinear[AssetProperties]]]
   }
 }
 

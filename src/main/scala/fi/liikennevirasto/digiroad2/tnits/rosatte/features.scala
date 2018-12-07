@@ -40,48 +40,32 @@ object features {
   type Asset = geojson.Feature[AssetProperties]
   type RoadLink = geojson.FeatureLinear[RoadLinkProperties]
 
-  case class NumericAssetProperties(
-    sideCode: Int,
-    changeType: String,
-    value: Int,
-    startMeasure: Double,
-    endMeasure: Double,
-    link: RoadLink) extends  LinearAssetProperties {
+  case class LinearNumericAssetProperties(
+                                           sideCode: Int,
+                                           changeType: String,
+                                           value: Int,
+                                           startMeasure: Double,
+                                           endMeasure: Double,
+                                           link: RoadLink) extends LinearAssetProperties {
     override def setSideCode(sideCode: Int): LinearAssetProperties = copy(sideCode = sideCode)
   }
 
   case class VehicleProhibitionProperties(
-      sideCode: Int,
-      changeType: String,
-      value: Seq[ProhibitionValue],
-      startMeasure: Double,
-      endMeasure: Double,
-      link: RoadLink) extends  LinearAssetProperties {
+                                           sideCode: Int,
+                                           changeType: String,
+                                           value: Seq[ProhibitionValue],
+                                           startMeasure: Double,
+                                           endMeasure: Double,
+                                           link: RoadLink) extends LinearAssetProperties {
     override def setSideCode(sideCode: Int): LinearAssetProperties = copy(sideCode = sideCode)
   }
 
-  case class PedestrianCrossingProperties(
-      sideCode: Int,
-      changeType: String,
-      mValue: Double,
-      link: RoadLink) extends  PointAssetProperties {
-    override def setSideCode(sideCode: Int): PointAssetProperties = copy(sideCode = sideCode)
-  }
-
-  case class ObstacleProperties(
-      sideCode: Int,
-      changeType: String,
-      mValue: Double,
-      link: RoadLink) extends  PointAssetProperties {
-    override def setSideCode(sideCode: Int): PointAssetProperties = copy(sideCode = sideCode)
-  }
-
-  case class WarningSignProperties(
-      sideCode: Int,
-      changeType: String,
-      mValue: Double,
-      typeValue: Int,
-      link: RoadLink) extends  PointAssetProperties {
+  case class IncomingPointAssetProperties(
+                                           sideCode: Int,
+                                           changeType: String,
+                                           typeValue: Option[Int],
+                                           mValue: Double,
+                                           link: RoadLink) extends PointAssetProperties {
     override def setSideCode(sideCode: Int): PointAssetProperties = copy(sideCode = sideCode)
   }
 
@@ -117,27 +101,29 @@ object features {
   }
 
   case class RoadLinkProperties(
-    functionalClass: Int,
-    `type`: Int,
-    length: Double)
+                                 functionalClass: Int,
+                                 `type`: Int,
+                                 length: Double)
 
   case class ProhibitionTypesOperations(typeId: Int, exceptions: Set[Int]) {
-    val mapVehicleType = Map((3, Seq("AllVehicle"))
-      ,(2	, Seq("AllVehicle"))
-      ,(12 , Seq("Pedestrian"))
-      ,(11 , Seq("Bicycle"))
-      ,(10 , Seq("Moped"))
-      ,(9	, Seq("Motorcycle"))
-      ,(5	, Seq("PublicBus", "PrivateBus"))
-      ,(8	, Seq("Taxi"))
-      ,(7 , Seq("PassangerCar"))
-      ,(6	, Seq("DeliveryTruck"))
-      ,(4	, Seq("TransportTruck"))
-      ,(19 , Seq("MilitaryVehicle"))
-      ,(13 , Seq("CarWithTrailer"))
-      ,(14 , Seq("FarmVehicle"))
-      ,(21 , Seq("DeliveryTruck", "EmergencyVehicle", "FacilityVehicle", "MailVehicle"))
-      ,(22 , Seq("ResidentialVehicle")))
+    val mapVehicleType: Map[Int, Seq[String]] = Map(
+      3 -> Seq("AllVehicle"),
+      2	-> Seq("AllVehicle"),
+      12 -> Seq("Pedestrian"),
+      11 -> Seq("Bicycle"),
+      10 -> Seq("Moped"),
+      9	-> Seq("Motorcycle"),
+      5	-> Seq("PublicBus", "PrivateBus"),
+      8	-> Seq("Taxi"),
+      7 -> Seq("PassangerCar"),
+      6	-> Seq("DeliveryTruck"),
+      4	-> Seq("TransportTruck"),
+      19 -> Seq("MilitaryVehicle"),
+      13 -> Seq("CarWithTrailer"),
+      14 -> Seq("FarmVehicle"),
+      21 -> Seq("DeliveryTruck", "EmergencyVehicle", "FacilityVehicle", "MailVehicle"),
+      22 -> Seq("ResidentialVehicle"))
+
 
     def vehicleConditionExceptions(): Set[String] = {
       val excludedType = Set(23, 26, 27, 28, 15)
@@ -159,10 +145,10 @@ object features {
   case class ValidityPeriodOperations(startHour: Int, endHour: Int, days: Int, startMinute: Int, endMinute: Int) {
     def fromTimeDomainValue() : (Int, Int)  =
       days match {
-      case 1 => (1, 5) //Weekday
-      case 2 => (6, 1) //Saturday
-      case 3 => (7, 1) //Sunday
-    }
+        case 1 => (1, 5) //Weekday
+        case 2 => (6, 1) //Saturday
+        case 3 => (7, 1) //Sunday
+      }
 
     def duration(): Int = {
       val startTotalMinutes = startMinute + (startHour * 60)
