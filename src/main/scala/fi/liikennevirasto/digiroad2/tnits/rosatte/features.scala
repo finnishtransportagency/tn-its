@@ -50,7 +50,7 @@ object features {
     override def setSideCode(sideCode: Int): LinearAssetProperties = copy(sideCode = sideCode)
   }
 
-  case class VehicleProhibitionAssetProperties(
+  case class VehicleProhibitionProperties(
       sideCode: Int,
       changeType: String,
       value: Seq[ProhibitionValue],
@@ -60,7 +60,7 @@ object features {
     override def setSideCode(sideCode: Int): LinearAssetProperties = copy(sideCode = sideCode)
   }
 
-  case class PedestrianCrossingAssetProperties(
+  case class PedestrianCrossingProperties(
       sideCode: Int,
       changeType: String,
       mValue: Double,
@@ -68,12 +68,50 @@ object features {
     override def setSideCode(sideCode: Int): PointAssetProperties = copy(sideCode = sideCode)
   }
 
-  case class ObstacleAssetProperties(
+  case class ObstacleProperties(
       sideCode: Int,
       changeType: String,
       mValue: Double,
       link: RoadLink) extends  PointAssetProperties {
     override def setSideCode(sideCode: Int): PointAssetProperties = copy(sideCode = sideCode)
+  }
+
+  case class WarningSignProperties(
+      sideCode: Int,
+      changeType: String,
+      mValue: Double,
+      typeValue: Int,
+      link: RoadLink) extends  PointAssetProperties {
+    override def setSideCode(sideCode: Int): PointAssetProperties = copy(sideCode = sideCode)
+  }
+
+  case class TrafficSigns(typeId: Int) {
+    def warningSign: String = {
+      val warningSignType = Map(
+        9 -> "Danger",
+        36 -> "DangerousCurve",
+        37 -> "DangerousCurve",
+        38 -> "DangerousCurve",
+        39 -> "DangerousCurve",
+        40 -> "Slope",
+        41 -> "Slope",
+        42 -> "UnevenRoadSurface",
+        43 -> "ChildrenPlaying",
+        82 -> "NarrowingRoad",
+        83 -> "TwoWayTraffic",
+        84 -> "MovingBridge",
+        85 -> "ConstructionWork",
+        86 -> "SlipperyRoad",
+        87 -> "PedestriansCrossing",
+        88 -> "CyclistsCrossing",
+        89 -> "DangerousIntersection",
+        90 -> "TrafficLightsAhead",
+        91 -> "RailwayCrossing",
+        92 -> "Rockfall",
+        93 -> "SideWind"
+      )
+      warningSignType(typeId)
+    }
   }
 
   case class RoadLinkProperties(

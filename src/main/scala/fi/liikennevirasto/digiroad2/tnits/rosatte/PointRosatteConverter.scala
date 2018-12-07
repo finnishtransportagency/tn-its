@@ -5,38 +5,41 @@ import java.util.UUID
 import fi.liikennevirasto.digiroad2.tnits.geojson.FeaturePoint
 import fi.liikennevirasto.digiroad2.tnits.geometry.{CoordinateTransform, Point}
 import fi.liikennevirasto.digiroad2.tnits.openlr.OpenLREncoder
+import fi.liikennevirasto.digiroad2.tnits.rosatte.features.{TrafficSigns, WarningSignProperties}
 import fi.liikennevirasto.digiroad2.tnits.runners.AssetType
 
 import scala.util.Try
 import scala.xml.{Elem, NodeBuffer, NodeSeq}
 
 /** Generates a dataset. */
-object PointRosatteConverter extends AssetRosatteConverter {
+class PointRosatteConverter extends AssetRosatteConverter {
   override type AssetPropertiesType = PointAssetProperties
   override type FeatureType = FeaturePoint[AssetPropertiesType]
 
-  override def locationReference(feature: FeaturePoint[PointAssetProperties], reference: String) : NodeBuffer   = {
+  override def locationReference(feature: FeaturePoint[PointAssetProperties], reference: String): NodeBuffer = {
     val properties = feature.properties
 
       <rst:locationReference>
       <rst:INSPIRELinearLocation gml:id= { UUID.randomUUID().toString }>
         <net:SimplePointReference>
           <net:element xlink:href= { DefaultLinkReference + properties.link.id }/>
-          <net:applicableDirection> {applicableDirection(properties.sideCode) }</net:applicableDirection>
+          {applicableDirection(properties.sideCode) }
           <net:atPosition uom="meter"> { properties.mValue }</net:atPosition>
         </net:SimplePointReference>
       </rst:INSPIRELinearLocation>
     </rst:locationReference>
-    <rst:locationReference>
-       <rst:OpenLRLocationString gml:id= { UUID.randomUUID().toString }>
-         <rst:base64String> { reference }</rst:base64String>
-         <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
-       </rst:OpenLRLocationString>
-    </rst:locationReference>
+      <rst:locationReference>
+        <rst:OpenLRLocationString gml:id={UUID.randomUUID().toString}>
+          <rst:base64String>
+            {reference}
+          </rst:base64String>
+          <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+        </rst:OpenLRLocationString>
+      </rst:locationReference>
 
   }
 
-  override def geometry(feature: FeaturePoint[PointAssetProperties] ) : String = {
+  override def geometry(feature: FeaturePoint[PointAssetProperties]): String = {
     val coordinates = Seq(feature.geometry.coordinates).flatMap(_.take(2))
     val transformedCoordinates = CoordinateTransform.convertToWgs84(coordinates)
     transformedCoordinates.mkString(" ")
@@ -64,19 +67,25 @@ object PointRosatteConverter extends AssetRosatteConverter {
     OpenLREncoder.encodeAssetOnLink(properties.mValue, properties.mValue, points, linkLength, functionalClass, linkType,  DefaultLinkReference + link.id)
   }
 
-  override def splitFeaturesApplicableToBothDirections(assets: Seq[FeaturePoint[PointAssetProperties]], assetType : AssetType): Seq[FeaturePoint[PointAssetProperties]] = {
+  override def splitFeaturesApplicableToBothDirections(assets: Seq[FeaturePoint[PointAssetProperties]], assetType: AssetType): Seq[FeaturePoint[PointAssetProperties]] = {
     assets
   }
 
-  override def applicableDirection(sideCode: Int) : String = {
-    sideCode match  {
-      case 1 => "bothDirection"
-      case 2 => "inDirection"
-      case 3 => "inOppositeDirection"
-      case _ => ""
+  override def applicableDirection(sideCode: Int): Elem = {
+    def buildDirection(direction: String): Elem = {
+      <net:applicableDirection>
+        {direction}
+      </net:applicableDirection>
+    }
+
+    sideCode match {
+      case 1 => buildDirection("bothDirection")
+      case 2 => buildDirection("inDirection")
+      case 3 => buildDirection("inOppositeDirection")
+      case 99 => <net:applicableDirection xsi:nil="true" nilReason="http://inspire.ec.europa.eu/codelist/VoidReasonValue/Unpopulated "/>
+      case _ => throw new IllegalArgumentException(s"Applicable direction value $sideCode not supported")
     }
   }
-
   override def encodedGeometry(feature: FeaturePoint[PointAssetProperties]) : Elem   = {
     <rst:encodedGeometry>
       <gml:Point gml:id={UUID.randomUUID().toString} srsDimension="2">
@@ -85,5 +94,26 @@ object PointRosatteConverter extends AssetRosatteConverter {
         </gml:pos>
       </gml:Point>
     </rst:encodedGeometry>
+  }
+}
+
+class PointValueRosatteConverter extends PointRosatteConverter {
+
+  override def properties(assetType: AssetType, feature: FeaturePoint[PointAssetProperties]): NodeSeq = {
+    assetType.apiEndPoint match {
+      case "warning_signs_group" =>
+        <rst:properties>
+          <rst:SafetyFeaturePropertyValue>
+            <rst:type>
+              {assetType.valueType}
+            </rst:type>
+            <rst:propertyValue>
+              {TrafficSigns(feature.properties.asInstanceOf[WarningSignProperties].typeValue).warningSign}
+            </rst:propertyValue>
+          </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+      case _ =>
+        NodeSeq.Empty
+    }
   }
 }

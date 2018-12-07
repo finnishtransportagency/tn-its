@@ -77,7 +77,7 @@ trait AssetRosatteConverter {
                 <rst:type>{ feature.properties.changeType }</rst:type>
               </rst:UpdateInfo>
             </rst:updateInfo>
-            <rst:source>Regulation</rst:source>
+            <rst:source>{assetType.source}</rst:source>
             {encodedGeometry(feature)}
             <rst:type>{ assetType.featureType }</rst:type>
             {properties(assetType, feature)}
@@ -90,7 +90,7 @@ trait AssetRosatteConverter {
 
   def locationReference(feature: FeatureType, reference: String ) : NodeBuffer
 
-  def applicableDirection(sideCode: Int) : String
+  def applicableDirection(sideCode: Int) : Elem
 
   def encodeOpenLRLocationString(feature: FeatureType): Try[String]
 
