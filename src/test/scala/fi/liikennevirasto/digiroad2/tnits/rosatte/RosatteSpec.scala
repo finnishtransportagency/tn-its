@@ -5,7 +5,6 @@ import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.UUID
 
-import fi.liikennevirasto.digiroad2.tnits.geojson.{Feature, FeatureLinear}
 import fi.liikennevirasto.digiroad2.tnits.oth.OTHClient
 import fi.liikennevirasto.digiroad2.tnits.rosatte.DatasetID.DataSetId
 import fi.liikennevirasto.digiroad2.tnits.rosatte.features.{Asset, NumericAssetProperties}
