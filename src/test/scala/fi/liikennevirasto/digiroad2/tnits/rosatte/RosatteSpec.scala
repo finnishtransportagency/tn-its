@@ -175,7 +175,7 @@ class RosatteSpec extends FunSuite {
         },
         "type": "Feature"}]}"""
 
-    val parsed = (parse(input) \ "features").extract[Seq[Feature[NumericAssetProperties]]].asInstanceOf[Seq[Feature[AssetProperties]]]
+    val parsed = (parse(input) \ "features").extract[Seq[FeatureLinear[LinearNumericAssetProperties]]].asInstanceOf[Seq[Feature[AssetProperties]]]
     val output = new ByteArrayOutputStream()
 
     RosatteConverter.convertDataSet(
@@ -345,7 +345,7 @@ class RosatteSpec extends FunSuite {
         ]}
         """
 
-    val parsed = (parse(input) \ "features").extract[Seq[Feature[NumericAssetProperties]]].asInstanceOf[Seq[Feature[AssetProperties]]]
+    val parsed = (parse(input) \ "features").extract[Seq[FeatureLinear[LinearNumericAssetProperties]]].asInstanceOf[Seq[Feature[AssetProperties]]]
     val output = new ByteArrayOutputStream()
 
     RosatteConverter.convertDataSet(
