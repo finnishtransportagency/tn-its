@@ -5,8 +5,7 @@ import java.time.Instant
 
 import fi.liikennevirasto.digiroad2.tnits.geojson.{Feature, FeaturePoint}
 import fi.liikennevirasto.digiroad2.tnits.oth.{PedestrianCrossingOTHClient, WarningSignOTHClient}
-import fi.liikennevirasto.digiroad2.tnits.oth.PedestrianCrossingOTHClient
-import fi.liikennevirasto.digiroad2.tnits.rosatte.features.{IncomingPointAssetProperties}
+import fi.liikennevirasto.digiroad2.tnits.rosatte.features.IncomingPointAssetProperties
 import fi.liikennevirasto.digiroad2.tnits.runners.AssetType
 import org.json4s.jackson.JsonMethods._
 import org.json4s.{DefaultFormats, Formats}

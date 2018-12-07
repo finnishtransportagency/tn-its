@@ -9,7 +9,6 @@ import fi.liikennevirasto.digiroad2.tnits.oth.OTHClient
 import fi.liikennevirasto.digiroad2.tnits.rosatte.DatasetID.DataSetId
 import fi.liikennevirasto.digiroad2.tnits.rosatte.features.{Asset, LinearNumericAssetProperties}
 import fi.liikennevirasto.digiroad2.tnits.geojson.{Feature, FeatureLinear}
-import fi.liikennevirasto.digiroad2.tnits.geojson.Feature
 import fi.liikennevirasto.digiroad2.tnits.runners.AssetType
 import org.json4s.jackson.JsonMethods._
 import org.json4s.{DefaultFormats, Formats}
