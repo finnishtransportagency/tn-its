@@ -69,6 +69,38 @@ object features {
     override def setSideCode(sideCode: Int): PointAssetProperties = copy(sideCode = sideCode)
   }
 
+  case class IncomingMassTransitStopProperties(
+                                                adminStopId: String,
+                                                stopCode: String,
+                                                name_fi: Option[String],
+                                                name_sv: Option[String],
+                                                bearing: Int,
+                                                bearingDescription: Option[String],
+                                                direction: Option[String],
+                                                stopAttribute: Seq[Long],
+                                                equipment: String,
+                                                reachability: String,
+                                                specialNeeds: String,
+                                                modifiedTimestamp: String,
+                                                modifiedBy: String,
+                                                validFrom: String,
+                                                validTo: String,
+                                                administratorCode: String,
+                                                municipalityCode: Int,
+                                                municipalityName: String,
+                                                comments: String,
+                                                platformCode: String,
+                                                connectedToTerminal: String,
+                                                contactEmails: String,
+                                                zoneId: String,
+                                                sideCode: Int,
+                                                changeType: String,
+                                                mValue: Double,
+                                                link: RoadLink) extends PointAssetProperties {
+    override def setSideCode(sideCode: Int): AssetProperties = copy(sideCode = sideCode)
+  }
+
+
   case class TrafficSigns(typeId: Int) {
     def warningSign: String = {
       val warningSignType = Map(
