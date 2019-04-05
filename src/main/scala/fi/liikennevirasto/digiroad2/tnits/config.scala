@@ -21,11 +21,18 @@ object config {
 
   val dirSFTP = env("AINEISTOT_SFTP_DIRECTORY")
   val baseDirSFTP = env("AINEISTOT_SFTP_BASE_DIRECTORY") + "/" + env("AINEISTOT_SFTP_DIRECTORY")
+  val dirBusStopsSFTP = env("AINEISTOT_SFTP_BUS_STOPS_DIRECTORY")
+  val baseDirBusStopsSFTP = env("AINEISTOT_SFTP_BASE_DIRECTORY") + "/" + env("AINEISTOT_SFTP_BUS_STOPS_DIRECTORY")
 
   val urls = new {
     val aineistotSFTP = new {
       val domain = env("AINEISTOT_SFTP_DOMAIN")
       val dir = s"https://$domain/${config.dirSFTP}"
+      val sftp = domain
+    }
+    val aineistotSFTPForBusStops = new {
+      val domain = env("AINEISTOT_SFTP_DOMAIN")
+      val dir = s"https://$domain/${config.dirBusStopsSFTP}"
       val sftp = domain
     }
     val changesApi = env("CHANGE_API_URL")
