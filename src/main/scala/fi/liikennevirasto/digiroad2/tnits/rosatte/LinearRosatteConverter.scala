@@ -27,14 +27,14 @@ object LinearRosatteConverter extends AssetRosatteConverter {
         <net:SimpleLinearReference>
           <net:element xlink:href= { DefaultLinkReference + properties.link.id } />
           { applicableDirection(properties.sideCode) }
-          <net:fromPosition uom="meter"> { properties.startMeasure }</net:fromPosition>
-          <net:toPosition uom="meter"> { properties.endMeasure }</net:toPosition>
+          <net:fromPosition uom="meter">{ properties.startMeasure }</net:fromPosition>
+          <net:toPosition uom="meter">{ properties.endMeasure }</net:toPosition>
         </net:SimpleLinearReference>
       </rst:INSPIRELinearLocation>
     </rst:locationReference>
       <rst:locationReference>
         <rst:OpenLRLocationString gml:id= {UUID.randomUUID().toString }>
-          <rst:base64String> {reference } </rst:base64String>
+          <rst:base64String>{ reference }</rst:base64String>
           <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
         </rst:OpenLRLocationString>
       </rst:locationReference>
@@ -122,9 +122,7 @@ object LinearRosatteConverter extends AssetRosatteConverter {
       case _ =>
         <rst:properties>
           <rst:SafetyFeaturePropertyValue>
-            <rst:type>
-              {assetType.valueType}
-            </rst:type>
+            <rst:type>{ assetType.valueType }</rst:type>
             <rst:propertyValue>
               <gml:measure uom={assetType.unit}>
                 {feature.properties.value}

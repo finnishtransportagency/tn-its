@@ -30,9 +30,7 @@ class PointRosatteConverter extends AssetRosatteConverter {
     </rst:locationReference>
       <rst:locationReference>
         <rst:OpenLRLocationString gml:id={UUID.randomUUID().toString}>
-          <rst:base64String>
-            {reference}
-          </rst:base64String>
+          <rst:base64String>{ reference }</rst:base64String>
           <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
         </rst:OpenLRLocationString>
       </rst:locationReference>
@@ -104,9 +102,7 @@ class PointValueRosatteConverter extends PointRosatteConverter {
       case "warning_signs_group" =>
         <rst:properties>
           <rst:SafetyFeaturePropertyValue>
-            <rst:type>
-              {assetType.valueType}
-            </rst:type>
+            <rst:type>{ assetType.valueType }</rst:type>
             <rst:propertyValue>
               {TrafficSigns(feature.properties.asInstanceOf[IncomingPointAssetProperties].typeValue.get).warningSign}
             </rst:propertyValue>
