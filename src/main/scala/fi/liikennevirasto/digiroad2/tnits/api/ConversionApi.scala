@@ -5,7 +5,7 @@ import java.time.Instant
 import java.time.temporal.ChronoUnit
 
 import fi.liikennevirasto.digiroad2.tnits.aineistot.RemoteDatasets
-import fi.liikennevirasto.digiroad2.tnits.runners.Converter
+import fi.liikennevirasto.digiroad2.tnits.runners.{BaseAssetConverter, BusStopConverter, Converter, WeightLimitConverter}
 import org.scalatra._
 
 import scala.concurrent.ExecutionContext
@@ -15,6 +15,10 @@ import scala.concurrent.ExecutionContext
   * The conversion process can also run from command line, see: [[Converter]].
   */
 class ConversionApi extends ScalatraServlet with FutureSupport with AuthenticationSupport {
+
+  lazy val baseAssetConverter = new BaseAssetConverter
+  lazy val busStopAssetConverter = new BusStopConverter
+  lazy val weightLimitAssetConverter = new WeightLimitConverter
 
   override protected implicit def executor: ExecutionContext =
     scala.concurrent.ExecutionContext.global
@@ -36,7 +40,7 @@ class ConversionApi extends ScalatraServlet with FutureSupport with Authenticati
     val keepAlive = keepConnectionAlive(writer)
 
     for (counter <- 1 to numberOfDays.toInt) {
-      Converter.convert(writer, Some(startDate.plus(counter - 1, ChronoUnit.DAYS)), Some(startDate.plus(counter, ChronoUnit.DAYS)))
+      baseAssetConverter.convert(writer, Some(startDate.plus(counter - 1, ChronoUnit.DAYS)), Some(startDate.plus(counter, ChronoUnit.DAYS)))
     }
 
     keepAlive.cancel()
@@ -48,7 +52,8 @@ class ConversionApi extends ScalatraServlet with FutureSupport with Authenticati
   post("/") {
     val writer = response.writer
     val keepAlive = keepConnectionAlive(writer)
-    Converter.convert(writer)
+    baseAssetConverter.convert(writer)
+    weightLimitAssetConverter.convert(writer)
     keepAlive.cancel()
     writer.println("OK")
     writer.flush()
@@ -58,7 +63,7 @@ class ConversionApi extends ScalatraServlet with FutureSupport with Authenticati
   post("/mass_transit_stop_on_vallu") {
     val writer = response.writer
     val keepAlive = keepConnectionAlive(writer)
-    Converter.convertBusStopOnXml(writer)
+    busStopAssetConverter.convert(writer)
     keepAlive.cancel()
     writer.println("OK")
     writer.flush()
