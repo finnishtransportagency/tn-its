@@ -15,7 +15,9 @@ import fi.liikennevirasto.digiroad2.tnits.rosatte._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 import scala.concurrent.{Await, ExecutionContext, Future}
-import java.io.{OutputStream}
+import java.io.OutputStream
+
+import fi.liikennevirasto.digiroad2.tnits.rosatte.features.BogieWeightLimitAssetProperties
 
 case class AssetType(apiEndPoint: String, featureType: String, valueType: String, unit: String, client: Client, service: AssetRosatteConverter, source: String = "Regulation")
 
@@ -30,8 +32,8 @@ trait Converter {
   def convert(logger: PrintWriter, fromDate: Option[Instant] = None, toDate: Option[Instant] = None): Unit = {
     val (start, end) =  (fromDate, toDate) match {
       case (Some(startDate), Some(endDate)) => (startDate, endDate)
-      case _ => (/*RemoteDatasets.getLatestEndTime.getOrElse(*/Instant.now.minus(1, ChronoUnit.DAYS),
-        Instant.now.plus(2, ChronoUnit.HOURS))
+      case _ => (RemoteDatasets.getLatestEndTime.getOrElse(Instant.now.minus(2, ChronoUnit.DAYS),
+        Instant.now.plus(10, ChronoUnit.HOURS)))
     }
 
     logger.println(s"Start: $start")
@@ -82,14 +84,13 @@ trait Converter {
 
 class BaseAssetConverter extends Converter {
   override def assetTypes: Seq[AssetType] = Seq(
-    AssetType("speed_limits", "SpeedLimit", "MaximumSpeedLimit", "kmph", OTHClient, LinearRosatteConverter),
-    AssetType("length_limits", "RestrictionForVehicles", "MaximumLength", "cm", OTHClient, LinearRosatteConverter),
-    AssetType("width_limits", "RestrictionForVehicles", "MaximumWidth", "cm", OTHClient, LinearRosatteConverter),
-    AssetType("height_limits", "RestrictionForVehicles", "MaximumHeight", "cm", OTHClient, LinearRosatteConverter),
-    //      AssetType("road_names", "RoadName", "RoadName", ""),
-    AssetType("axle_weight_limits", "RestrictionForVehicles", "MaximumWeightPerSingleAxle", "kg", OTHClient, LinearRosatteConverter),
-    AssetType("road_numbers", "RoadNumber", "RoadNumber", "", ViiteClient, LinearRosatteConverter),
-    AssetType("vehicle_prohibitions", "NoEntry", "NoEntry", "", VehicleOTHClient, LinearRosatteConverter),
+    AssetType("speed_limits", "SpeedLimit", "MaximumSpeedLimit", "kmph", OTHClient, new LinearRosatteConverter),
+    AssetType("length_limits", "RestrictionForVehicles", "MaximumLength", "cm", OTHClient, new LinearRosatteConverter),
+    AssetType("width_limits", "RestrictionForVehicles", "MaximumWidth", "cm", OTHClient, new LinearRosatteConverter),
+    AssetType("height_limits", "RestrictionForVehicles", "MaximumHeight", "cm", OTHClient, new LinearRosatteConverter),
+    AssetType("axle_weight_limits", "RestrictionForVehicles", "MaximumWeightPerSingleAxle", "kg", OTHClient, new LinearRosatteConverter),
+    AssetType("road_numbers", "RoadNumber", "RoadNumber", "", ViiteClient, new LinearRosatteConverter),
+    AssetType("vehicle_prohibitions", "NoEntry", "NoEntry", "", VehicleOTHClient, new LinearRosatteConverter),
     AssetType("pedestrian_crossing", "PedestrianCrossing", "PedestrianCrossing", "", PedestrianCrossingOTHClient, new PointRosatteConverter),
     AssetType("obstacles", "ClosedToAllVehiclesInBothDirection", "ClosedToAllVehiclesInBothDirection", "", ObstacleOTHClient, new PointRosatteConverter),
     AssetType("warning_signs_group", "WarningSign", "WarningSignType", "", WarningSignOTHClient, new PointValueRosatteConverter, "FixedTrafficSign"),
@@ -115,8 +116,8 @@ class BusStopConverter extends Converter {
 
 class WeightLimitConverter extends Converter {
   override def assetTypes: Seq[AssetType] = Seq(
-    AssetType("trailer_truck_weight_limits", "RestrictionForVehicles", "MaximumTrailerTruckWeight", "kg", OTHClient, LinearRosatteConverter),
-    AssetType("bogie_weight_limits", "RestrictionForVehicles", "MaximumWeightPerSingleAxle", "kg", OTHClient, LinearRosatteConverter)
+    AssetType("trailer_truck_weight_limits", "RestrictionForVehicles", "MaximumTrailerTruckWeight", "kg", OTHClient, new LinearRosatteConverter),
+    AssetType("bogie_weight_limits", "RestrictionForVehicles", "MaximumWeightPerSingleAxle", "kg", BogieWeightLimitOTHClient, new BogieWeightLimitRosatteConverter)
   )
 
   override def baseDirectory: String = config.baseWeightLimitSFTP
@@ -125,7 +126,9 @@ class WeightLimitConverter extends Converter {
 
 object TestObject {
 
-  /** Runs a conversion from the command line */
+  /** Runs a conversion from the command line
+    *
+    * Comment/Uncomment to select which converter you want to test.*/
   def main(args: Array[String]): Unit = {
 //    val baseAssetConverter = new BaseAssetConverter
 //    baseAssetConverter.convert(new PrintWriter(System.out, true))

@@ -1,8 +1,9 @@
 package fi.liikennevirasto.digiroad2.tnits.rosatte
 
+import java.io.OutputStreamWriter
 import java.util.UUID
 
-import fi.liikennevirasto.digiroad2.tnits.geojson.FeaturePoint
+import fi.liikennevirasto.digiroad2.tnits.geojson.{Feature, FeaturePoint}
 import fi.liikennevirasto.digiroad2.tnits.geometry.{CoordinateTransform, Point}
 import fi.liikennevirasto.digiroad2.tnits.openlr.OpenLREncoder
 import fi.liikennevirasto.digiroad2.tnits.rosatte.features.{IncomingPointAssetProperties, TrafficSigns}
@@ -94,6 +95,14 @@ class PointRosatteConverter extends AssetRosatteConverter {
         </gml:pos>
       </gml:Point>
     </rst:encodedGeometry>
+  }
+
+  override def splitFeatureMember(assetType: AssetType, changes: Seq[Feature[AssetProperties]], writer: OutputStreamWriter) = {
+    val onlyOneWayFeatures = assetType.service.splitFeaturesApplicableToBothDirections(changes.asInstanceOf[Seq[assetType.service.FeatureType]], assetType)
+    onlyOneWayFeatures.foreach { feature =>
+      val featureMember = assetType.service.toFeatureMember(feature, assetType, writer)
+      writer.write(featureMember.toString)
+    }
   }
 }
 

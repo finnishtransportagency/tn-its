@@ -5,6 +5,7 @@ import java.time.Instant
 import java.util.UUID
 
 import fi.liikennevirasto.digiroad2.tnits.geojson.Feature
+import fi.liikennevirasto.digiroad2.tnits.rosatte.features.BogieWeightLimitAssetProperties
 import fi.liikennevirasto.digiroad2.tnits.runners.AssetType
 
 import scala.util.{Failure, Success, Try}
@@ -32,11 +33,7 @@ object RosatteConverter {
 
     featureMembers.foreach { case (assetType, changes) =>
       // We need to split two-way features into two one-way features because of OpenLR encoding
-      val onlyOneWayFeatures = assetType.service.splitFeaturesApplicableToBothDirections(changes.asInstanceOf[Seq[assetType.service.FeatureType]], assetType)
-      onlyOneWayFeatures.foreach { feature =>
-        val featureMember = assetType.service.toFeatureMember(feature, assetType, writer)
-        writer.write(featureMember.toString)
-      }
+      assetType.service.splitFeatureMember(assetType, changes, writer)
     }
 
     writer.write(
@@ -99,4 +96,6 @@ trait AssetRosatteConverter {
   def splitFeaturesApplicableToBothDirections(assets: Seq[FeatureType], assetType : AssetType): Seq[FeatureType]
 
   def encodedGeometry(feature: FeatureType) : Elem
+
+  def splitFeatureMember(assetType: AssetType, changes: Seq[Feature[AssetProperties]], writer: OutputStreamWriter): Unit
 }

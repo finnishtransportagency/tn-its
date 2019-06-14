@@ -6,6 +6,7 @@ import fi.liikennevirasto.digiroad2.tnits.rosatte.features.RoadLink
 case class ValidityPeriodDayOfWeek(value: Int)
 case class ValidityPeriod(startHour: Int, endHour: Int, days: Int, startMinute: Int = 0, endMinute: Int = 0)
 case class ProhibitionValue(typeId: Int, validityPeriod: Set[ValidityPeriod], exceptions: Set[Int], additionalInfo: String = "")
+case class BogieAxleValue(twoAxleValue: Option[String], threeAxleValue: Option[String])
 
 trait AssetProperties {
   val sideCode: Int
@@ -48,6 +49,16 @@ object features {
                                            endMeasure: Double,
                                            link: RoadLink) extends LinearAssetProperties {
     override def setSideCode(sideCode: Int): LinearAssetProperties = copy(sideCode = sideCode)
+  }
+
+  case class BogieWeightLimitAssetProperties(
+                                             sideCode: Int,
+                                             changeType: String,
+                                             value: BogieAxleValue,
+                                             startMeasure: Double,
+                                             endMeasure: Double,
+                                             link: RoadLink) extends LinearAssetProperties {
+    override def setSideCode(sideCode: Int): AssetProperties = copy(sideCode = sideCode)
   }
 
   case class VehicleProhibitionProperties(

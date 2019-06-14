@@ -37,7 +37,7 @@ class RosatteSpec extends FunSuite {
     val output = new ByteArrayOutputStream()
 
     RosatteConverter.convertDataSet(
-      featureMembers = Seq((AssetType("speed_limits", "SpeedLimit", "MaximumSpeedLimit", "kmph", OTHClient, LinearRosatteConverter), parsed)),
+      featureMembers = Seq((AssetType("speed_limits", "SpeedLimit", "MaximumSpeedLimit", "kmph", OTHClient, new LinearRosatteConverter), parsed)),
       start = Instant.parse("2014-04-22T13:00:00Z"),
       end = Instant.parse("2014-04-22T15:00:00Z"),
       dataSetId = "id",
@@ -178,7 +178,7 @@ class RosatteSpec extends FunSuite {
     val output = new ByteArrayOutputStream()
 
     RosatteConverter.convertDataSet(
-      featureMembers = Seq((AssetType("speed_limits", "SpeedLimit", "MaximumSpeedLimit", "kmph", OTHClient, LinearRosatteConverter), parsed)),
+      featureMembers = Seq((AssetType("speed_limits", "SpeedLimit", "MaximumSpeedLimit", "kmph", OTHClient, new LinearRosatteConverter), parsed)),
       start = Instant.parse("2014-04-22T13:00:00Z"),
       end = Instant.parse("2014-04-22T15:00:00Z"),
       dataSetId = "id",
@@ -348,7 +348,7 @@ class RosatteSpec extends FunSuite {
     val output = new ByteArrayOutputStream()
 
     RosatteConverter.convertDataSet(
-      featureMembers = Seq((AssetType("speed_limits", "SpeedLimit", "MaximumSpeedLimit", "kmph", OTHClient, LinearRosatteConverter), parsed)),
+      featureMembers = Seq((AssetType("speed_limits", "SpeedLimit", "MaximumSpeedLimit", "kmph", OTHClient, new LinearRosatteConverter), parsed)),
       start = Instant.parse("2014-04-22T13:00:00Z"),
       end = Instant.parse("2014-04-22T15:00:00Z"),
       dataSetId = "id",

@@ -158,6 +158,15 @@ object BusStopOTHClient extends Client{
   }
 }
 
+object BogieWeightLimitOTHClient extends Client {
+  override protected def changeApi: String = config.urls.changesApi
+
+  override protected def extractFeatures(features: JValue): Seq[Feature[AssetProperties]] = {
+    val extrated = features.extract[Seq[FeatureLinear[BogieWeightLimitAssetProperties]]]
+    extrated.asInstanceOf[Seq[FeatureLinear[AssetProperties]]]
+  }
+}
+
 /** HTTP access to VIITE change API.
   */
 object ViiteClient extends Client{

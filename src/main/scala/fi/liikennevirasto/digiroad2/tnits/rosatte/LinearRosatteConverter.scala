@@ -1,21 +1,23 @@
 package fi.liikennevirasto.digiroad2.tnits.rosatte
 
 
+import java.io.OutputStreamWriter
 import java.util.UUID
 
-import fi.liikennevirasto.digiroad2.tnits.geojson.FeatureLinear
+import fi.liikennevirasto.digiroad2.tnits.geojson.{Feature, FeatureLinear}
 import fi.liikennevirasto.digiroad2.tnits.geometry.{CoordinateTransform, Point}
 import fi.liikennevirasto.digiroad2.tnits.openlr.OpenLREncoder
-import fi.liikennevirasto.digiroad2.tnits.rosatte.features.{ProhibitionTypesOperations, ValidityPeriodOperations}
+import fi.liikennevirasto.digiroad2.tnits.oth.OTHClient
+import fi.liikennevirasto.digiroad2.tnits.rosatte.features.{BogieWeightLimitAssetProperties, LinearNumericAssetProperties, ProhibitionTypesOperations, ValidityPeriodOperations}
 import fi.liikennevirasto.digiroad2.tnits.runners.AssetType
 
-import scala.util.Try
+import scala.util.{Failure, Success, Try}
 import scala.xml.{Elem, NodeBuffer, NodeSeq}
 
 /** Generates a dataset. */
 
 
-object LinearRosatteConverter extends AssetRosatteConverter {
+class LinearRosatteConverter extends AssetRosatteConverter {
   override type AssetPropertiesType = LinearAssetProperties
   override type FeatureType = FeatureLinear[AssetPropertiesType]
 
@@ -60,6 +62,14 @@ object LinearRosatteConverter extends AssetRosatteConverter {
         (points, properties.startMeasure, properties.endMeasure)
 
     OpenLREncoder.encodeAssetOnLink(startM, endM, linkGeometry, linkLength, functionalClass, linkType,  DefaultLinkReference + link.id)
+  }
+
+  override def splitFeatureMember(assetType: AssetType, changes: Seq[Feature[AssetProperties]], writer: OutputStreamWriter) = {
+    val onlyOneWayFeatures = assetType.service.splitFeaturesApplicableToBothDirections(changes.asInstanceOf[Seq[assetType.service.FeatureType]], assetType)
+    onlyOneWayFeatures.foreach { feature =>
+      val featureMember = assetType.service.toFeatureMember(feature, assetType, writer)
+      writer.write(featureMember.toString)
+    }
   }
 
   override def properties(assetType: AssetType, feature: FeatureLinear[LinearAssetProperties]) : NodeSeq = {
@@ -172,5 +182,43 @@ object LinearRosatteConverter extends AssetRosatteConverter {
         </gml:posList>
       </gml:LineString >
     </rst:encodedGeometry>
+  }
+}
+
+class BogieWeightLimitRosatteConverter extends LinearRosatteConverter {
+
+  def splitAssetsByAxleValue(assetType: AssetType, changes: Seq[Feature[AssetProperties]]) = {
+    changes.flatMap { change =>
+      val propertyValues = change.properties.asInstanceOf[BogieWeightLimitAssetProperties].value
+      val changes = change.properties.asInstanceOf[BogieWeightLimitAssetProperties]
+      val newProperties = features.LinearNumericAssetProperties(changes.sideCode, changes.changeType, 0, changes.startMeasure, changes.endMeasure, changes.link)
+
+      propertyValues match {
+        case BogieAxleValue(Some(axleValue), None) =>
+          Seq((AssetType(assetType.apiEndPoint, assetType.featureType, "MaximumPerTwoAxle", assetType.unit, OTHClient, new LinearRosatteConverter),
+            FeatureLinear(change.id, changes.link.geometry, newProperties.copy(value = axleValue.toInt))))
+
+        case BogieAxleValue(None, Some(axleValue)) =>
+          Seq((AssetType(assetType.apiEndPoint, assetType.featureType, "MaximumPerThreeAxle", assetType.unit, OTHClient, new LinearRosatteConverter),
+            FeatureLinear(change.id, changes.link.geometry, newProperties.copy(value = axleValue.toInt))))
+
+        case BogieAxleValue(Some(twoAxleValue), Some(threeAxleValue)) =>
+          Seq((AssetType(assetType.apiEndPoint, assetType.featureType, "MaximumPerTwoAxle", assetType.unit, OTHClient, new LinearRosatteConverter),
+            FeatureLinear(change.id, changes.link.geometry, newProperties.copy(value = twoAxleValue.toInt))),
+          (AssetType(assetType.apiEndPoint, assetType.featureType, "MaximumPerThreeAxle", assetType.unit, OTHClient, new LinearRosatteConverter),
+            FeatureLinear(change.id, changes.link.geometry, newProperties.copy(value = threeAxleValue.toInt))))
+      }
+    }
+  }
+
+  override def splitFeatureMember(assetType: AssetType, changes: Seq[Feature[AssetProperties]], writer: OutputStreamWriter) = {
+    val splitted = splitAssetsByAxleValue(assetType, changes).groupBy(_._1)
+    splitted.foreach { case (newAssetType, feature) =>
+      val onlyOneWayFeatures = newAssetType.service.splitFeaturesApplicableToBothDirections(feature.map(_._2).asInstanceOf[Seq[newAssetType.service.FeatureType]], newAssetType)
+      onlyOneWayFeatures.foreach { feature =>
+        val featureMember = newAssetType.service.toFeatureMember(feature, newAssetType, writer)
+        writer.write(featureMember.toString)
+      }
+    }
   }
 }
