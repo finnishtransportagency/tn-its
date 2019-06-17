@@ -195,17 +195,17 @@ class BogieWeightLimitRosatteConverter extends LinearRosatteConverter {
 
       propertyValues match {
         case BogieAxleValue(Some(axleValue), None) =>
-          Seq((AssetType(assetType.apiEndPoint, assetType.featureType, "MaximumPerTwoAxle", assetType.unit, OTHClient, new LinearRosatteConverter),
+          Seq((AssetType(assetType.apiEndPoint, assetType.featureType, "MaximumWeightPerTwoAxesBogie", assetType.unit, OTHClient, new LinearRosatteConverter),
             FeatureLinear(change.id, changes.link.geometry, newProperties.copy(value = axleValue.toInt))))
 
         case BogieAxleValue(None, Some(axleValue)) =>
-          Seq((AssetType(assetType.apiEndPoint, assetType.featureType, "MaximumPerThreeAxle", assetType.unit, OTHClient, new LinearRosatteConverter),
+          Seq((AssetType(assetType.apiEndPoint, assetType.featureType, "MaximumWeightPerThreeAxesBogie", assetType.unit, OTHClient, new LinearRosatteConverter),
             FeatureLinear(change.id, changes.link.geometry, newProperties.copy(value = axleValue.toInt))))
 
         case BogieAxleValue(Some(twoAxleValue), Some(threeAxleValue)) =>
-          Seq((AssetType(assetType.apiEndPoint, assetType.featureType, "MaximumPerTwoAxle", assetType.unit, OTHClient, new LinearRosatteConverter),
+          Seq((AssetType(assetType.apiEndPoint, assetType.featureType, "MaximumWeightPerTwoAxesBogie", assetType.unit, OTHClient, new LinearRosatteConverter),
             FeatureLinear(change.id, changes.link.geometry, newProperties.copy(value = twoAxleValue.toInt))),
-          (AssetType(assetType.apiEndPoint, assetType.featureType, "MaximumPerThreeAxle", assetType.unit, OTHClient, new LinearRosatteConverter),
+          (AssetType(assetType.apiEndPoint, assetType.featureType, "MaximumWeightPerThreeAxesBogie", assetType.unit, OTHClient, new LinearRosatteConverter),
             FeatureLinear(change.id, changes.link.geometry, newProperties.copy(value = threeAxleValue.toInt))))
       }
     }
