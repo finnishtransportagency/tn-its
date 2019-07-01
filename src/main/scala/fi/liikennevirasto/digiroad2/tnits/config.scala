@@ -4,27 +4,6 @@ import java.net.URI
 
 /** Configuration values that are read at startup from the environment. */
 object config {
-
-  val variables = Map(
-    "AINEISTOT_USERNAME" -> "tn_its",
-    "AINEISTOT_PASSWORD" -> "Ki10!aD10!as",
-    "AINEISTOT_DIRECTORY" -> "",
-    "AINEISTOT_SFTP_DIRECTORY" -> "tnits",
-    "AINEISTOT_SFTP_BUS_STOPS_DIRECTORY" -> "digiroad/muutokset_pysakit_xml",
-    "AINEISTOT_SFTP_WEIGTH_LIMIT_DIRECTORY" -> "tnits/droth-1987-tests", //TODO
-    "AINEISTOT_SFTP_USERNAME" -> "tn_its",
-    "AINEISTOT_SFTP_PASSWORD" -> "Kissa10!as400!rW2",
-    "AINEISTOT_SFTP_BASE_DIRECTORY" -> "aineistot.liikennevirasto.fi",
-    "AINEISTOT_SFTP_DOMAIN" -> "aineistot.vayla.fi",
-    "CHANGE_API_USERNAME" -> "kalpa",
-    "CHANGE_API_PASSWORD" -> "kalpa",
-    "CHANGE_API_URL" -> "http://localhost:9001/api/changes",
-    "VIITE_CHANGE_API_URL" -> "https://devtest.vayla.fi/viite/api/viite/changes",
-    "CONVERTER_API_USERNAME" -> "",
-    "CONVERTER_API_PASSWORD" -> ""
-  )
-
-
   val logins = new {
     val oth = new {
       val username = env("CHANGE_API_USERNAME")
@@ -95,13 +74,9 @@ object config {
       }
   }
 
-  private def env(name: String) = {
-    //sys.env.getOrElse(name, sys.error(s"Environment variable required: $name"))
-    variables.getOrElse(name, sys.error(s"Environment variable required: $name"))
-  }
+  private def env(name: String) =
+    sys.env.getOrElse(name, sys.error(s"Environment variable required: $name"))
 
-  private def optionalEnv(name: String): Option[String] = {
-    variables.get(name).filter(_ != null)
-    //sys.env.get(name).filter(_ != null)
-  }
+  private def optionalEnv(name: String): Option[String] =
+    sys.env.get(name).filter(_ != null)
 }
