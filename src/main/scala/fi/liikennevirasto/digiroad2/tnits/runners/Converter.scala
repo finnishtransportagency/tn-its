@@ -51,7 +51,6 @@ trait Converter {
 
       try {
         convertDataSet(assetTypes.zip(assets), start, end, dataSetId, outputStreamSFTP)
-//        convertDataSet(assetTypes.zip(assets), start, end, dataSetId, System.out)
       } finally {
         outputStreamSFTP.close()
       }
@@ -89,6 +88,7 @@ class BaseAssetConverter extends Converter {
     AssetType("width_limits", "RestrictionForVehicles", "MaximumWidth", "cm", OTHClient, new LinearRosatteConverter),
     AssetType("height_limits", "RestrictionForVehicles", "MaximumHeight", "cm", OTHClient, new LinearRosatteConverter),
     AssetType("axle_weight_limits", "RestrictionForVehicles", "MaximumWeightPerSingleAxle", "kg", OTHClient, new LinearRosatteConverter),
+    //AssetType("road_names", "RoadName", "RoadName", ""),
     AssetType("road_numbers", "RoadNumber", "RoadNumber", "", ViiteClient, new LinearRosatteConverter),
     AssetType("vehicle_prohibitions", "NoEntry", "NoEntry", "", VehicleOTHClient, new LinearRosatteConverter),
     AssetType("pedestrian_crossing", "PedestrianCrossing", "PedestrianCrossing", "", PedestrianCrossingOTHClient, new PointRosatteConverter),
@@ -124,17 +124,14 @@ class WeightLimitConverter extends Converter {
 
 }
 
-object TestObject {
-
-  /** Runs a conversion from the command line
-    *
-    * Comment/Uncomment to select which converter you want to test.*/
+object CoverterObject {
+  /** Runs a conversion from the command line */
   def main(args: Array[String]): Unit = {
-//    val baseAssetConverter = new BaseAssetConverter
-//    baseAssetConverter.convert(new PrintWriter(System.out, true))
+    val baseAssetConverter = new BaseAssetConverter
+    baseAssetConverter.convert(new PrintWriter(System.out, true))
 
-//    val busStopConverter = new BaseAssetConverter
-//    busStopConverter.convert(new PrintWriter(System.out, true))
+    val busStopConverter = new BaseAssetConverter
+    busStopConverter.convert(new PrintWriter(System.out, true))
 
     val weightLimitConverter = new WeightLimitConverter
     weightLimitConverter.convert(new PrintWriter(System.out, true))
@@ -142,8 +139,3 @@ object TestObject {
   }
 
 }
-
-
-/**
-  *   AssetType("road_names", "RoadName", "RoadName", ""), -> commented code that was on AssetTypes for the base directory
-  */
