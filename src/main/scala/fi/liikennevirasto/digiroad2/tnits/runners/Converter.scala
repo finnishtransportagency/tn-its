@@ -29,11 +29,11 @@ trait Converter {
 
   case class OTHException(cause: Throwable) extends RuntimeException(cause)
 
-  def convert(logger: PrintWriter, fromDate: Option[Instant] = None, toDate: Option[Instant] = None): Unit = {
+  def convert(logger: PrintWriter, fromDate: Option[Instant] = None, toDate: Option[Instant] = None ): Unit = {
     val (start, end) =  (fromDate, toDate) match {
       case (Some(startDate), Some(endDate)) => (startDate, endDate)
-      case _ => (RemoteDatasets.getLatestEndTime.getOrElse(Instant.now.minus(2, ChronoUnit.DAYS),
-        Instant.now.plus(10, ChronoUnit.HOURS)))
+      case _ => (RemoteDatasets.getLatestEndTime.getOrElse(Instant.now.minus(1, ChronoUnit.DAYS)),
+        Instant.now.minus(1, ChronoUnit.MINUTES))
     }
 
     logger.println(s"Start: $start")
@@ -130,7 +130,7 @@ object CoverterObject {
     val baseAssetConverter = new BaseAssetConverter
     baseAssetConverter.convert(new PrintWriter(System.out, true))
 
-    val busStopConverter = new BaseAssetConverter
+    val busStopConverter = new BusStopConverter
     busStopConverter.convert(new PrintWriter(System.out, true))
 
     val weightLimitConverter = new WeightLimitConverter
