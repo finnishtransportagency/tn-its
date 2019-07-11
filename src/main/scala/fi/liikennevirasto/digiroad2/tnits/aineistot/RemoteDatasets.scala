@@ -31,6 +31,9 @@ object RemoteDatasets {
   private val baseUrl =
     config.urls.aineistotSFTP.dir
 
+  private val baseUrlForVallu =
+    config.urls.aineistotSFTPForBusStops.dir
+
   /** @return names of all datasets in the configured directory. */
   def index: Seq[String] = {
     val response = createClient.execute(new HttpGet(config.urls.aineistotSFTP.dir))
@@ -62,6 +65,39 @@ object RemoteDatasets {
     } else {
       None
     }
+  }
+
+  /** @return the ending timestamp of the latest dataset on a specific folder. */
+  def getLatestEndTimeOnFolder: Option[Instant] = {
+    val dataSets = try {
+      RemoteDatasets.indexOnFolder(baseUrlForVallu)
+    } catch {
+      case err: Throwable =>
+        throw RemoteDatasetsException(err)
+    }
+
+    if (dataSets.nonEmpty) {
+      Some(dataSets
+        .map { id => DatasetID.decode(URLDecoder.decode(id, "UTF-8")) }
+        .map { _.endDate }
+        .max)
+    } else {
+      None
+    }
+  }
+
+  /** @return names of all datasets in a specific folder. */
+  def indexOnFolder(folderDirectory: String): Seq[String] = {
+    val response = createClient.execute(new HttpGet(folderDirectory))
+    val contents = EntityUtils.toString(response.getEntity, "UTF-8")
+    val doc = Jsoup.parse(contents, folderDirectory)
+    val links = doc.select("a")
+    links.asScala
+      .map(_.attr("href"))
+      .filter(_.endsWith(".xml"))
+      .map(_.dropRight(".xml".length))
+      .map(URLDecoder.decode(_, "UTF-8"))
+      .distinct
   }
 
   /** @return a readable stream to a dataset. */
@@ -98,6 +134,58 @@ object RemoteDatasets {
     } catch {
       case e: SftpException =>
         throw new IllegalStateException("Can't change directory to tn-its: " + e.getMessage())
+    }
+
+    //verify if file already exist, if not, return a exception and continue, if exist, throw IllegalArgumentException
+    if (fileExist(channelSftp, fileName))
+      throw new IllegalArgumentException(s"$fileName already exists on server") //when file exist
+
+    //when file doesn't exist
+    val output = channelSftp.put(fileName)
+
+    new OutputStream {
+      override def write(b: Int): Unit = output.write(b)
+
+      override def write(b: Array[Byte]): Unit = output.write(b)
+
+      override def write(b: Array[Byte], off: Int, len: Int): Unit = output.write(b, off, len)
+
+      override def close(): Unit = {
+        output.close()
+        channelSftp.exit()
+        channel.disconnect()
+        session.disconnect()
+      }
+    }
+  }
+
+  /** @return a writable stream to a new dataset using SFTP transfer process and where we can specify the folder. */
+  def getOutputStreamSFTP(fileName: String, baseDirectory: String): OutputStream = {
+    val jschClient = new JSch()
+
+    val session = jschClient.getSession(config.logins.aineistotSFTP.username, config.urls.aineistotSFTP.sftp, config.sftpServerPort)
+    session.setPassword(config.logins.aineistotSFTP.password)
+    session.setConfig("StrictHostKeyChecking", "no")
+
+    if (!session.isConnected()) {
+      try {
+        session.connect()
+      } catch {
+        case jsche: JSchException =>
+          throw new IllegalArgumentException("Login failed")
+      }
+    }
+
+    val channel = session.openChannel("sftp")
+    channel.connect()
+
+    val channelSftp = channel.asInstanceOf[ChannelSftp]
+
+    try {
+      channelSftp.cd(baseDirectory)
+    } catch {
+      case e: SftpException =>
+        throw new IllegalStateException("Can't change directory to muutokset_pysakit_xml: " + e.getMessage())
     }
 
     //verify if file already exist, if not, return a exception and continue, if exist, throw IllegalArgumentException

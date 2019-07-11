@@ -7,6 +7,7 @@ import java.time.temporal.ChronoUnit
 import java.util.concurrent.Executors
 
 import fi.liikennevirasto.digiroad2.tnits.aineistot.RemoteDatasets
+import fi.liikennevirasto.digiroad2.tnits.config
 import fi.liikennevirasto.digiroad2.tnits.geojson.Feature
 import fi.liikennevirasto.digiroad2.tnits.oth._
 import fi.liikennevirasto.digiroad2.tnits.rosatte._
@@ -65,6 +66,44 @@ object Converter {
 
       try {
         RosatteConverter.convertDataSet(assetTypes.zip(assets), start, end, dataSetId, outputStreamSFTP)
+      } finally {
+        outputStreamSFTP.close()
+      }
+    } catch {
+      case e: Throwable => logger.println("SFTP OutputStream  Failed with the follow message: ", e.getMessage)
+    }
+
+    logger.println(s"Dataset ID: $dataSetId")
+    logger.println(s"dataset: $filename")
+    logger.println("done!\n")
+  }
+
+  /** Runs a conversion programmatically. */
+  def convertBusStopOnXml(logger: PrintWriter, fromDate: Option[Instant] = None, toDate: Option[Instant] = None ): Unit = {
+    val (start, end) =  (fromDate, toDate) match {
+      case (Some(startDate), Some(endDate)) => (startDate, endDate)
+      case _ => (RemoteDatasets.getLatestEndTimeOnFolder.getOrElse(Instant.now.minus(1, ChronoUnit.DAYS)),
+        Instant.now.minus(1, ChronoUnit.MINUTES))
+    }
+
+    logger.println(s"start: $start")
+    logger.println(s"end: $end")
+
+    val assetType = Seq(AssetType("mass_transit_stops", "MassTransitStop", "MassTransitStop", "", BusStopOTHClient, new PointRosatteConverter))
+
+    val assets = fetchAllChanges(start, end, assetType)
+
+    logger.println("fetched Bus Stops changes to generate Vallu XML, generating dataset")
+
+    val dataSetId = DatasetID.encode(DatasetID.LiikennevirastoUUID, start, end)
+    val filename = s"${URLEncoder.encode(dataSetId, "UTF-8")}.xml"
+
+    try {
+      // Create new stream to the SFTP server
+      val outputStreamSFTP = RemoteDatasets.getOutputStreamSFTP(filename, config.baseDirBusStopsSFTP)
+
+      try {
+        BusStopValluConverter.convertDataSet(assetType.zip(assets), outputStreamSFTP)
       } finally {
         outputStreamSFTP.close()
       }

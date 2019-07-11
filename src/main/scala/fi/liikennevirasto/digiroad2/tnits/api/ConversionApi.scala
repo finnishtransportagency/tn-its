@@ -55,6 +55,16 @@ class ConversionApi extends ScalatraServlet with FutureSupport with Authenticati
     Unit
   }
 
+  post("/mass_transit_stop_on_vallu") {
+    val writer = response.writer
+    val keepAlive = keepConnectionAlive(writer)
+    Converter.convertBusStopOnXml(writer)
+    keepAlive.cancel()
+    writer.println("OK")
+    writer.flush()
+    Unit
+  }
+
   def keepConnectionAlive(writer: PrintWriter) = {
     val timer = new java.util.Timer()
     val task = new java.util.TimerTask {
