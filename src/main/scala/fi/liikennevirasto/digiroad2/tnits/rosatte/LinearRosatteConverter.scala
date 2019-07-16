@@ -65,10 +65,10 @@ class LinearRosatteConverter extends AssetRosatteConverter {
   }
 
   override def splitFeatureMember(assetType: AssetType, changes: Seq[Feature[AssetProperties]], writer: OutputStreamWriter) = {
-    val onlyOneWayFeatures = assetType.service.splitFeaturesApplicableToBothDirections(changes.asInstanceOf[Seq[assetType.service.FeatureType]], assetType)
-    onlyOneWayFeatures.foreach { feature =>
-      val featureMember = assetType.service.toFeatureMember(feature, assetType, writer)
-      writer.write(featureMember.toString)
+    assetType.service.splitFeaturesApplicableToBothDirections(changes.asInstanceOf[Seq[assetType.service.FeatureType]], assetType)
+      .foreach { feature =>
+        val featureMember = assetType.service.toFeatureMember(feature, assetType, writer)
+        writer.write(featureMember.toString)
     }
   }
 
@@ -191,32 +191,24 @@ class BogieWeightLimitRosatteConverter extends LinearRosatteConverter {
       val changes = change.properties.asInstanceOf[BogieWeightLimitAssetProperties]
       val newProperties = features.LinearNumericAssetProperties(changes.sideCode, changes.changeType, 0, changes.startMeasure, changes.endMeasure, changes.link)
 
-      propertyValues match {
-        case BogieAxleValue(Some(axleValue), None) =>
-          Seq((AssetType(assetType.apiEndPoint, assetType.featureType, "MaximumWeightPerTwoAxesBogie", assetType.unit, OTHClient, new LinearRosatteConverter),
-            FeatureLinear(change.id, changes.link.geometry, newProperties.copy(value = axleValue.toInt))))
-
-        case BogieAxleValue(None, Some(axleValue)) =>
-          Seq((AssetType(assetType.apiEndPoint, assetType.featureType, "MaximumWeightPerThreeAxesBogie", assetType.unit, OTHClient, new LinearRosatteConverter),
-            FeatureLinear(change.id, changes.link.geometry, newProperties.copy(value = axleValue.toInt))))
-
-        case BogieAxleValue(Some(twoAxleValue), Some(threeAxleValue)) =>
-          Seq((AssetType(assetType.apiEndPoint, assetType.featureType, "MaximumWeightPerTwoAxesBogie", assetType.unit, OTHClient, new LinearRosatteConverter),
-            FeatureLinear(change.id, changes.link.geometry, newProperties.copy(value = twoAxleValue.toInt))),
-          (AssetType(assetType.apiEndPoint, assetType.featureType, "MaximumWeightPerThreeAxesBogie", assetType.unit, OTHClient, new LinearRosatteConverter),
-            FeatureLinear(change.id, changes.link.geometry, newProperties.copy(value = threeAxleValue.toInt))))
+      propertyValues.twoAxleValue.map { value =>
+        (AssetType(assetType.apiEndPoint, assetType.featureType, "MaximumWeightPerTwoAxesBogie", assetType.unit, OTHClient, new LinearRosatteConverter),
+          FeatureLinear(change.id, changes.link.geometry, newProperties.copy(value = value.toInt)))
+      } ++ propertyValues.threeAxleValue.map { value =>
+        (AssetType(assetType.apiEndPoint, assetType.featureType, "MaximumWeightPerThreeAxesBogie", assetType.unit, OTHClient, new LinearRosatteConverter),
+          FeatureLinear(change.id, changes.link.geometry, newProperties.copy(value = value.toInt)))
       }
     }
   }
 
   override def splitFeatureMember(assetType: AssetType, changes: Seq[Feature[AssetProperties]], writer: OutputStreamWriter) = {
-    val splitted = splitAssetsByAxleValue(assetType, changes).groupBy(_._1)
-    splitted.foreach { case (newAssetType, feature) =>
-      val onlyOneWayFeatures = newAssetType.service.splitFeaturesApplicableToBothDirections(feature.map(_._2).asInstanceOf[Seq[newAssetType.service.FeatureType]], newAssetType)
-      onlyOneWayFeatures.foreach { feature =>
-        val featureMember = newAssetType.service.toFeatureMember(feature, newAssetType, writer)
-        writer.write(featureMember.toString)
+    splitAssetsByAxleValue(assetType, changes).groupBy(_._1)
+      .foreach { case (newAssetType, feature) =>
+        newAssetType.service.splitFeaturesApplicableToBothDirections(feature.map(_._2).asInstanceOf[Seq[newAssetType.service.FeatureType]], newAssetType)
+          .foreach { feature =>
+            val featureMember = newAssetType.service.toFeatureMember(feature, newAssetType, writer)
+            writer.write(featureMember.toString)
+        }
       }
-    }
   }
 }
