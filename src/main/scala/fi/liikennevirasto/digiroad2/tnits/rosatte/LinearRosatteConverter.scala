@@ -124,9 +124,7 @@ object LinearRosatteConverter extends AssetRosatteConverter {
           <rst:SafetyFeaturePropertyValue>
             <rst:type>{ assetType.valueType }</rst:type>
             <rst:propertyValue>
-              <gml:measure uom={assetType.unit}>
-                {feature.properties.value}
-              </gml:measure>
+              <gml:measure uom={assetType.unit}>{feature.properties.value}</gml:measure>
             </rst:propertyValue>
           </rst:SafetyFeaturePropertyValue>
         </rst:properties>
