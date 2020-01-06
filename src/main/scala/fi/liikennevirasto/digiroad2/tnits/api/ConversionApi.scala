@@ -39,6 +39,11 @@ class ConversionApi extends ScalatraServlet with FutureSupport with Authenticati
     val writer = response.writer
     val keepAlive = keepConnectionAlive(writer)
 
+    if(numberOfDays == 0 ) {
+      println("Running in manually mode, only some hours")
+      Converter.convert(writer, Some(startDate), Some(endDate))
+    }
+
     for (counter <- 1 to numberOfDays.toInt) {
       baseAssetConverter.convert(writer, Some(startDate.plus(counter - 1, ChronoUnit.DAYS)), Some(startDate.plus(counter, ChronoUnit.DAYS)))
     }
@@ -95,6 +100,16 @@ class ConversionApi extends ScalatraServlet with FutureSupport with Authenticati
     val writer = response.writer
     val keepAlive = keepConnectionAlive(writer)
     busStopAssetConverter.convert(writer)
+    keepAlive.cancel()
+    writer.println("OK")
+    writer.flush()
+    Unit
+  }
+
+  post("/mass_transit_stop_on_vallu") {
+    val writer = response.writer
+    val keepAlive = keepConnectionAlive(writer)
+    Converter.convertBusStopOnXml(writer)
     keepAlive.cancel()
     writer.println("OK")
     writer.flush()
