@@ -27,7 +27,7 @@ class ConversionApi extends ScalatraServlet with FutureSupport with Authenticati
     basicAuth
   }
 
-  post("/baseAssetConverter/:endDate") {
+  post("/:endDate") {
     val startDate = RemoteDatasets.getLatestEndTime.getOrElse(Instant.now.minus(1, ChronoUnit.DAYS))
     val endDate = Instant.parse(params("endDate"))
 
@@ -41,32 +41,12 @@ class ConversionApi extends ScalatraServlet with FutureSupport with Authenticati
 
     if(numberOfDays == 0 ) {
       println("Running in manually mode, only some hours")
-      Converter.convert(writer, Some(startDate), Some(endDate))
+      baseAssetConverter.convert(writer, Some(startDate), Some(endDate))
+      weightLimitAssetConverter.convert(writer, Some(startDate), Some(endDate))
     }
 
     for (counter <- 1 to numberOfDays.toInt) {
       baseAssetConverter.convert(writer, Some(startDate.plus(counter - 1, ChronoUnit.DAYS)), Some(startDate.plus(counter, ChronoUnit.DAYS)))
-    }
-
-    keepAlive.cancel()
-    writer.println("OK")
-    writer.flush()
-    Unit
-  }
-
-  post("/weightLimitConverter/:endDate") {
-    val startDate = RemoteDatasets.getLatestEndTime.getOrElse(Instant.now.minus(1, ChronoUnit.DAYS))
-    val endDate = Instant.parse(params("endDate"))
-
-    if(startDate.isAfter(endDate)  || endDate.isAfter(Instant.now))
-      halt(BadRequest(s"Wrong date period startDate - $startDate / endDate - $endDate "))
-
-    val numberOfDays = startDate.until(endDate, ChronoUnit.DAYS)
-
-    val writer = response.writer
-    val keepAlive = keepConnectionAlive(writer)
-
-    for (counter <- 1 to numberOfDays.toInt) {
       weightLimitAssetConverter.convert(writer, Some(startDate.plus(counter - 1, ChronoUnit.DAYS)), Some(startDate.plus(counter, ChronoUnit.DAYS)))
     }
 
@@ -76,19 +56,10 @@ class ConversionApi extends ScalatraServlet with FutureSupport with Authenticati
     Unit
   }
 
-  post("/baseAssetConverter") {
+  post("/") {
     val writer = response.writer
     val keepAlive = keepConnectionAlive(writer)
     baseAssetConverter.convert(writer)
-    keepAlive.cancel()
-    writer.println("OK")
-    writer.flush()
-    Unit
-  }
-
-  post("/weightLimitConverter") {
-    val writer = response.writer
-    val keepAlive = keepConnectionAlive(writer)
     weightLimitAssetConverter.convert(writer)
     keepAlive.cancel()
     writer.println("OK")
@@ -100,16 +71,6 @@ class ConversionApi extends ScalatraServlet with FutureSupport with Authenticati
     val writer = response.writer
     val keepAlive = keepConnectionAlive(writer)
     busStopAssetConverter.convert(writer)
-    keepAlive.cancel()
-    writer.println("OK")
-    writer.flush()
-    Unit
-  }
-
-  post("/mass_transit_stop_on_vallu") {
-    val writer = response.writer
-    val keepAlive = keepConnectionAlive(writer)
-    Converter.convertBusStopOnXml(writer)
     keepAlive.cancel()
     writer.println("OK")
     writer.flush()

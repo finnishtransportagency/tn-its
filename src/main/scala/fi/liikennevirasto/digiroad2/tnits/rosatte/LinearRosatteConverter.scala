@@ -64,14 +64,6 @@ class LinearRosatteConverter extends AssetRosatteConverter {
     OpenLREncoder.encodeAssetOnLink(startM, endM, linkGeometry, linkLength, functionalClass, linkType,  DefaultLinkReference + link.id)
   }
 
-  override def splitFeatureMember(assetType: AssetType, changes: Seq[Feature[AssetProperties]], writer: OutputStreamWriter) = {
-    assetType.service.splitFeaturesApplicableToBothDirections(changes.asInstanceOf[Seq[assetType.service.FeatureType]], assetType)
-      .foreach { feature =>
-        val featureMember = assetType.service.toFeatureMember(feature, assetType, writer)
-        writer.write(featureMember.toString)
-    }
-  }
-
   override def properties(assetType: AssetType, feature: FeatureLinear[LinearAssetProperties]) : NodeSeq = {
     assetType.apiEndPoint match {
 

@@ -97,5 +97,11 @@ trait AssetRosatteConverter {
 
   def encodedGeometry(feature: FeatureType) : Elem
 
-  def splitFeatureMember(assetType: AssetType, changes: Seq[Feature[AssetProperties]], writer: OutputStreamWriter): Unit
+  def splitFeatureMember(assetType: AssetType, changes: Seq[Feature[AssetProperties]], writer: OutputStreamWriter): Unit = {
+    assetType.service.splitFeaturesApplicableToBothDirections(changes.asInstanceOf[Seq[assetType.service.FeatureType]], assetType)
+      .foreach { feature =>
+        val featureMember = assetType.service.toFeatureMember(feature, assetType, writer)
+        writer.write(featureMember.toString)
+      }
+  }
 }

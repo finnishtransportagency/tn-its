@@ -95,13 +95,6 @@ class PointRosatteConverter extends AssetRosatteConverter {
     </rst:encodedGeometry>
   }
 
-  override def splitFeatureMember(assetType: AssetType, changes: Seq[Feature[AssetProperties]], writer: OutputStreamWriter) = {
-    val onlyOneWayFeatures = assetType.service.splitFeaturesApplicableToBothDirections(changes.asInstanceOf[Seq[assetType.service.FeatureType]], assetType)
-    onlyOneWayFeatures.foreach { feature =>
-      val featureMember = assetType.service.toFeatureMember(feature, assetType, writer)
-      writer.write(featureMember.toString)
-    }
-  }
 }
 
 class PointValueRosatteConverter extends PointRosatteConverter {
