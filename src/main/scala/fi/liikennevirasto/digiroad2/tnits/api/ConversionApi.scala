@@ -56,7 +56,9 @@ class ConversionApi extends ScalatraServlet with FutureSupport with Authenticati
   post("/") {
     val writer = response.writer
     val keepAlive = keepConnectionAlive(writer)
+    writer.println(s"***** Base Asset Converter *****")
     baseAssetConverter.convert(writer)
+    writer.println(s"***** WeightLimit Asset Converter *****")
     weightLimitAssetConverter.convert(writer)
     keepAlive.cancel()
     writer.println("OK")
