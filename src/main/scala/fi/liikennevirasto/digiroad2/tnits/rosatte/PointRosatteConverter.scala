@@ -1,8 +1,9 @@
 package fi.liikennevirasto.digiroad2.tnits.rosatte
 
+import java.io.OutputStreamWriter
 import java.util.UUID
 
-import fi.liikennevirasto.digiroad2.tnits.geojson.FeaturePoint
+import fi.liikennevirasto.digiroad2.tnits.geojson.{Feature, FeaturePoint}
 import fi.liikennevirasto.digiroad2.tnits.geometry.{CoordinateTransform, Point}
 import fi.liikennevirasto.digiroad2.tnits.openlr.OpenLREncoder
 import fi.liikennevirasto.digiroad2.tnits.rosatte.features.{IncomingPointAssetProperties, TrafficSigns}
@@ -93,6 +94,7 @@ class PointRosatteConverter extends AssetRosatteConverter {
       </gml:Point>
     </rst:encodedGeometry>
   }
+
 }
 
 class PointValueRosatteConverter extends PointRosatteConverter {

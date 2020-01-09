@@ -107,59 +107,7 @@ object RemoteDatasets {
     response.getEntity.getContent
   }
 
-  /** @return a writable stream to a new dataset using SFTP transfer process. */
-  def getOutputStreamSFTP(fileName: String): OutputStream = {
-    val jschClient = new JSch()
-
-    val session = jschClient.getSession(config.logins.aineistotSFTP.username, config.urls.aineistotSFTP.sftp, config.sftpServerPort)
-    session.setPassword(config.logins.aineistotSFTP.password)
-    session.setConfig("StrictHostKeyChecking", "no")
-
-    if (!session.isConnected()) {
-      try {
-        session.connect()
-      } catch {
-        case jsche: JSchException =>
-          throw new IllegalArgumentException("Login failed")
-      }
-    }
-
-    val channel = session.openChannel("sftp")
-    channel.connect()
-
-    val channelSftp = channel.asInstanceOf[ChannelSftp]
-
-    try {
-      channelSftp.cd(config.baseDirSFTP)
-    } catch {
-      case e: SftpException =>
-        throw new IllegalStateException("Can't change directory to tn-its: " + e.getMessage())
-    }
-
-    //verify if file already exist, if not, return a exception and continue, if exist, throw IllegalArgumentException
-    if (fileExist(channelSftp, fileName))
-      throw new IllegalArgumentException(s"$fileName already exists on server") //when file exist
-
-    //when file doesn't exist
-    val output = channelSftp.put(fileName)
-
-    new OutputStream {
-      override def write(b: Int): Unit = output.write(b)
-
-      override def write(b: Array[Byte]): Unit = output.write(b)
-
-      override def write(b: Array[Byte], off: Int, len: Int): Unit = output.write(b, off, len)
-
-      override def close(): Unit = {
-        output.close()
-        channelSftp.exit()
-        channel.disconnect()
-        session.disconnect()
-      }
-    }
-  }
-
-  /** @return a writable stream to a new dataset using SFTP transfer process and where we can specify the folder. */
+  /** @return a writable stream to a new dataset that will be saved in the specified directory using SFTP transfer process. */
   def getOutputStreamSFTP(fileName: String, baseDirectory: String): OutputStream = {
     val jschClient = new JSch()
 
@@ -185,7 +133,7 @@ object RemoteDatasets {
       channelSftp.cd(baseDirectory)
     } catch {
       case e: SftpException =>
-        throw new IllegalStateException("Can't change directory to muutokset_pysakit_xml: " + e.getMessage())
+        throw new IllegalStateException("Can't change directory to " + baseDirectory + ": " + e.getMessage())
     }
 
     //verify if file already exist, if not, return a exception and continue, if exist, throw IllegalArgumentException
@@ -215,7 +163,7 @@ object RemoteDatasets {
     try {
       channelSftp.ls(fileName).size > 0
     } catch {
-      case sftpe: SftpException if (sftpe.id == 2) => false
+      case sftpe: SftpException if sftpe.id == 2 => false
     }
   }
 

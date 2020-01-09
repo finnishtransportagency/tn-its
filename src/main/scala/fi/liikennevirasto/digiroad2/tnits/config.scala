@@ -23,6 +23,8 @@ object config {
   val baseDirSFTP = env("AINEISTOT_SFTP_BASE_DIRECTORY") + "/" + env("AINEISTOT_SFTP_DIRECTORY")
   val dirBusStopsSFTP = env("AINEISTOT_SFTP_BUS_STOPS_DIRECTORY")
   val baseDirBusStopsSFTP = env("AINEISTOT_SFTP_BASE_DIRECTORY") + "/" + env("AINEISTOT_SFTP_BUS_STOPS_DIRECTORY")
+  val dirWeightLimitSFTP = env("AINEISTOT_SFTP_WEIGTH_LIMIT_DIRECTORY")
+  val baseWeightLimitSFTP = env("AINEISTOT_SFTP_BASE_DIRECTORY") + "/" + env("AINEISTOT_SFTP_WEIGTH_LIMIT_DIRECTORY")
 
   val urls = new {
     val aineistotSFTP = new {
@@ -33,6 +35,11 @@ object config {
     val aineistotSFTPForBusStops = new {
       val domain = env("AINEISTOT_SFTP_DOMAIN")
       val dir = s"https://$domain/${config.dirBusStopsSFTP}"
+      val sftp = domain
+    }
+    val aineistotSFTPForWeigthLimits = new {
+      val domain = env("AINEISTOT_SFTP_DOMAIN")
+      val dir = s"https://$domain/${config.dirWeightLimitSFTP}"
       val sftp = domain
     }
     val changesApi = env("CHANGE_API_URL")
