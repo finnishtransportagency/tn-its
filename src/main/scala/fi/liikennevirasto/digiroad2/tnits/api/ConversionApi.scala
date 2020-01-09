@@ -39,14 +39,11 @@ class ConversionApi extends ScalatraServlet with FutureSupport with Authenticati
     val writer = response.writer
     val keepAlive = keepConnectionAlive(writer)
 
-    if(numberOfDays == 0 ) {
-      println("Running in manually mode, only some hours")
-      baseAssetConverter.convert(writer, Some(startDate), Some(endDate))
-      weightLimitAssetConverter.convert(writer, Some(startDate), Some(endDate))
-    }
-
     for (counter <- 1 to numberOfDays.toInt) {
+      writer.println(s"Base Asset Converter")
       baseAssetConverter.convert(writer, Some(startDate.plus(counter - 1, ChronoUnit.DAYS)), Some(startDate.plus(counter, ChronoUnit.DAYS)))
+
+      writer.println(s"WeightLimit Asset Converter")
       weightLimitAssetConverter.convert(writer, Some(startDate.plus(counter - 1, ChronoUnit.DAYS)), Some(startDate.plus(counter, ChronoUnit.DAYS)))
     }
 
