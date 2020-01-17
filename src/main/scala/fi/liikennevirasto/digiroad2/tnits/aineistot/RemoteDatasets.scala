@@ -24,21 +24,17 @@ case class RemoteDatasetsException(cause: Throwable) extends RuntimeException(ca
   * @see [[config.urls.aineistotSFTP]]
   * @see [[config.logins.aineistotSFTP]]
   */
-object RemoteDatasets {
+trait RemoteDatasets {
   private val logins =
     config.logins.aineistotSFTP
 
-  private val baseUrl =
-    config.urls.aineistotSFTP.dir
-
-  private val baseUrlForVallu =
-    config.urls.aineistotSFTPForBusStops.dir
+  def url: String
 
   /** @return names of all datasets in the configured directory. */
   def index: Seq[String] = {
-    val response = createClient.execute(new HttpGet(config.urls.aineistotSFTP.dir))
+    val response = createClient.execute(new HttpGet(url))
     val contents = EntityUtils.toString(response.getEntity, "UTF-8")
-    val doc = Jsoup.parse(contents, baseUrl)
+    val doc = Jsoup.parse(contents, url)
     val links = doc.select("a")
     links.asScala
       .map(_.attr("href"))
@@ -51,26 +47,7 @@ object RemoteDatasets {
   /** @return the ending timestamp of the latest dataset. */
   def getLatestEndTime: Option[Instant] = {
     val dataSets = try {
-      RemoteDatasets.index
-    } catch {
-      case err: Throwable =>
-        throw RemoteDatasetsException(err)
-    }
-
-    if (dataSets.nonEmpty) {
-      Some(dataSets
-        .map { id => DatasetID.decode(URLDecoder.decode(id, "UTF-8")) }
-        .map { _.endDate }
-        .max)
-    } else {
-      None
-    }
-  }
-
-  /** @return the ending timestamp of the latest dataset on a specific folder. */
-  def getLatestEndTimeOnFolder: Option[Instant] = {
-    val dataSets = try {
-      RemoteDatasets.indexOnFolder(baseUrlForVallu)
+      index
     } catch {
       case err: Throwable =>
         throw RemoteDatasetsException(err)
@@ -172,16 +149,28 @@ object RemoteDatasets {
     // URL-encoded encoding of the URL-encoded filename.
     val once = URLEncoder.encode(id, "UTF-8")
     val twice = URLEncoder.encode(once, "UTF-8")
-    s"$baseUrl/$twice.xml"
+    s"$url/$twice.xml"
   }
 
   private def createClient = {
     val credentialsProvider = new BasicCredentialsProvider
-    val dataSetsUri = URI.create(config.urls.aineistotSFTP.dir)
+    val dataSetsUri = URI.create(url)
     credentialsProvider.setCredentials(
       new AuthScope(dataSetsUri.getHost, dataSetsUri.getPort),
       new UsernamePasswordCredentials(config.logins.aineistotSFTP.username, config.logins.aineistotSFTP.password))
 
     HttpClients.custom().setDefaultCredentialsProvider(credentialsProvider).setMaxConnPerRoute(10).build()
   }
+}
+
+object RemoteDataset extends RemoteDatasets {
+  override def url: String = config.urls.aineistotSFTP.dir
+}
+
+object RemoteNonStdDataset extends RemoteDatasets {
+  override def url: String = config.urls.aineistotSFTPForWeigthLimits.dir
+}
+
+object RemoteDataSetBusStop extends RemoteDatasets {
+  override def url: String = config.urls.aineistotSFTPForBusStops.dir
 }

@@ -1,11 +1,10 @@
 package fi.liikennevirasto.digiroad2.tnits.api
 
-import java.io.{OutputStream, PrintWriter}
+import java.io.PrintWriter
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 
-import fi.liikennevirasto.digiroad2.tnits.aineistot.RemoteDatasets
-import fi.liikennevirasto.digiroad2.tnits.runners.{BaseAssetConverter, BusStopConverter, Converter, WeightLimitConverter}
+import fi.liikennevirasto.digiroad2.tnits.runners.{StdConverter, BusStopConverter, Converter, NonStdConverter}
 import org.scalatra._
 
 import scala.concurrent.ExecutionContext
@@ -16,9 +15,9 @@ import scala.concurrent.ExecutionContext
   */
 class ConversionApi extends ScalatraServlet with FutureSupport with AuthenticationSupport {
 
-  lazy val baseAssetConverter = new BaseAssetConverter
+  lazy val stdConverter = new StdConverter
   lazy val busStopAssetConverter = new BusStopConverter
-  lazy val weightLimitAssetConverter = new WeightLimitConverter
+  lazy val weightLimitAssetConverter = new NonStdConverter
 
   override protected implicit def executor: ExecutionContext =
     scala.concurrent.ExecutionContext.global
@@ -27,25 +26,29 @@ class ConversionApi extends ScalatraServlet with FutureSupport with Authenticati
     basicAuth
   }
 
+
+def manual(converter: Converter, writer: PrintWriter): Unit = {
+  val startDate = converter.getLatestEndTime.getOrElse(Instant.now.minus(1, ChronoUnit.DAYS))
+  val endDate = Instant.parse(params("endDate"))
+
+  if(startDate.isAfter(endDate)  || endDate.isAfter(Instant.now))
+    halt(BadRequest(s"Wrong date period startDate - $startDate / endDate - $endDate "))
+
+  val numberOfDays = startDate.until(endDate, ChronoUnit.DAYS)
+
+  for (counter <- 1 to numberOfDays.toInt) {
+    writer.println(s"***** Base Asset Converter *****")
+    converter.convert(writer, Some(startDate.plus(counter - 1, ChronoUnit.DAYS)), Some(startDate.plus(counter, ChronoUnit.DAYS)))
+  }
+}
+
   post("/:endDate") {
-    val startDate = RemoteDatasets.getLatestEndTime.getOrElse(Instant.now.minus(1, ChronoUnit.DAYS))
-    val endDate = Instant.parse(params("endDate"))
-
-    if(startDate.isAfter(endDate)  || endDate.isAfter(Instant.now))
-      halt(BadRequest(s"Wrong date period startDate - $startDate / endDate - $endDate "))
-
-    val numberOfDays = startDate.until(endDate, ChronoUnit.DAYS)
-
     val writer = response.writer
     val keepAlive = keepConnectionAlive(writer)
 
-    for (counter <- 1 to numberOfDays.toInt) {
-      writer.println(s"***** Base Asset Converter *****")
-      baseAssetConverter.convert(writer, Some(startDate.plus(counter - 1, ChronoUnit.DAYS)), Some(startDate.plus(counter, ChronoUnit.DAYS)))
+    manual(stdConverter, writer)
 
-      writer.println(s"***** WeightLimit Asset Converter *****")
-      weightLimitAssetConverter.convert(writer, Some(startDate.plus(counter - 1, ChronoUnit.DAYS)), Some(startDate.plus(counter, ChronoUnit.DAYS)))
-    }
+    manual(weightLimitAssetConverter, writer)
 
     keepAlive.cancel()
     writer.println("OK")
@@ -57,7 +60,7 @@ class ConversionApi extends ScalatraServlet with FutureSupport with Authenticati
     val writer = response.writer
     val keepAlive = keepConnectionAlive(writer)
     writer.println(s"***** Base Asset Converter *****")
-    baseAssetConverter.convert(writer)
+    stdConverter.convert(writer)
     writer.println(s"***** WeightLimit Asset Converter *****")
     weightLimitAssetConverter.convert(writer)
     keepAlive.cancel()

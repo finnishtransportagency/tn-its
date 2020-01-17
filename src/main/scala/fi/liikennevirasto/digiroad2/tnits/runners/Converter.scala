@@ -6,7 +6,7 @@ import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.concurrent.Executors
 
-import fi.liikennevirasto.digiroad2.tnits.aineistot.RemoteDatasets
+import fi.liikennevirasto.digiroad2.tnits.aineistot.{RemoteDataSetBusStop, RemoteDataset, RemoteNonStdDataset, RemoteDatasets}
 import fi.liikennevirasto.digiroad2.tnits.config
 import fi.liikennevirasto.digiroad2.tnits.geojson.Feature
 import fi.liikennevirasto.digiroad2.tnits.oth._
@@ -17,22 +17,22 @@ import scala.concurrent.duration._
 import scala.concurrent.{Await, ExecutionContext, Future}
 import java.io.OutputStream
 
-import fi.liikennevirasto.digiroad2.tnits.rosatte.features.BogieWeightLimitAssetProperties
-
 case class AssetType(apiEndPoint: String, featureType: String, valueType: String, unit: String, client: Client, service: AssetRosatteConverter, source: String = "Regulation")
 
 /** Base class to run conversion batch job. */
 trait Converter {
 
   def assetTypes: Seq[AssetType]
-  def baseDirectory: String
+  def directory: String
+  def getLatestEndTime: Option[Instant]
+  def getOutputStreamSFTP(filename : String, baseDirectory: String): OutputStream
 
   case class OTHException(cause: Throwable) extends RuntimeException(cause)
 
   def convert(logger: PrintWriter, fromDate: Option[Instant] = None, toDate: Option[Instant] = None ): Unit = {
     val (start, end) =  (fromDate, toDate) match {
       case (Some(startDate), Some(endDate)) => (startDate, endDate)
-      case _ => (RemoteDatasets.getLatestEndTime.getOrElse(Instant.now.minus(1, ChronoUnit.DAYS)),
+      case _ => (getLatestEndTime.getOrElse(Instant.now.minus(1, ChronoUnit.DAYS)),
         Instant.now.minus(1, ChronoUnit.MINUTES))
     }
 
@@ -47,7 +47,7 @@ trait Converter {
 
     try {
       // Create new stream to the SFTP server for replace a stream to the FTP server in the Future
-      val outputStreamSFTP = RemoteDatasets.getOutputStreamSFTP(filename, baseDirectory)
+      val outputStreamSFTP = getOutputStreamSFTP(filename, directory)
 
       try {
         convertDataSet(assetTypes.zip(assets), start, end, dataSetId, outputStreamSFTP)
@@ -63,45 +63,8 @@ trait Converter {
     logger.println("done!\n")
   }
 
-  /** Runs a conversion programmatically. */
-  def convertBusStopOnXml(logger: PrintWriter, fromDate: Option[Instant] = None, toDate: Option[Instant] = None ): Unit = {
-    val (start, end) =  (fromDate, toDate) match {
-      case (Some(startDate), Some(endDate)) => (startDate, endDate)
-      case _ => (RemoteDatasets.getLatestEndTimeOnFolder.getOrElse(Instant.now.minus(1, ChronoUnit.DAYS)),
-        Instant.now.minus(1, ChronoUnit.MINUTES))
-    }
 
-    logger.println(s"start: $start")
-    logger.println(s"end: $end")
-
-    val assetType = Seq(AssetType("mass_transit_stops", "MassTransitStop", "MassTransitStop", "", BusStopOTHClient, new PointRosatteConverter))
-
-    val assets = fetchAllChanges(start, end, assetType)
-
-    logger.println("fetched Bus Stops changes to generate Vallu XML, generating dataset")
-
-    val dataSetId = DatasetID.encode(DatasetID.LiikennevirastoUUID, start, end)
-    val filename = s"${URLEncoder.encode(dataSetId, "UTF-8")}.xml"
-
-    try {
-      // Create new stream to the SFTP server
-      val outputStreamSFTP = RemoteDatasets.getOutputStreamSFTP(filename, config.baseDirBusStopsSFTP)
-
-      try {
-        BusStopValluConverter.convertDataSet(assetType.zip(assets), outputStreamSFTP)
-      } finally {
-        outputStreamSFTP.close()
-      }
-    } catch {
-      case e: Throwable => logger.println("SFTP OutputStream  Failed with the follow message: ", e.getMessage)
-    }
-
-    logger.println(s"Dataset ID: $dataSetId")
-    logger.println(s"dataset: $filename")
-    logger.println("done!\n")
-  }
-
-  private def fetchAllChanges(start: Instant, end: Instant, assetTypes: Seq[AssetType]): Seq[Seq[Feature[AssetProperties]]] = {
+  protected def fetchAllChanges(start: Instant, end: Instant, assetTypes: Seq[AssetType]): Seq[Seq[Feature[AssetProperties]]] = {
     try {
       val executor = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(10))
       val responses = Future.sequence(assetTypes.map { asset =>
@@ -119,7 +82,61 @@ trait Converter {
   }
 }
 
-class BaseAssetConverter extends Converter {
+
+class BusStopConverter extends Converter {
+  override val assetTypes = Seq(
+    AssetType("mass_transit_stops", "MassTransitStop", "MassTransitStop", "", BusStopOTHClient, new PointRosatteConverter)
+  )
+  override def getLatestEndTime: Option[Instant] = RemoteDataSetBusStop.getLatestEndTime
+  override def getOutputStreamSFTP(filename : String, baseDirectory: String): OutputStream =  RemoteDataSetBusStop.getOutputStreamSFTP(filename, baseDirectory)
+  override def directory: String = config.baseDirBusStopsSFTP
+
+  RemoteDataset.getLatestEndTime
+  override protected def convertDataSet(assets: Seq[(AssetType, Seq[Feature[AssetProperties]])], start: Instant, end: Instant, datasetID: String, outputStream: OutputStream): Unit = {
+    BusStopValluConverter.convertDataSet(assets, outputStream)
+  }
+
+  /** Runs a conversion programmatically. */
+  override def convert(logger: PrintWriter, fromDate: Option[Instant] = None, toDate: Option[Instant] = None ): Unit = {
+    val (start, end) =  (fromDate, toDate) match {
+      case (Some(startDate), Some(endDate)) => (startDate, endDate)
+      case _ => (getLatestEndTime.getOrElse(Instant.now.minus(1, ChronoUnit.DAYS)),
+        Instant.now.minus(1, ChronoUnit.MINUTES))
+    }
+
+    logger.println(s"start: $start")
+    logger.println(s"end: $end")
+
+    val assetType = Seq(AssetType("mass_transit_stops", "MassTransitStop", "MassTransitStop", "", BusStopOTHClient, new PointRosatteConverter))
+
+    val assets = fetchAllChanges(start, end, assetType)
+
+    logger.println("fetched Bus Stops changes to generate Vallu XML, generating dataset")
+
+    val dataSetId = DatasetID.encode(DatasetID.LiikennevirastoUUID, start, end)
+    val filename = s"${URLEncoder.encode(dataSetId, "UTF-8")}.xml"
+
+    try {
+      // Create new stream to the SFTP server
+      val outputStreamSFTP = getOutputStreamSFTP(filename, config.baseDirBusStopsSFTP)
+
+      try {
+        BusStopValluConverter.convertDataSet(assetType.zip(assets), outputStreamSFTP)
+      } finally {
+        outputStreamSFTP.close()
+      }
+    } catch {
+      case e: Throwable => logger.println("SFTP OutputStream  Failed with the follow message: ", e.getMessage)
+    }
+
+    logger.println(s"Dataset ID: $dataSetId")
+    logger.println(s"dataset: $filename")
+    logger.println("done!\n")
+  }
+}
+
+
+class StdConverter extends Converter {
   override def assetTypes: Seq[AssetType] = Seq(
     AssetType("speed_limits", "SpeedLimit", "MaximumSpeedLimit", "kmph", OTHClient, new LinearRosatteConverter),
     AssetType("length_limits", "RestrictionForVehicles", "MaximumLength", "cm", OTHClient, new LinearRosatteConverter),
@@ -135,44 +152,34 @@ class BaseAssetConverter extends Converter {
     AssetType("stop_sign", "PassingWithoutStoppingProhibited", "PassingWithoutStoppingProhibited", "", StopSignOTHClient, new PointRosatteConverter)
   )
 
-  override def baseDirectory: String = config.baseDirSFTP
-
+  override def directory: String = config.baseDirSFTP
+  override def getLatestEndTime: Option[Instant] = RemoteNonStdDataset.getLatestEndTime
+  override def getOutputStreamSFTP(filename : String, baseDirectory: String): OutputStream = RemoteDataset.getOutputStreamSFTP(filename, baseDirectory)
 }
 
-class BusStopConverter extends Converter {
-  override val assetTypes = Seq(
-    AssetType("mass_transit_stops", "MassTransitStop", "MassTransitStop", "", BusStopOTHClient, new PointRosatteConverter)
-  )
-
-  override def baseDirectory: String = config.baseDirBusStopsSFTP
-
-
-  override protected def convertDataSet(assets: Seq[(AssetType, Seq[Feature[AssetProperties]])], start: Instant, end: Instant, datasetID: String, outputStream: OutputStream): Unit = {
-    BusStopValluConverter.convertDataSet(assets, outputStream)
-  }
-}
-
-class WeightLimitConverter extends Converter {
+class NonStdConverter extends Converter {
   override def assetTypes: Seq[AssetType] = Seq(
     AssetType("trailer_truck_weight_limits", "RestrictionForVehicles", "MaximumTrailerTruckWeight", "kg", OTHClient, new LinearRosatteConverter),
     AssetType("bogie_weight_limits", "RestrictionForVehicles", "MaximumWeightPerSingleAxle", "kg", BogieWeightLimitOTHClient, new BogieWeightLimitRosatteConverter)
   )
 
-  override def baseDirectory: String = config.baseWeightLimitSFTP
+  override def directory: String = config.baseWeightLimitSFTP
+  override def getLatestEndTime: Option[Instant] = RemoteNonStdDataset.getLatestEndTime
+  override def getOutputStreamSFTP(filename : String, baseDirectory: String): OutputStream = RemoteNonStdDataset.getOutputStreamSFTP(filename, baseDirectory)
 
 }
 
-object CoverterObject {
+object TestConverterObject {
   /** Runs a conversion from the command line */
   def main(args: Array[String]): Unit = {
-    val baseAssetConverter = new BaseAssetConverter
-    baseAssetConverter.convert(new PrintWriter(System.out, true))
+    val stdConverter = new StdConverter
+    stdConverter.convert(new PrintWriter(System.out, true))
 
     val busStopConverter = new BusStopConverter
     busStopConverter.convert(new PrintWriter(System.out, true))
 
-    val weightLimitConverter = new WeightLimitConverter
-    weightLimitConverter.convert(new PrintWriter(System.out, true))
+    val nonStdConverter = new NonStdConverter
+    nonStdConverter.convert(new PrintWriter(System.out, true))
     System.exit(0) //TODO: Without this, something leaves the program hanging
   }
 
