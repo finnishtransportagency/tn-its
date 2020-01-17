@@ -37,7 +37,7 @@ def manual(converter: Converter, writer: PrintWriter): Unit = {
   val numberOfDays = startDate.until(endDate, ChronoUnit.DAYS)
 
   for (counter <- 1 to numberOfDays.toInt) {
-    writer.println(s"***** Base Asset Converter *****")
+    writer.println(s"***** Convert *****")
     converter.convert(writer, Some(startDate.plus(counter - 1, ChronoUnit.DAYS)), Some(startDate.plus(counter, ChronoUnit.DAYS)))
   }
 }
@@ -46,8 +46,10 @@ def manual(converter: Converter, writer: PrintWriter): Unit = {
     val writer = response.writer
     val keepAlive = keepConnectionAlive(writer)
 
+    writer.println(s"***** Standard Asset Converter *****")
     manual(stdConverter, writer)
 
+    writer.println(s"***** NonStandard Asset Converter *****")
     manual(nonStdConverter, writer)
 
     keepAlive.cancel()
@@ -59,9 +61,9 @@ def manual(converter: Converter, writer: PrintWriter): Unit = {
   post("/") {
     val writer = response.writer
     val keepAlive = keepConnectionAlive(writer)
-    writer.println(s"***** Base Asset Converter *****")
+    writer.println(s"***** Standard Asset Converter *****")
     stdConverter.convert(writer)
-    writer.println(s"***** NonStandart Asset Converter *****")
+    writer.println(s"***** NonStandard Asset Converter *****")
     nonStdConverter.convert(writer)
     keepAlive.cancel()
     writer.println("OK")
