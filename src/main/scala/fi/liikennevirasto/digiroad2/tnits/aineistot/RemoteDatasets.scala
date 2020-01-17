@@ -92,7 +92,7 @@ trait RemoteDatasets {
     session.setPassword(config.logins.aineistotSFTP.password)
     session.setConfig("StrictHostKeyChecking", "no")
 
-    if (!session.isConnected()) {
+    if (!session.isConnected) {
       try {
         session.connect()
       } catch {
@@ -110,7 +110,7 @@ trait RemoteDatasets {
       channelSftp.cd(baseDirectory)
     } catch {
       case e: SftpException =>
-        throw new IllegalStateException("Can't change directory to " + baseDirectory + ": " + e.getMessage())
+        throw new IllegalStateException("Can't change directory to " + baseDirectory + ": " + e.getMessage)
     }
 
     //verify if file already exist, if not, return a exception and continue, if exist, throw IllegalArgumentException
@@ -168,7 +168,7 @@ object RemoteDataset extends RemoteDatasets {
 }
 
 object RemoteNonStdDataset extends RemoteDatasets {
-  override def url: String = config.urls.aineistotSFTPForWeigthLimits.dir
+  override def url: String = config.urls.aineistotSFTPForNonStd.dir
 }
 
 object RemoteDataSetBusStop extends RemoteDatasets {

@@ -17,7 +17,7 @@ class ConversionApi extends ScalatraServlet with FutureSupport with Authenticati
 
   lazy val stdConverter = new StdConverter
   lazy val busStopAssetConverter = new BusStopConverter
-  lazy val weightLimitAssetConverter = new NonStdConverter
+  lazy val nonStdConverter = new NonStdConverter
 
   override protected implicit def executor: ExecutionContext =
     scala.concurrent.ExecutionContext.global
@@ -48,7 +48,7 @@ def manual(converter: Converter, writer: PrintWriter): Unit = {
 
     manual(stdConverter, writer)
 
-    manual(weightLimitAssetConverter, writer)
+    manual(nonStdConverter, writer)
 
     keepAlive.cancel()
     writer.println("OK")
@@ -61,8 +61,8 @@ def manual(converter: Converter, writer: PrintWriter): Unit = {
     val keepAlive = keepConnectionAlive(writer)
     writer.println(s"***** Base Asset Converter *****")
     stdConverter.convert(writer)
-    writer.println(s"***** WeightLimit Asset Converter *****")
-    weightLimitAssetConverter.convert(writer)
+    writer.println(s"***** NonStandart Asset Converter *****")
+    nonStdConverter.convert(writer)
     keepAlive.cancel()
     writer.println("OK")
     writer.flush()

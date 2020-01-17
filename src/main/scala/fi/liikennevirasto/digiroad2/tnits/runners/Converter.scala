@@ -25,7 +25,7 @@ trait Converter {
   def assetTypes: Seq[AssetType]
   def directory: String
   def getLatestEndTime: Option[Instant]
-  def getOutputStreamSFTP(filename : String, baseDirectory: String): OutputStream
+  def getOutputStreamSFTP(filename : String): OutputStream
 
   case class OTHException(cause: Throwable) extends RuntimeException(cause)
 
@@ -47,7 +47,7 @@ trait Converter {
 
     try {
       // Create new stream to the SFTP server for replace a stream to the FTP server in the Future
-      val outputStreamSFTP = getOutputStreamSFTP(filename, directory)
+      val outputStreamSFTP = getOutputStreamSFTP(filename)
 
       try {
         convertDataSet(assetTypes.zip(assets), start, end, dataSetId, outputStreamSFTP)
@@ -88,10 +88,10 @@ class BusStopConverter extends Converter {
     AssetType("mass_transit_stops", "MassTransitStop", "MassTransitStop", "", BusStopOTHClient, new PointRosatteConverter)
   )
   override def getLatestEndTime: Option[Instant] = RemoteDataSetBusStop.getLatestEndTime
-  override def getOutputStreamSFTP(filename : String, baseDirectory: String): OutputStream =  RemoteDataSetBusStop.getOutputStreamSFTP(filename, baseDirectory)
   override def directory: String = config.baseDirBusStopsSFTP
+  override def getOutputStreamSFTP(filename : String): OutputStream = RemoteDataSetBusStop.getOutputStreamSFTP(filename, directory)
 
-  RemoteDataset.getLatestEndTime
+
   override protected def convertDataSet(assets: Seq[(AssetType, Seq[Feature[AssetProperties]])], start: Instant, end: Instant, datasetID: String, outputStream: OutputStream): Unit = {
     BusStopValluConverter.convertDataSet(assets, outputStream)
   }
@@ -118,7 +118,7 @@ class BusStopConverter extends Converter {
 
     try {
       // Create new stream to the SFTP server
-      val outputStreamSFTP = getOutputStreamSFTP(filename, config.baseDirBusStopsSFTP)
+      val outputStreamSFTP = getOutputStreamSFTP(filename)
 
       try {
         BusStopValluConverter.convertDataSet(assetType.zip(assets), outputStreamSFTP)
@@ -153,8 +153,8 @@ class StdConverter extends Converter {
   )
 
   override def directory: String = config.baseDirSFTP
-  override def getLatestEndTime: Option[Instant] = RemoteNonStdDataset.getLatestEndTime
-  override def getOutputStreamSFTP(filename : String, baseDirectory: String): OutputStream = RemoteDataset.getOutputStreamSFTP(filename, baseDirectory)
+  override def getLatestEndTime: Option[Instant] = RemoteDataset.getLatestEndTime
+  override def getOutputStreamSFTP(filename : String): OutputStream = RemoteDataset.getOutputStreamSFTP(filename, directory)
 }
 
 class NonStdConverter extends Converter {
@@ -163,9 +163,9 @@ class NonStdConverter extends Converter {
     AssetType("bogie_weight_limits", "RestrictionForVehicles", "MaximumWeightPerSingleAxle", "kg", BogieWeightLimitOTHClient, new BogieWeightLimitRosatteConverter)
   )
 
-  override def directory: String = config.baseWeightLimitSFTP
+  override def directory: String = config.nonStdDirSFTP
   override def getLatestEndTime: Option[Instant] = RemoteNonStdDataset.getLatestEndTime
-  override def getOutputStreamSFTP(filename : String, baseDirectory: String): OutputStream = RemoteNonStdDataset.getOutputStreamSFTP(filename, baseDirectory)
+  override def getOutputStreamSFTP(filename : String): OutputStream = RemoteNonStdDataset.getOutputStreamSFTP(filename, directory)
 
 }
 
@@ -182,5 +182,4 @@ object TestConverterObject {
     nonStdConverter.convert(new PrintWriter(System.out, true))
     System.exit(0) //TODO: Without this, something leaves the program hanging
   }
-
 }
