@@ -1,7 +1,7 @@
 package fi.liikennevirasto.digiroad2.tnits.rosatte
 
 
-import java.io.OutputStreamWriter
+import java.io.{OutputStreamWriter, PrintWriter}
 import java.util.UUID
 
 import fi.liikennevirasto.digiroad2.tnits.geojson.{Feature, FeatureLinear}
@@ -64,7 +64,7 @@ class LinearRosatteConverter extends AssetRosatteConverter {
     OpenLREncoder.encodeAssetOnLink(startM, endM, linkGeometry, linkLength, functionalClass, linkType,  DefaultLinkReference + link.id)
   }
 
-  override def properties(assetType: AssetType, feature: FeatureLinear[LinearAssetProperties]) : NodeSeq = {
+  override def properties(assetType: AssetType, feature: FeatureLinear[LinearAssetProperties], logger: PrintWriter) : NodeSeq = {
     assetType.apiEndPoint match {
 
       case "vehicle_prohibitions" =>
@@ -191,12 +191,12 @@ class BogieWeightLimitRosatteConverter extends LinearRosatteConverter {
     }
   }
 
-  override def splitFeatureMember(assetType: AssetType, changes: Seq[Feature[AssetProperties]], writer: OutputStreamWriter) = {
+  override def splitFeatureMember(assetType: AssetType, changes: Seq[Feature[AssetProperties]], writer: OutputStreamWriter, logger: PrintWriter) = {
     splitAssetsByAxleValue(assetType, changes).groupBy(_._1)
       .foreach { case (newAssetType, feature) =>
         newAssetType.service.splitFeaturesApplicableToBothDirections(feature.map(_._2).asInstanceOf[Seq[newAssetType.service.FeatureType]], newAssetType)
           .foreach { feature =>
-            val featureMember = newAssetType.service.toFeatureMember(feature, newAssetType, writer)
+            val featureMember = newAssetType.service.toFeatureMember(feature, newAssetType, writer, logger)
             writer.write(featureMember.toString)
         }
       }

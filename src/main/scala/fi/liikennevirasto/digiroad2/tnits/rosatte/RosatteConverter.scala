@@ -1,6 +1,6 @@
 package fi.liikennevirasto.digiroad2.tnits.rosatte
 
-import java.io.{BufferedOutputStream, OutputStream, OutputStreamWriter}
+import java.io.{BufferedOutputStream, OutputStream, OutputStreamWriter, PrintWriter}
 import java.time.Instant
 import java.util.UUID
 
@@ -16,11 +16,11 @@ object RosatteConverter {
 
   /** Converts the given [[fi.liikennevirasto.digiroad2.tnits.rosatte.features.Asset]]s
     * to Rosatte XML and writes it to the provided stream. */
-  def convertDataSet(featureMembers: Seq[(AssetType, Seq[Feature[AssetProperties]])], start: Instant, end: Instant, dataSetId: String, output: OutputStream): Unit = {
-    generateChangeData(featureMembers, dataSetId, start, end, output)
+  def convertDataSet(featureMembers: Seq[(AssetType, Seq[Feature[AssetProperties]])], start: Instant, end: Instant, dataSetId: String, output: OutputStream, logger: PrintWriter): Unit = {
+    generateChangeData(featureMembers, dataSetId, start, end, output, logger)
   }
 
-  private def generateChangeData(featureMembers: Seq[(AssetType, Seq[Feature[AssetProperties]])], dataSetId: String, startTime: Instant, endTime: Instant, output: OutputStream): Unit = {
+  private def generateChangeData(featureMembers: Seq[(AssetType, Seq[Feature[AssetProperties]])], dataSetId: String, startTime: Instant, endTime: Instant, output: OutputStream, logger: PrintWriter): Unit = {
     val writer = new OutputStreamWriter(new BufferedOutputStream(output), "UTF-8")
     writer.write(
       s"""<rst:ROSATTESafetyFeatureDataset xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -33,7 +33,7 @@ object RosatteConverter {
 
     featureMembers.foreach { case (assetType, changes) =>
       // We need to split two-way features into two one-way features because of OpenLR encoding
-      assetType.service.splitFeatureMember(assetType, changes, writer)
+      assetType.service.splitFeatureMember(assetType, changes, writer, logger)
     }
 
     writer.write(
@@ -54,7 +54,7 @@ trait AssetRosatteConverter {
 
   val DefaultLinkReference = "FI.1000018."
 
-  def toFeatureMember(feature: FeatureType, assetType: AssetType, writer: OutputStreamWriter) : Any = {
+  def toFeatureMember(feature: FeatureType, assetType: AssetType, writer: OutputStreamWriter, logger: PrintWriter) : Any = {
     val openLR = encodeOpenLRLocationString(feature)
     openLR match {
       case Failure(reason) =>
@@ -77,13 +77,13 @@ trait AssetRosatteConverter {
             <rst:source>{assetType.source}</rst:source>
             {encodedGeometry(feature)}
             <rst:type>{ assetType.featureType }</rst:type>
-            {properties(assetType, feature)}
+            {properties(assetType, feature, logger)}
           </rst:GenericSafetyFeature>
         </gml:featureMember>
     }
   }
 
-  def properties(assetType: AssetType, feature: FeatureType) : NodeSeq
+  def properties(assetType: AssetType, feature: FeatureType, logger: PrintWriter) : NodeSeq
 
   def locationReference(feature: FeatureType, reference: String ) : NodeBuffer
 
@@ -97,10 +97,10 @@ trait AssetRosatteConverter {
 
   def encodedGeometry(feature: FeatureType) : Elem
 
-  def splitFeatureMember(assetType: AssetType, changes: Seq[Feature[AssetProperties]], writer: OutputStreamWriter): Unit = {
+  def splitFeatureMember(assetType: AssetType, changes: Seq[Feature[AssetProperties]], writer: OutputStreamWriter, logger: PrintWriter): Unit = {
     assetType.service.splitFeaturesApplicableToBothDirections(changes.asInstanceOf[Seq[assetType.service.FeatureType]], assetType)
       .foreach { feature =>
-        val featureMember = assetType.service.toFeatureMember(feature, assetType, writer)
+        val featureMember = assetType.service.toFeatureMember(feature, assetType, writer, logger)
         writer.write(featureMember.toString)
       }
   }

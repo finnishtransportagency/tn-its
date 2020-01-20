@@ -1,9 +1,8 @@
 package fi.liikennevirasto.digiroad2.tnits.rosatte
 
 import java.io.{BufferedOutputStream, OutputStream, OutputStreamWriter}
-
 import fi.liikennevirasto.digiroad2.tnits.geojson.{Feature, FeaturePoint}
-import fi.liikennevirasto.digiroad2.tnits.rosatte.features.{IncomingMassTransitStopProperties}
+import fi.liikennevirasto.digiroad2.tnits.rosatte.features.IncomingMassTransitStopProperties
 import fi.liikennevirasto.digiroad2.tnits.runners.AssetType
 
 /** Generates Vallu XML to be sended. */

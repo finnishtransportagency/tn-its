@@ -1,6 +1,6 @@
 package fi.liikennevirasto.digiroad2.tnits.rosatte
 
-import java.io.OutputStreamWriter
+import java.io.{OutputStreamWriter, PrintWriter}
 import java.util.UUID
 
 import fi.liikennevirasto.digiroad2.tnits.geojson.{Feature, FeaturePoint}
@@ -44,7 +44,7 @@ class PointRosatteConverter extends AssetRosatteConverter {
     transformedCoordinates.mkString(" ")
   }
 
-  override def properties(assetType: AssetType, feature: FeaturePoint[PointAssetProperties]) : NodeSeq  = {
+  override def properties(assetType: AssetType, feature: FeaturePoint[PointAssetProperties], logger: PrintWriter) : NodeSeq  = {
     NodeSeq.Empty
   }
 
@@ -99,7 +99,8 @@ class PointRosatteConverter extends AssetRosatteConverter {
 
 class PointValueRosatteConverter extends PointRosatteConverter {
 
-  override def properties(assetType: AssetType, feature: FeaturePoint[PointAssetProperties]): NodeSeq = {
+  override def properties(assetType: AssetType, feature: FeaturePoint[PointAssetProperties], logger: PrintWriter): NodeSeq = {
+    logger.println(s"end: ${feature.properties.asInstanceOf[IncomingPointAssetProperties]}")
     assetType.apiEndPoint match {
       case "warning_signs_group" =>
         <rst:properties>

@@ -2,11 +2,11 @@ package fi.liikennevirasto.digiroad2.tnits.runners
 
 import java.io.PrintWriter
 import java.net.URLEncoder
-import java.time.Instant
+import java.time.{Instant, LocalDateTime, ZoneId}
 import java.time.temporal.ChronoUnit
 import java.util.concurrent.Executors
 
-import fi.liikennevirasto.digiroad2.tnits.aineistot.{RemoteDataSetBusStop, RemoteDataset, RemoteNonStdDataset, RemoteDatasets}
+import fi.liikennevirasto.digiroad2.tnits.aineistot.{RemoteDataSetBusStop, RemoteDataset, RemoteDatasets, RemoteNonStdDataset}
 import fi.liikennevirasto.digiroad2.tnits.config
 import fi.liikennevirasto.digiroad2.tnits.geojson.Feature
 import fi.liikennevirasto.digiroad2.tnits.oth._
@@ -16,6 +16,8 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 import scala.concurrent.{Await, ExecutionContext, Future}
 import java.io.OutputStream
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 case class AssetType(apiEndPoint: String, featureType: String, valueType: String, unit: String, client: Client, service: AssetRosatteConverter, source: String = "Regulation")
 
@@ -36,6 +38,12 @@ trait Converter {
         Instant.now.minus(1, ChronoUnit.MINUTES))
     }
 
+    //LocalDateTime.parse("09:12 PM, 01/09/2020" , DateTimeFormatter.ofPattern( "hh:mm a, M/d/uuuu" , Locale.UK )).atZone(ZoneId.of( "GMT" )).toInstant,
+    //getLatestEndTime.getOrElse(Instant.now.minus(1, ChronoUnit.DAYS)),
+    //LocalDateTime.parse("09:15 PM, 01/09/2020" , DateTimeFormatter.ofPattern( "hh:mm a, M/d/uuuu" , Locale.UK )).atZone(ZoneId.of( "GMT" )).toInstant)
+    //        Instant.now.minus(1, ChronoUnit.MINUTES))
+    //}
+
     logger.println(s"Start: $start")
     logger.println(s"End: $end")
 
@@ -50,7 +58,7 @@ trait Converter {
       val outputStreamSFTP = getOutputStreamSFTP(filename)
 
       try {
-        convertDataSet(assetTypes.zip(assets), start, end, dataSetId, outputStreamSFTP)
+        convertDataSet(assetTypes.zip(assets), start, end, dataSetId, outputStreamSFTP, logger)
       } finally {
         outputStreamSFTP.close()
       }
@@ -77,8 +85,8 @@ trait Converter {
     }
   }
 
-  protected def convertDataSet(assets: Seq[(AssetType, Seq[Feature[AssetProperties]])], start: Instant, end: Instant, datasetID: String, outputStream: OutputStream): Unit = {
-    RosatteConverter.convertDataSet(assets, start, end, datasetID, outputStream)
+  protected def convertDataSet(assets: Seq[(AssetType, Seq[Feature[AssetProperties]])], start: Instant, end: Instant, datasetID: String, outputStream: OutputStream, logger: PrintWriter): Unit = {
+    RosatteConverter.convertDataSet(assets, start, end, datasetID, outputStream, logger)
   }
 }
 
@@ -92,7 +100,7 @@ class BusStopConverter extends Converter {
   override def getOutputStreamSFTP(filename : String): OutputStream = RemoteDataSetBusStop.getOutputStreamSFTP(filename, directory)
 
 
-  override protected def convertDataSet(assets: Seq[(AssetType, Seq[Feature[AssetProperties]])], start: Instant, end: Instant, datasetID: String, outputStream: OutputStream): Unit = {
+  override protected def convertDataSet(assets: Seq[(AssetType, Seq[Feature[AssetProperties]])], start: Instant, end: Instant, datasetID: String, outputStream: OutputStream, logger: PrintWriter): Unit = {
     BusStopValluConverter.convertDataSet(assets, outputStream)
   }
 
@@ -138,18 +146,18 @@ class BusStopConverter extends Converter {
 
 class StdConverter extends Converter {
   override def assetTypes: Seq[AssetType] = Seq(
-    AssetType("speed_limits", "SpeedLimit", "MaximumSpeedLimit", "kmph", OTHClient, new LinearRosatteConverter),
-    AssetType("length_limits", "RestrictionForVehicles", "MaximumLength", "cm", OTHClient, new LinearRosatteConverter),
-    AssetType("width_limits", "RestrictionForVehicles", "MaximumWidth", "cm", OTHClient, new LinearRosatteConverter),
-    AssetType("height_limits", "RestrictionForVehicles", "MaximumHeight", "cm", OTHClient, new LinearRosatteConverter),
-    AssetType("axle_weight_limits", "RestrictionForVehicles", "MaximumWeightPerSingleAxle", "kg", OTHClient, new LinearRosatteConverter),
+    //AssetType("speed_limits", "SpeedLimit", "MaximumSpeedLimit", "kmph", OTHClient, new LinearRosatteConverter),
+    //AssetType("length_limits", "RestrictionForVehicles", "MaximumLength", "cm", OTHClient, new LinearRosatteConverter),
+    //AssetType("width_limits", "RestrictionForVehicles", "MaximumWidth", "cm", OTHClient, new LinearRosatteConverter),
+    //AssetType("height_limits", "RestrictionForVehicles", "MaximumHeight", "cm", OTHClient, new LinearRosatteConverter),
+    //AssetType("axle_weight_limits", "RestrictionForVehicles", "MaximumWeightPerSingleAxle", "kg", OTHClient, new LinearRosatteConverter),
     //AssetType("road_names", "RoadName", "RoadName", ""),
    // AssetType("road_numbers", "RoadNumber", "RoadNumber", "", ViiteClient, new LinearRosatteConverter),
-    AssetType("vehicle_prohibitions", "NoEntry", "NoEntry", "", VehicleOTHClient, new LinearRosatteConverter),
-    AssetType("pedestrian_crossing", "PedestrianCrossing", "PedestrianCrossing", "", PedestrianCrossingOTHClient, new PointRosatteConverter),
-    AssetType("obstacles", "ClosedToAllVehiclesInBothDirection", "ClosedToAllVehiclesInBothDirection", "", ObstacleOTHClient, new PointRosatteConverter),
-    AssetType("warning_signs_group", "WarningSign", "WarningSignType", "", WarningSignOTHClient, new PointValueRosatteConverter, "FixedTrafficSign"),
-    AssetType("stop_sign", "PassingWithoutStoppingProhibited", "PassingWithoutStoppingProhibited", "", StopSignOTHClient, new PointRosatteConverter)
+    //AssetType("vehicle_prohibitions", "NoEntry", "NoEntry", "", VehicleOTHClient, new LinearRosatteConverter),
+    //AssetType("pedestrian_crossing", "PedestrianCrossing", "PedestrianCrossing", "", PedestrianCrossingOTHClient, new PointRosatteConverter),
+    //AssetType("obstacles", "ClosedToAllVehiclesInBothDirection", "ClosedToAllVehiclesInBothDirection", "", ObstacleOTHClient, new PointRosatteConverter),
+    AssetType("warning_signs_group", "WarningSign", "WarningSignType", "", WarningSignOTHClient, new PointValueRosatteConverter, "FixedTrafficSign")
+   // AssetType("stop_sign", "PassingWithoutStoppingProhibited", "PassingWithoutStoppingProhibited", "", StopSignOTHClient, new PointRosatteConverter)
   )
 
   override def directory: String = config.baseDirSFTP
@@ -175,11 +183,11 @@ object TestConverterObject {
     val stdConverter = new StdConverter
     stdConverter.convert(new PrintWriter(System.out, true))
 
-    val busStopConverter = new BusStopConverter
-    busStopConverter.convert(new PrintWriter(System.out, true))
-
-    val nonStdConverter = new NonStdConverter
-    nonStdConverter.convert(new PrintWriter(System.out, true))
+//    val busStopConverter = new BusStopConverter
+//    busStopConverter.convert(new PrintWriter(System.out, true))
+//
+//    val nonStdConverter = new NonStdConverter
+//    nonStdConverter.convert(new PrintWriter(System.out, true))
     System.exit(0) //TODO: Without this, something leaves the program hanging
   }
 }
