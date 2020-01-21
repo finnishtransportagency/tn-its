@@ -33,9 +33,9 @@ def manual(converter: Converter, writer: PrintWriter): Unit = {
 
   val startDate =  LocalDateTime.parse("08:15 PM, 01/09/2020" , DateTimeFormatter.ofPattern( "hh:mm a, M/d/uuuu" , Locale.UK )).atZone(ZoneId.of( "GMT" )).toInstant
 
-  for(counter <- 1 to 200)
-  converter.convert(writer, Some(startDate.plus((counter - 1) * 10 , ChronoUnit.MINUTES)), Some(startDate.plus(counter * 10, ChronoUnit.MINUTES)))
-
+  for(counter <- 1 to 200) {
+    converter.convert(writer, Some(startDate.plus((counter - 1) * 10, ChronoUnit.MINUTES)), Some(startDate.plus(counter * 10, ChronoUnit.MINUTES)))
+  }
   //val endDate = LocalDateTime.parse("09:15 PM, 01/09/2020" , DateTimeFormatter.ofPattern( "hh:mm a, M/d/uuuu" , Locale.UK )).atZone(ZoneId.of( "GMT" )).toInstant)
   //        Instant.now.minus(1, ChronoUnit.MINUTES))
 
