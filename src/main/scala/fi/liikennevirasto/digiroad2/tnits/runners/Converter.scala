@@ -62,15 +62,12 @@ trait Converter {
     logger.println(s"dataset: $filename")
     logger.println("done!\n")
   }
+
   protected def fetchAllChanges(start: Instant, end: Instant, assetTypes: Seq[AssetType]): Seq[Seq[Feature[AssetProperties]]] = {
-    val seconds = start.until(end, ChronoUnit.SECONDS)
-    val hours = Math.ceil(seconds.toFloat/3600).toInt
     try {
       val executor = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(10))
-      val responses = Future.sequence(assetTypes.flatMap { asset =>
-        for(counter <- 1 to hours) yield {
-          asset.client.fetchChanges(asset.apiEndPoint, start.plus(counter - 1, ChronoUnit.HOURS), Seq(start.plus(counter, ChronoUnit.HOURS), end).min(dateTimeOrdering), executor)
-        }
+      val responses = Future.sequence(assetTypes.map { asset =>
+        asset.client.fetchChanges(asset.apiEndPoint, start, end, executor)
       })
       Await.result(responses, 120.minutes)
     } catch {
@@ -134,19 +131,6 @@ class BusStopConverter extends Converter {
     logger.println(s"Dataset ID: $dataSetId")
     logger.println(s"dataset: $filename")
     logger.println("done!\n")
-  }
-
-  override protected def fetchAllChanges(start: Instant, end: Instant, assetTypes: Seq[AssetType]): Seq[Seq[Feature[AssetProperties]]] = {
-    try {
-      val executor = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(10))
-      val responses = Future.sequence(assetTypes.map { asset =>
-        asset.client.fetchChanges(asset.apiEndPoint, start, end, executor)
-      })
-      Await.result(responses, 120.minutes)
-    } catch {
-      case err: Throwable =>
-        throw OTHException(err)
-    }
   }
 }
 
