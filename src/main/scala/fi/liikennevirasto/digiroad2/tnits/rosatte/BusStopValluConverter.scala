@@ -63,7 +63,6 @@ object BusStopValluConverter {
       <Reachability>{properties.reachability}</Reachability>
       <SpecialNeeds>{properties.specialNeeds}</SpecialNeeds>
       <ModifiedTimestamp>{properties.modifiedTimestamp}</ModifiedTimestamp>
-      <ModifiedBy>{properties.modifiedBy}</ModifiedBy>
       { if(properties.validFrom.equals("true"))
           <ValidFrom xsi:nil="true" />
         else
