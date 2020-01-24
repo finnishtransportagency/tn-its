@@ -4,7 +4,7 @@ import java.io.PrintWriter
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 
-import fi.liikennevirasto.digiroad2.tnits.runners.{StdConverter, BusStopConverter, Converter, NonStdConverter}
+import fi.liikennevirasto.digiroad2.tnits.runners.{BusStopConverter, Converter, NonStdConverter, StdConverter}
 import org.scalatra._
 
 import scala.concurrent.ExecutionContext
