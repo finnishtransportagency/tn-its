@@ -38,8 +38,8 @@ trait Converter {
     val assets = fetchAllChanges(start, end, assetTypes, pageNumber)
     val zippedAsset: Seq[(AssetType, Seq[Feature[AssetProperties]])] = assetTypes.zip(assets)
 
-    val oversizeAssetTypes = zippedAsset.foldLeft(Seq.empty[AssetType]) { case (result, asset) =>
-      if (asset._2.size == LIMIT_RECORD_NUMBER) result :+ asset._1 else result
+    val oversizeAssetTypes = zippedAsset.foldLeft(Seq.empty[AssetType]) { case (res, asset) =>
+      if (asset._2.size == LIMIT_RECORD_NUMBER) res :+ asset._1 else res
     }
 
     if(oversizeAssetTypes.nonEmpty)
