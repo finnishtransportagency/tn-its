@@ -2,11 +2,11 @@ package fi.liikennevirasto.digiroad2.tnits.runners
 
 import java.io.PrintWriter
 import java.net.URLEncoder
-import java.time.Instant
+import java.time.{Instant, LocalDateTime, ZoneId}
 import java.time.temporal.ChronoUnit
 import java.util.concurrent.Executors
 
-import fi.liikennevirasto.digiroad2.tnits.aineistot.{RemoteDataSetBusStop, RemoteDataset, RemoteNonStdDataset, RemoteDatasets}
+import fi.liikennevirasto.digiroad2.tnits.aineistot.{RemoteDataSetBusStop, RemoteDataset, RemoteNonStdDataset}
 import fi.liikennevirasto.digiroad2.tnits.config
 import fi.liikennevirasto.digiroad2.tnits.geojson.Feature
 import fi.liikennevirasto.digiroad2.tnits.oth._
@@ -27,7 +27,27 @@ trait Converter {
   def getLatestEndTime: Option[Instant]
   def getOutputStreamSFTP(filename : String): OutputStream
 
+  //For each page, OTH return 4000 record, if you want increase it please request to OTH Team
+  private val LIMIT_RECORD_NUMBER = 4000
+
   case class OTHException(cause: Throwable) extends RuntimeException(cause)
+
+  def recursiveCall(start: Instant, end: Instant, assetTypes: Seq[AssetType], pageNumber: Option[Int] = Some(1),
+                    result: Seq[(AssetType, Seq[Feature[AssetProperties]])] = Seq()): Seq[(AssetType, Seq[Feature[AssetProperties]])] = {
+
+    val assets = fetchAllChanges(start, end, assetTypes, pageNumber)
+    val zippedAsset: Seq[(AssetType, Seq[Feature[AssetProperties]])] = assetTypes.zip(assets)
+
+    val oversizeAssetTypes = zippedAsset.foldLeft(Seq.empty[AssetType]) { case (res, asset) =>
+      if (asset._2.size == LIMIT_RECORD_NUMBER && !asset._1.apiEndPoint.equals("road_numbers")) res :+ asset._1 else res
+    }
+
+    if(oversizeAssetTypes.nonEmpty)
+      recursiveCall(start, end, assetTypes, Some(pageNumber.get + 1), result)
+    else {
+      result
+    }
+  }
 
   def convert(logger: PrintWriter, fromDate: Option[Instant] = None, toDate: Option[Instant] = None ): Unit = {
     val (start, end) =  (fromDate, toDate) match {
@@ -39,7 +59,8 @@ trait Converter {
     logger.println(s"Start: $start")
     logger.println(s"End: $end")
 
-    val assets = fetchAllChanges(start, end, assetTypes)
+    val assets = recursiveCall(start, end, assetTypes).groupBy(_._1).flatten(_._2).toSeq
+
     logger.println("fetched all changes, generating dataset")
 
     val dataSetId = DatasetID.encode(DatasetID.LiikennevirastoUUID, start, end)
@@ -50,7 +71,7 @@ trait Converter {
       val outputStreamSFTP = getOutputStreamSFTP(filename)
 
       try {
-        convertDataSet(assetTypes.zip(assets), start, end, dataSetId, outputStreamSFTP)
+        convertDataSet(assets, start, end, dataSetId, outputStreamSFTP)
       } finally {
         outputStreamSFTP.close()
       }
@@ -63,11 +84,11 @@ trait Converter {
     logger.println("done!\n")
   }
 
-  protected def fetchAllChanges(start: Instant, end: Instant, assetTypes: Seq[AssetType]): Seq[Seq[Feature[AssetProperties]]] = {
+  protected def fetchAllChanges(start: Instant, end: Instant, assetTypes: Seq[AssetType], pageNumber: Option[Int] = None): Seq[Seq[Feature[AssetProperties]]] = {
     try {
       val executor = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(10))
       val responses = Future.sequence(assetTypes.map { asset =>
-        asset.client.fetchChanges(asset.apiEndPoint, start, end, executor)
+        asset.client.fetchChanges(asset.apiEndPoint, start, end, pageNumber, executor)
       })
       Await.result(responses, 120.minutes)
     } catch {

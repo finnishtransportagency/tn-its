@@ -34,10 +34,15 @@ trait Client {
   /**
     * @return a Future that will contain changes as [[Asset]]s from the given OTH change API endpoint.
     */
-  def fetchChanges(apiEndpoint: String, since: Instant, until: Instant, executionContext: ExecutionContext): scala.concurrent.Future[Seq[Feature[AssetProperties]]] = {
+  def fetchChanges(apiEndpoint: String, since: Instant, until: Instant, pageNumber: Option[Int], executionContext: ExecutionContext): scala.concurrent.Future[Seq[Feature[AssetProperties]]] = {
     val changesApiUri = URI.create(changeApi + "/" + apiEndpoint)
 
-    val get = new HttpGet(changesApiUri.getPath + s"?since=$since&until=$until")
+    val parameters = pageNumber match {
+      case Some(pgNum) =>  s"?since=$since&until=$until&pageNumber=$pgNum"
+      case _=>  s"?since=$since&until=$until"
+    }
+
+    val get = new HttpGet(changesApiUri.getPath + parameters)
     get.setConfig(config.optionalProxy.fold(RequestConfig.DEFAULT) { proxy =>
       val p = new HttpHost(proxy.host, proxy.port)
       RequestConfig.custom()
