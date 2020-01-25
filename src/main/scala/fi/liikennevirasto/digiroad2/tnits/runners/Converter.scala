@@ -39,7 +39,7 @@ trait Converter {
     val zippedAsset: Seq[(AssetType, Seq[Feature[AssetProperties]])] = assetTypes.zip(assets)
 
     val oversizeAssetTypes = zippedAsset.foldLeft(Seq.empty[AssetType]) { case (res, asset) =>
-      if (asset._2.size == LIMIT_RECORD_NUMBER) res :+ asset._1 else res
+      if (asset._2.size == LIMIT_RECORD_NUMBER && !asset._1.apiEndPoint.equals("road_numbers")) res :+ asset._1 else res
     }
 
     if(oversizeAssetTypes.nonEmpty)
