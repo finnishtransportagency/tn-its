@@ -49,12 +49,19 @@ def manual(converter: Converter, writer: PrintWriter): Unit = {
     writer.println(s"***** Standard Asset Converter *****")
     manual(stdConverter, writer)
 
-    writer.println(s"***** NonStandard Asset Converter *****")
-    manual(nonStdConverter, writer)
-
     keepAlive.cancel()
     writer.println("OK")
     writer.flush()
+
+
+    val writerNonStd = response.writer
+    val keepAliveNonStd = keepConnectionAlive(writerNonStd)
+
+    writerNonStd.println(s"***** NonStandard Asset Converter *****")
+    manual(nonStdConverter, writerNonStd)
+    keepAliveNonStd.cancel()
+    writerNonStd.println("OK")
+    writerNonStd.flush()
     Unit
   }
 
