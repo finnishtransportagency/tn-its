@@ -7,6 +7,7 @@ import fi.liikennevirasto.digiroad2.tnits.rosatte.DatasetID
 import org.scalatra._
 
 import scala.concurrent.ExecutionContext
+import scala.xml.Elem
 
 /** The public TN-ITS API providing endpoints to query and download change datasets.
   */
@@ -43,15 +44,15 @@ class Digiroad2TnItsApi extends ScalatraServlet with FutureSupport {
     RemoteDataset.get(id)
   }
 
-  def queryDataSets(dataSetIds: Seq[String], lastValidDataSetId: Option[String]): Unit = {
+  def queryDataSets(dataSetIds: Seq[String], param: Option[String]): Elem = {
     val decodedDataSetIds =
       dataSetIds
         .map { id => (id, DatasetID.decode(URLDecoder.decode(id, "UTF-8"))) }
         .sortBy { case (_, id) => id.startDate }
 
     val wantedDataSetIds =
-      if (lastValidDataSetId.contains("lastValidDatasetId")) {
-        val wantedId = DatasetID.decode(lastValidDataSetId.get)
+      if (param.contains("lastValidDatasetId")) {
+        val wantedId = DatasetID.decode(param.get)
         decodedDataSetIds
           .filter { case (_, id) => id.startDate.isAfter(wantedId.startDate) }
           .map(_._1)

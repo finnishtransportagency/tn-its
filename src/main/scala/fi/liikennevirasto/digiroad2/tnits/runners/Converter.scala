@@ -43,7 +43,7 @@ trait Converter {
     }
 
     if(oversizeAssetTypes.nonEmpty)
-      recursiveCall(start, end, assetTypes, Some(pageNumber.get + 1), result ++ zippedAsset)
+      recursiveCall(start, end, oversizeAssetTypes, Some(pageNumber.get + 1), result ++ zippedAsset)
     else {
       result ++ zippedAsset
     }
