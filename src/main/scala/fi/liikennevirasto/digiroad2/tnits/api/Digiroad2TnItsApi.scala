@@ -17,16 +17,18 @@ class Digiroad2TnItsApi extends ScalatraServlet with FutureSupport {
 
   get("/download/queryDataSets/nonstd") {
     contentType = "application/xml"
-
+    val lastValidDatasetId = params.get("lastValidDatasetId")
     val dataSetIds = RemoteNonStdDataset.index
-    queryDataSets(dataSetIds)
+
+    queryDataSets(dataSetIds, lastValidDatasetId)
   }
 
   get("/download/queryDataSets") {
     contentType = "application/xml"
-
+    val lastValidDatasetId = params.get("lastValidDatasetId")
     val dataSetIds = RemoteDataset.index
-    queryDataSets(dataSetIds)
+
+    queryDataSets(dataSetIds, lastValidDatasetId)
   }
 
   get("/download/readDataSet/nonstd") {
@@ -41,16 +43,15 @@ class Digiroad2TnItsApi extends ScalatraServlet with FutureSupport {
     RemoteDataset.get(id)
   }
 
-  def queryDataSets(dataSetIds: Seq[String]): Unit = {
+  def queryDataSets(dataSetIds: Seq[String], lastValidDataSetId: Option[String]): Unit = {
     val decodedDataSetIds =
       dataSetIds
         .map { id => (id, DatasetID.decode(URLDecoder.decode(id, "UTF-8"))) }
         .sortBy { case (_, id) => id.startDate }
 
     val wantedDataSetIds =
-      if (params.contains("lastValidDatasetId")) {
-        val lastValidDataSetId = params("lastValidDatasetId")
-        val wantedId = DatasetID.decode(lastValidDataSetId)
+      if (lastValidDataSetId.contains("lastValidDatasetId")) {
+        val wantedId = DatasetID.decode(lastValidDataSetId.get)
         decodedDataSetIds
           .filter { case (_, id) => id.startDate.isAfter(wantedId.startDate) }
           .map(_._1)
