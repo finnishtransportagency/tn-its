@@ -16,6 +16,11 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 import scala.concurrent.{Await, ExecutionContext, Future}
 import java.io.OutputStream
+import java.nio.charset.StandardCharsets
+import java.time.format.DateTimeFormatter
+import java.util.{Base64, Locale}
+
+import jdk.nashorn.internal.parser.Token
 
 case class AssetType(apiEndPoint: String, featureType: String, valueType: String, unit: String, client: Client, service: AssetRosatteConverter, source: String = "Regulation")
 
@@ -27,15 +32,17 @@ trait Converter {
   def getLatestEndTime: Option[Instant]
   def getOutputStreamSFTP(filename : String): OutputStream
 
-  //For each page, OTH return 4000 record, if you want increase it please request to OTH Team
-  private val LIMIT_RECORD_NUMBER = 4000
+  private val LIMIT_RECORD_NUMBER = 2000
 
   case class OTHException(cause: Throwable) extends RuntimeException(cause)
 
   def recursiveCall(start: Instant, end: Instant, assetTypes: Seq[AssetType], pageNumber: Option[Int] = Some(1),
                     result: Seq[(AssetType, Seq[Feature[AssetProperties]])] = Seq()): Seq[(AssetType, Seq[Feature[AssetProperties]])] = {
 
-    val assets = fetchAllChanges(start, end, assetTypes, pageNumber)
+    val message = s"pageNumber:${pageNumber.get}, recordNumber:$LIMIT_RECORD_NUMBER"
+    val token = Some(Base64.getEncoder.encodeToString(message.getBytes("UTF-8")))
+
+    val assets = fetchAllChanges(start, end, assetTypes, token)
     val zippedAsset: Seq[(AssetType, Seq[Feature[AssetProperties]])] = assetTypes.zip(assets)
 
     val oversizeAssetTypes = zippedAsset.foldLeft(Seq.empty[AssetType]) { case (res, asset) =>
@@ -84,11 +91,11 @@ trait Converter {
     logger.println("done!\n")
   }
 
-  protected def fetchAllChanges(start: Instant, end: Instant, assetTypes: Seq[AssetType], pageNumber: Option[Int] = None): Seq[Seq[Feature[AssetProperties]]] = {
+  protected def fetchAllChanges(start: Instant, end: Instant, assetTypes: Seq[AssetType], token: Option[String] = None): Seq[Seq[Feature[AssetProperties]]] = {
     try {
       val executor = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(10))
       val responses = Future.sequence(assetTypes.map { asset =>
-        asset.client.fetchChanges(asset.apiEndPoint, start, end, pageNumber, executor)
+        asset.client.fetchChanges(asset.apiEndPoint, start, end, token, executor)
       })
       Await.result(responses, 120.minutes)
     } catch {
@@ -157,16 +164,16 @@ class BusStopConverter extends Converter {
 
 class StdConverter extends Converter {
   override def assetTypes: Seq[AssetType] = Seq(
-    AssetType("speed_limits", "SpeedLimit", "MaximumSpeedLimit", "kmph", OTHClient, new LinearRosatteConverter),
-    AssetType("length_limits", "RestrictionForVehicles", "MaximumLength", "cm", OTHClient, new LinearRosatteConverter),
-    AssetType("width_limits", "RestrictionForVehicles", "MaximumWidth", "cm", OTHClient, new LinearRosatteConverter),
-    AssetType("height_limits", "RestrictionForVehicles", "MaximumHeight", "cm", OTHClient, new LinearRosatteConverter),
-    AssetType("axle_weight_limits", "RestrictionForVehicles", "MaximumWeightPerSingleAxle", "kg", OTHClient, new LinearRosatteConverter),
+   // AssetType("speed_limits", "SpeedLimit", "MaximumSpeedLimit", "kmph", OTHClient, new LinearRosatteConverter),
+   // AssetType("length_limits", "RestrictionForVehicles", "MaximumLength", "cm", OTHClient, new LinearRosatteConverter),
+   // AssetType("width_limits", "RestrictionForVehicles", "MaximumWidth", "cm", OTHClient, new LinearRosatteConverter),
+   // AssetType("height_limits", "RestrictionForVehicles", "MaximumHeight", "cm", OTHClient, new LinearRosatteConverter),
+   // AssetType("axle_weight_limits", "RestrictionForVehicles", "MaximumWeightPerSingleAxle", "kg", OTHClient, new LinearRosatteConverter),
     //AssetType("road_names", "RoadName", "RoadName", ""),
-    AssetType("road_numbers", "RoadNumber", "RoadNumber", "", ViiteClient, new LinearRosatteConverter),
-    AssetType("vehicle_prohibitions", "NoEntry", "NoEntry", "", VehicleOTHClient, new LinearRosatteConverter),
-    AssetType("pedestrian_crossing", "PedestrianCrossing", "PedestrianCrossing", "", PedestrianCrossingOTHClient, new PointRosatteConverter),
-    AssetType("obstacles", "ClosedToAllVehiclesInBothDirection", "ClosedToAllVehiclesInBothDirection", "", ObstacleOTHClient, new PointRosatteConverter),
+//    AssetType("road_numbers", "RoadNumber", "RoadNumber", "", ViiteClient, new LinearRosatteConverter),
+//    AssetType("vehicle_prohibitions", "NoEntry", "NoEntry", "", VehicleOTHClient, new LinearRosatteConverter),
+  //  AssetType("pedestrian_crossing", "PedestrianCrossing", "PedestrianCrossing", "", PedestrianCrossingOTHClient, new PointRosatteConverter),
+  //  AssetType("obstacles", "ClosedToAllVehiclesInBothDirection", "ClosedToAllVehiclesInBothDirection", "", ObstacleOTHClient, new PointRosatteConverter),
     AssetType("warning_signs_group", "WarningSign", "WarningSignType", "", WarningSignOTHClient, new PointValueRosatteConverter, "FixedTrafficSign"),
     AssetType("stop_sign", "PassingWithoutStoppingProhibited", "PassingWithoutStoppingProhibited", "", StopSignOTHClient, new PointRosatteConverter)
   )

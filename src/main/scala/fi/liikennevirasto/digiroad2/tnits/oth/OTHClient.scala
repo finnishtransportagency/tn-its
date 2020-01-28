@@ -34,11 +34,11 @@ trait Client {
   /**
     * @return a Future that will contain changes as [[Asset]]s from the given OTH change API endpoint.
     */
-  def fetchChanges(apiEndpoint: String, since: Instant, until: Instant, pageNumber: Option[Int], executionContext: ExecutionContext): scala.concurrent.Future[Seq[Feature[AssetProperties]]] = {
+  def fetchChanges(apiEndpoint: String, since: Instant, until: Instant, token: Option[String], executionContext: ExecutionContext): scala.concurrent.Future[Seq[Feature[AssetProperties]]] = {
     val changesApiUri = URI.create(changeApi + "/" + apiEndpoint)
 
-    val parameters = pageNumber match {
-      case Some(pgNum) =>  s"?since=$since&until=$until&pageNumber=$pgNum"
+    val parameters = token match {
+      case Some(tk) =>  s"?since=$since&until=$until&token=$tk"
       case _=>  s"?since=$since&until=$until"
     }
 
