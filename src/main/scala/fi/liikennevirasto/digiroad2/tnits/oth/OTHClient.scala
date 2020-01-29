@@ -1,5 +1,6 @@
 package fi.liikennevirasto.digiroad2.tnits.oth
 
+import java.io.PrintWriter
 import java.net.URI
 import java.time.Instant
 
@@ -34,7 +35,7 @@ trait Client {
   /**
     * @return a Future that will contain changes as [[Asset]]s from the given OTH change API endpoint.
     */
-  def fetchChanges(apiEndpoint: String, since: Instant, until: Instant, token: Option[String], executionContext: ExecutionContext): scala.concurrent.Future[Seq[Feature[AssetProperties]]] = {
+  def fetchChanges(apiEndpoint: String, since: Instant, until: Instant, token: Option[String], executionContext: ExecutionContext, logger: PrintWriter): scala.concurrent.Future[Seq[Feature[AssetProperties]]] = {
     val changesApiUri = URI.create(changeApi + "/" + apiEndpoint)
 
     val parameters = token match {
@@ -51,6 +52,7 @@ trait Client {
     })
 
     Future {
+      logger.println(s"Fetch: ${get.getURI}")
       println(s"Fetch: ${get.getURI}")
 
       using(client.execute(target, get)) { response =>
