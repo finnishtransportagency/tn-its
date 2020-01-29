@@ -136,6 +136,7 @@ object features {
         128 -> "DangerousIntersection",
         129 -> "DangerousIntersection",
         90 -> "TrafficLightsAhead",
+        91 -> "RailwayCrossing",
         130 -> "RailwayCrossing",
         131 -> "RailwayCrossing",
         132 -> "RailwayCrossing",
