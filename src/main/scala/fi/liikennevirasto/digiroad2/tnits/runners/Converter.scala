@@ -83,7 +83,9 @@ trait Converter {
         outputStreamSFTP.close()
       }
     } catch {
-      case e: Throwable => logger.println("SFTP OutputStream  Failed with the follow message: ", e.getMessage)
+      case e: Throwable =>
+        logger.println("SFTP OutputStream  Failed with the follow message: ", e.getMessage)
+        logger.println(e)
     }
 
     logger.println(s"Dataset ID: $dataSetId")
@@ -100,6 +102,7 @@ trait Converter {
       Await.result(responses, 120.minutes)
     } catch {
       case err: Throwable =>
+        logger.println(s"Error in fetchAllChanges $err")
         throw OTHException(err)
     }
   }
