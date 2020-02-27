@@ -2,7 +2,7 @@ package fi.liikennevirasto.digiroad2.tnits.runners
 
 import java.io.PrintWriter
 import java.net.URLEncoder
-import java.time.Instant
+import java.time.{Instant, LocalDateTime, ZoneId}
 import java.time.temporal.ChronoUnit
 import java.util.concurrent.Executors
 
@@ -29,17 +29,17 @@ trait Converter {
   def getLatestEndTime: Option[Instant]
   def getOutputStreamSFTP(filename : String): OutputStream
 
-  private val LIMIT_RECORD_NUMBER = 10000
+  private val LIMIT_RECORD_NUMBER = 20000
 
   case class OTHException(cause: Throwable) extends RuntimeException(cause)
 
   def recursiveCall(start: Instant, end: Instant, assetTypes: Seq[AssetType], pageNumber: Option[Int] = Some(1),
-                    result: Seq[(AssetType, Seq[Feature[AssetProperties]])] = Seq()): Seq[(AssetType, Seq[Feature[AssetProperties]])] = {
+                    result: Seq[(AssetType, Seq[Feature[AssetProperties]])] = Seq(), logger: PrintWriter): Seq[(AssetType, Seq[Feature[AssetProperties]])] = {
 
     val message = s"pageNumber:${pageNumber.get}, recordNumber:$LIMIT_RECORD_NUMBER"
     val token = Some(Base64.getEncoder.encodeToString(message.getBytes("UTF-8")))
 
-    val assets = fetchAllChanges(start, end, assetTypes, token)
+    val assets = fetchAllChanges(start, end, assetTypes, token, logger = logger)
     val zippedAsset: Seq[(AssetType, Seq[Feature[AssetProperties]])] = assetTypes.zip(assets)
 
     val oversizeAssetTypes = zippedAsset.foldLeft(Seq.empty[AssetType]) { case (res, asset) =>
@@ -47,7 +47,7 @@ trait Converter {
     }
 
     if(oversizeAssetTypes.nonEmpty)
-      recursiveCall(start, end, oversizeAssetTypes, Some(pageNumber.get + 1), result ++ zippedAsset)
+      recursiveCall(start, end, oversizeAssetTypes, Some(pageNumber.get + 1), result ++ zippedAsset, logger = logger)
     else {
       result ++ zippedAsset
     }
@@ -63,9 +63,12 @@ trait Converter {
     logger.println(s"Start: $start")
     logger.println(s"End: $end")
 
-    val assets = recursiveCall(start, end, assetTypes).groupBy(_._1).flatten(_._2).toSeq
+    val assets : Seq[(AssetType, Seq[Feature[AssetProperties]])] = recursiveCall(start, end, assetTypes, logger = logger).groupBy(_._1).mapValues(_.flatMap(_._2)).toSeq
 
-    logger.println("fetched all changes, generating dataset")
+    logger.println(s"fetched all changes, generating dataset for assets")
+    assets.foreach{ asset =>
+      logger.println(s"for endPoint ${asset._1.apiEndPoint} with the size ${asset._2.size}")
+    }
 
     val dataSetId = DatasetID.encode(DatasetID.LiikennevirastoUUID, start, end)
     val filename = s"${URLEncoder.encode(dataSetId, "UTF-8")}.xml"
@@ -80,7 +83,9 @@ trait Converter {
         outputStreamSFTP.close()
       }
     } catch {
-      case e: Throwable => logger.println("SFTP OutputStream  Failed with the follow message: ", e.getMessage)
+      case e: Throwable =>
+        logger.println("SFTP OutputStream  Failed with the follow message: ", e.getMessage)
+        logger.println(e)
     }
 
     logger.println(s"Dataset ID: $dataSetId")
@@ -88,15 +93,16 @@ trait Converter {
     logger.println("done!\n")
   }
 
-  protected def fetchAllChanges(start: Instant, end: Instant, assetTypes: Seq[AssetType], token: Option[String] = None): Seq[Seq[Feature[AssetProperties]]] = {
+  protected def fetchAllChanges(start: Instant, end: Instant, assetTypes: Seq[AssetType], token: Option[String] = None, logger: PrintWriter): Seq[Seq[Feature[AssetProperties]]] = {
     try {
       val executor = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(10))
       val responses = Future.sequence(assetTypes.map { asset =>
-        asset.client.fetchChanges(asset.apiEndPoint, start, end, token, executor)
+        asset.client.fetchChanges(asset.apiEndPoint, start, end, token, executor, logger)
       })
       Await.result(responses, 120.minutes)
     } catch {
       case err: Throwable =>
+        logger.println(s"Error in fetchAllChanges $err")
         throw OTHException(err)
     }
   }
@@ -133,7 +139,7 @@ class BusStopConverter extends Converter {
 
     val assetType = Seq(AssetType("mass_transit_stops", "MassTransitStop", "MassTransitStop", "", BusStopOTHClient, new PointRosatteConverter))
 
-    val assets = fetchAllChanges(start, end, assetType)
+    val assets = fetchAllChanges(start, end, assetType, logger = logger)
 
     logger.println("fetched Bus Stops changes to generate Vallu XML, generating dataset")
 
