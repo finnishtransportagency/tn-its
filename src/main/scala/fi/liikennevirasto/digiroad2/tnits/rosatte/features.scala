@@ -85,7 +85,7 @@ object features {
                                                 stopCode: String,
                                                 name_fi: Option[String],
                                                 name_sv: Option[String],
-                                                bearing: Int,
+                                                bearing: Option[Int],
                                                 bearingDescription: Option[String],
                                                 direction: Option[String],
                                                 stopAttribute: Seq[Long],
