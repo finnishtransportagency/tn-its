@@ -88,20 +88,6 @@ def manual(converter: Converter, writer: PrintWriter): Unit = {
     Unit
   }
 
-  post("/mass_transit_stop_on_vallu/:endDate") {
-
-    val writer = response.writer
-    val keepAlive = keepConnectionAlive(writer)
-
-    manual(busStopAssetConverter, writer)
-
-    keepAlive.cancel()
-    writer.println("OK")
-    writer.flush()
-
-    Unit
-  }
-
   def keepConnectionAlive(writer: PrintWriter) = {
     val timer = new java.util.Timer()
     val task = new java.util.TimerTask {
