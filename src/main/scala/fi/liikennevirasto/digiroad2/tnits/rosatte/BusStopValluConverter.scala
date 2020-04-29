@@ -49,7 +49,7 @@ object BusStopValluConverter {
         <xCoordinate>{xCoordinate}</xCoordinate>
         <yCoordinate>{yCoordinate}</yCoordinate>
       </Coordinate>
-      <Bearing>{properties.bearing}</Bearing>
+      <Bearing>{properties.bearing.get}</Bearing>
       {if (properties.bearingDescription.isDefined) <BearingDescription>{ properties.bearingDescription.get }</BearingDescription>}
       {if (properties.direction.isDefined) <Direction>{properties.direction.get}</Direction>}
       <StopAttribute>{

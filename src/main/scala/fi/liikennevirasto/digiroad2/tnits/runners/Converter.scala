@@ -2,16 +2,14 @@ package fi.liikennevirasto.digiroad2.tnits.runners
 
 import java.io.PrintWriter
 import java.net.URLEncoder
-import java.time.{Instant, LocalDateTime, ZoneId}
+import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.concurrent.Executors
-
 import fi.liikennevirasto.digiroad2.tnits.aineistot.{RemoteDataSetBusStop, RemoteDataset, RemoteNonStdDataset}
 import fi.liikennevirasto.digiroad2.tnits.config
 import fi.liikennevirasto.digiroad2.tnits.geojson.Feature
 import fi.liikennevirasto.digiroad2.tnits.oth._
 import fi.liikennevirasto.digiroad2.tnits.rosatte._
-
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 import scala.concurrent.{Await, ExecutionContext, Future}
@@ -30,6 +28,7 @@ trait Converter {
   def getOutputStreamSFTP(filename : String): OutputStream
 
   private val LIMIT_RECORD_NUMBER = 20000
+  private val LIMIT_RECORD_NUMBER_VALLU = 120
 
   case class OTHException(cause: Throwable) extends RuntimeException(cause)
 
@@ -52,6 +51,30 @@ trait Converter {
       result ++ zippedAsset
     }
   }
+
+  def recursiveCallVallu(start: Instant, end: Instant, assetTypes: Seq[AssetType], pageNumber: Option[Int] = Some(1),
+                    result: Seq[(AssetType, Seq[Feature[AssetProperties]])] = Seq(), logger: PrintWriter): Seq[(AssetType, Seq[Feature[AssetProperties]])] = {
+
+    val message = s"pageNumber:${pageNumber.get}, recordNumber:$LIMIT_RECORD_NUMBER_VALLU"
+    val token = Some(Base64.getEncoder.encodeToString(message.getBytes("UTF-8")))
+
+    val assets = fetchAllChanges(start, end, assetTypes, token, logger = logger)
+    val zippedAsset: Seq[(AssetType, Seq[Feature[AssetProperties]])] = assetTypes.zip(assets)
+
+    val oversizeAssetTypes = zippedAsset.foldLeft(Seq.empty[AssetType]) {
+        case (res, asset) =>
+            if (asset._2.size == LIMIT_RECORD_NUMBER_VALLU )
+              res :+ asset._1
+            else res
+    }
+
+    if(oversizeAssetTypes.nonEmpty)
+      recursiveCallVallu(start, end, oversizeAssetTypes, Some(pageNumber.get + 1), result ++ zippedAsset, logger = logger)
+    else {
+      result ++ zippedAsset
+    }
+  }
+
 
   def convert(logger: PrintWriter, fromDate: Option[Instant] = None, toDate: Option[Instant] = None ): Unit = {
     val (start, end) =  (fromDate, toDate) match {
@@ -137,9 +160,7 @@ class BusStopConverter extends Converter {
     logger.println(s"start: $start")
     logger.println(s"end: $end")
 
-    val assetType = Seq(AssetType("mass_transit_stops", "MassTransitStop", "MassTransitStop", "", BusStopOTHClient, new PointRosatteConverter))
-
-    val assets = fetchAllChanges(start, end, assetType, logger = logger)
+    val assets : Seq[(AssetType, Seq[Feature[AssetProperties]])] = recursiveCallVallu(start, end, assetTypes, logger = logger).groupBy(_._1).mapValues(_.flatMap(_._2)).toSeq
 
     logger.println("fetched Bus Stops changes to generate Vallu XML, generating dataset")
 
@@ -151,7 +172,7 @@ class BusStopConverter extends Converter {
       val outputStreamSFTP = getOutputStreamSFTP(filename)
 
       try {
-        BusStopValluConverter.convertDataSet(assetType.zip(assets), outputStreamSFTP)
+        BusStopValluConverter.convertDataSet(assets, outputStreamSFTP)
       } finally {
         outputStreamSFTP.close()
       }
