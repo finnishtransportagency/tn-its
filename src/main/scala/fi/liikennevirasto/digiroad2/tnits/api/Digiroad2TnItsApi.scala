@@ -5,9 +5,9 @@ import javax.servlet.http.HttpServletRequest
 import fi.liikennevirasto.digiroad2.tnits.aineistot.{RemoteDataset, RemoteNonStdDataset}
 import fi.liikennevirasto.digiroad2.tnits.rosatte.DatasetID
 import org.scalatra._
-
 import scala.concurrent.ExecutionContext
 import scala.xml.Elem
+
 
 /** The public TN-ITS API providing endpoints to query and download change datasets.
   */
@@ -68,12 +68,12 @@ class Digiroad2TnItsApi extends ScalatraServlet with FutureSupport {
     </rst:ROSATTERestDatasetRefList>
   }
 
-  def dataSetElement(id: String)(implicit request: HttpServletRequest) = {
-    val scheme = request.urlScheme.toString.toLowerCase
+  def dataSetElement(id: String) = {
+    val scheme = "https"
     val port = serverPort
     val url =
-      (scheme, port) match {
-        case ("http", 80) | ("https", 443) =>
+      port match {
+        case 80 | 443 =>
           s"$scheme://$serverHost/rosattedownload/download/readDataSet?dataSetID=" + id
         case _ =>
           s"$scheme://$serverHost:$port/rosattedownload/download/readDataSet?dataSetID=" + id
