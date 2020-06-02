@@ -68,12 +68,12 @@ class Digiroad2TnItsApi extends ScalatraServlet with FutureSupport {
     </rst:ROSATTERestDatasetRefList>
   }
 
-  def dataSetElement(id: String)(implicit request: HttpServletRequest) = {
+  def dataSetElement(id: String) = {
     val scheme = "https"
     val port = serverPort
     val url =
-      (scheme, port) match {
-        case ("http", 80) | ("https", 443) =>
+      port match {
+        case 80 | 443 =>
           s"$scheme://$serverHost/rosattedownload/download/readDataSet?dataSetID=" + id
         case _ =>
           s"$scheme://$serverHost:$port/rosattedownload/download/readDataSet?dataSetID=" + id
