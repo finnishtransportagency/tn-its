@@ -1,4 +1,4 @@
-<schema targetNamespace="http://www.ertico.com/en/subprojects/rosatte/rst" elementFormDefault="qualified" version="2009-05-20">
+<schema targetNamespace="http://tn-its-test.herokuapp.com/old-schemas/" elementFormDefault="qualified" version="2009-05-20">
 <import namespace="urn:x-inspire:specification:gmlas:Network:3.2" schemaLocation="http://inspire.ec.europa.eu/schemas/net/3.2/Network.xsd"/>
 <import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
 <import namespace="http://www.openlr.org/openlr" schemaLocation="./openlr.xsd"/>

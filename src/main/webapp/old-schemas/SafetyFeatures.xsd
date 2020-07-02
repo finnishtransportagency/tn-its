@@ -1,4 +1,4 @@
-<schema targetNamespace="http://www.ertico.com/en/subprojects/rosatte/rst" elementFormDefault="qualified" version="2009-05-20">
+<schema targetNamespace="http://tn-its-test.herokuapp.com/old-schemas/" elementFormDefault="qualified" version="2009-05-20">
 <include schemaLocation="Update.xsd"/>
 <include schemaLocation="LocationReferencing.xsd"/>
 <include schemaLocation="Conditions.xsd"/>
