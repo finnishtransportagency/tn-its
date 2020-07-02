@@ -1,0 +1,22 @@
+<schema targetNamespace="http://www.ertico.com/en/subprojects/rosatte/rst" elementFormDefault="qualified" version="2009-05-20">
+<import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
+<!--XML Schema document created by ShapeChange-->
+<simpleType name="UpdateTypeType">
+<restriction base="string">
+<enumeration value="Add"/>
+<enumeration value="Modify"/>
+<enumeration value="Remove"/>
+</restriction>
+</simpleType>
+<element name="UpdateInfo" type="rst:UpdateInfoType" substitutionGroup="gml:AbstractObject"/>
+<complexType name="UpdateInfoType">
+<sequence>
+<element name="type" type="rst:UpdateTypeType"/>
+</sequence>
+</complexType>
+<complexType name="UpdateInfoPropertyType">
+<sequence>
+<element ref="rst:UpdateInfo"/>
+</sequence>
+</complexType>
+</schema>

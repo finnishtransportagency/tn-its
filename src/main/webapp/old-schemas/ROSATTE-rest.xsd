@@ -1,0 +1,57 @@
+<schema targetNamespace="http://www.ptvag.com/rosatte/dataexchange/rest" elementFormDefault="qualified" version="2009-05-20">
+<import namespace="http://www.ertico.com/en/subprojects/rosatte/rst" schemaLocation="./ROSATTE.xsd"/>
+<import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
+<!--
+<import namespace="http://www.w3.org/1999/xlink" schemaLocation="./xlink/xlinks.xsd"/>
+-->
+<import namespace="http://www.w3.org/1999/xlink" schemaLocation="http://www.w3.org/1999/xlink.xsd"/>
+<annotation>
+<documentation>
+Main schema file for the ROSATTE RESTful API, version 1.0
+</documentation>
+</annotation>
+<complexType name="ROSATTERestDatasetRefType">
+<attributeGroup ref="xlink:simpleAttrs"/>
+</complexType>
+<complexType name="ROSATTERestFeedbackRefType">
+<attributeGroup ref="xlink:simpleAttrs"/>
+</complexType>
+<element name="ROSATTERestDatasetRefList">
+<complexType>
+<sequence>
+<element name="ROSATTERestDatasetRef" type="desrst:ROSATTERestDatasetRefType" minOccurs="0" maxOccurs="unbounded"/>
+</sequence>
+</complexType>
+</element>
+<element name="ROSATTERestFeedbackRefList">
+<complexType>
+<sequence>
+<element name="ROSATTERestFeedbackRef" type="desrst:ROSATTERestFeedbackRefType" minOccurs="0" maxOccurs="unbounded"/>
+</sequence>
+</complexType>
+</element>
+<element name="ROSATTESafetyFeatureDatasetElement">
+<complexType>
+<complexContent>
+<extension base="rst:ROSATTEDatasetType">
+<sequence>
+<element name="type" type="rst:DatasetTypeType"/>
+</sequence>
+</extension>
+</complexContent>
+</complexType>
+</element>
+<element name="FeedbackInformationElement">
+<complexType>
+<complexContent>
+<extension base="gml:AbstractGMLType">
+<sequence>
+<element name="log" type="rst:FeedbackLogPropertyType"/>
+<element name="datasetIdentifier" type="string"/>
+<element name="processed" type="dateTime"/>
+</sequence>
+</extension>
+</complexContent>
+</complexType>
+</element>
+</schema>

@@ -1,0 +1,154 @@
+<schema targetNamespace="http://www.ertico.com/en/subprojects/rosatte/rst" elementFormDefault="qualified" version="2009-05-20">
+<include schemaLocation="SafetyFeatures.xsd"/>
+<import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
+<!--XML Schema document created by ShapeChange-->
+<simpleType name="SafetyFeatureEventCodeType">
+<union memberTypes="rst:SafetyFeatureEventCodeEnumerationType rst:SafetyFeatureEventCodeOtherType"/>
+</simpleType>
+<simpleType name="SafetyFeatureEventCodeEnumerationType">
+<restriction base="string">
+<enumeration value="DecodeLocationError"/>
+<enumeration value="DecodeLocationErrorGeometryMismatch"/>
+<enumeration value="DecodeLocationRoadDescriptorMismatch"/>
+<enumeration value="IllegalPropertyValue"/>
+<enumeration value="Success"/>
+</restriction>
+</simpleType>
+<simpleType name="SafetyFeatureEventCodeOtherType">
+<restriction base="string">
+<pattern value="other: \w{2,}"/>
+</restriction>
+</simpleType>
+<element name="FreeTextEvent" type="rst:FreeTextEventType" substitutionGroup="rst:FeedbackLogEvent"/>
+<complexType name="FreeTextEventType">
+<complexContent>
+<extension base="rst:FeedbackLogEventType">
+<sequence>
+<element name="text" type="string"/>
+</sequence>
+</extension>
+</complexContent>
+</complexType>
+<complexType name="FreeTextEventPropertyType">
+<sequence minOccurs="0">
+<element ref="rst:FreeTextEvent"/>
+</sequence>
+<attributeGroup ref="gml:AssociationAttributeGroup"/>
+<attributeGroup ref="gml:OwnershipAttributeGroup"/>
+</complexType>
+<element name="FeedbackInformation" type="rst:FeedbackInformationType" substitutionGroup="gml:AbstractGML"/>
+<complexType name="FeedbackInformationType">
+<complexContent>
+<extension base="gml:AbstractGMLType">
+<sequence>
+<element name="log" type="rst:FeedbackLogPropertyType"/>
+<element name="datasetIdentifier" type="string"/>
+<element name="processed" type="dateTime"/>
+</sequence>
+</extension>
+</complexContent>
+</complexType>
+<complexType name="FeedbackInformationPropertyType">
+<sequence minOccurs="0">
+<element ref="rst:FeedbackInformation"/>
+</sequence>
+<attributeGroup ref="gml:AssociationAttributeGroup"/>
+<attributeGroup ref="gml:OwnershipAttributeGroup"/>
+</complexType>
+<element name="GeneralFeedbackEvent" type="rst:GeneralFeedbackEventType" substitutionGroup="rst:FeedbackLogEvent"/>
+<complexType name="GeneralFeedbackEventType">
+<complexContent>
+<extension base="rst:FeedbackLogEventType">
+<sequence>
+<element name="eventCode" type="rst:GeneralFeedbackEventCodeType"/>
+</sequence>
+</extension>
+</complexContent>
+</complexType>
+<complexType name="GeneralFeedbackEventPropertyType">
+<sequence minOccurs="0">
+<element ref="rst:GeneralFeedbackEvent"/>
+</sequence>
+<attributeGroup ref="gml:AssociationAttributeGroup"/>
+<attributeGroup ref="gml:OwnershipAttributeGroup"/>
+</complexType>
+<element name="SafetyFeatureEvent" type="rst:SafetyFeatureEventType" substitutionGroup="rst:FeedbackLogEvent"/>
+<complexType name="SafetyFeatureEventType">
+<complexContent>
+<extension base="rst:FeedbackLogEventType">
+<sequence>
+<element name="safetyFeatureId" type="rst:SafetyFeatureIdPropertyType"/>
+<element name="safetyFeaturePropertyType" type="rst:SafetyFeaturePropertyTypeCodeType" minOccurs="0"/>
+<element name="eventCode" type="rst:SafetyFeatureEventCodeType"/>
+<!--v17 after London meeting-->
+<element name="decodedGeometry" type="gml:GeometricPrimitivePropertyType" minOccurs="0"/>
+</sequence>
+</extension>
+</complexContent>
+</complexType>
+<complexType name="SafetyFeatureEventPropertyType">
+<sequence minOccurs="0">
+<element ref="rst:SafetyFeatureEvent"/>
+</sequence>
+<attributeGroup ref="gml:AssociationAttributeGroup"/>
+<attributeGroup ref="gml:OwnershipAttributeGroup"/>
+</complexType>
+<element name="FeedbackLogEvent" type="rst:FeedbackLogEventType" abstract="true" substitutionGroup="gml:AbstractGML"/>
+<complexType name="FeedbackLogEventType" abstract="true">
+<complexContent>
+<extension base="gml:AbstractGMLType">
+<sequence/>
+</extension>
+</complexContent>
+</complexType>
+<complexType name="FeedbackLogEventPropertyType">
+<sequence minOccurs="0">
+<element ref="rst:FeedbackLogEvent"/>
+</sequence>
+<attributeGroup ref="gml:AssociationAttributeGroup"/>
+<attributeGroup ref="gml:OwnershipAttributeGroup"/>
+</complexType>
+<simpleType name="GeneralFeedbackEventCodeType">
+<union memberTypes="rst:GeneralFeedbackEventCodeEnumerationType rst:GeneralFeedbackEventCodeOtherType"/>
+</simpleType>
+<simpleType name="GeneralFeedbackEventCodeEnumerationType">
+<restriction base="string">
+<enumeration value="SchemaVersionMismatch"/>
+</restriction>
+</simpleType>
+<simpleType name="GeneralFeedbackEventCodeOtherType">
+<restriction base="string">
+<pattern value="other: \w{2,}"/>
+</restriction>
+</simpleType>
+<element name="SummaryInfo" type="rst:SummaryInfoType" substitutionGroup="gml:AbstractObject"/>
+<complexType name="SummaryInfoType">
+<sequence>
+<element name="nrSuccess" type="integer"/>
+<element name="nrFail" type="integer"/>
+</sequence>
+</complexType>
+<complexType name="SummaryInfoPropertyType">
+<sequence>
+<element ref="rst:SummaryInfo"/>
+</sequence>
+</complexType>
+<element name="FeedbackLog" type="rst:FeedbackLogType" substitutionGroup="gml:AbstractGML"/>
+<complexType name="FeedbackLogType">
+<complexContent>
+<extension base="gml:AbstractGMLType">
+<sequence>
+<element name="events" type="rst:FeedbackLogEventPropertyType" minOccurs="0" maxOccurs="unbounded"/>
+<element name="summary" type="rst:SummaryInfoPropertyType"/>
+</sequence>
+</extension>
+</complexContent>
+</complexType>
+<complexType name="FeedbackLogPropertyType">
+<sequence minOccurs="0">
+<element ref="rst:FeedbackLog"/>
+</sequence>
+<attributeGroup ref="gml:AssociationAttributeGroup"/>
+<attributeGroup ref="gml:OwnershipAttributeGroup"/>
+</complexType>
+</schema>

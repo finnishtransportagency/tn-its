@@ -1,0 +1,80 @@
+<schema targetNamespace="http://www.ertico.com/en/subprojects/rosatte/rst" elementFormDefault="qualified" version="2009-05-20">
+<include schemaLocation="SafetyFeatures.xsd"/>
+<include schemaLocation="Feedback.xsd"/>
+<import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
+<!--
+ISO 19139 Metadata will be used in the final version of this schema. To simplify testing, a simpler metadata placeholder is created in this schema
+	<import namespace="http://www.isotc211.org/2005/gmd" schemaLocation="http://www.isotc211.org/schemas/2005/gmd/gmd.xsd"/>
+
+-->
+<complexType name="MetadataType">
+<sequence>
+<element name="datasetId" type="string"/>
+<element name="datasetCreationTime" type="dateTime"/>
+</sequence>
+</complexType>
+<!--XML Schema document created by ShapeChange-->
+<element name="ROSATTEDataset" type="rst:ROSATTEDatasetType" abstract="true" substitutionGroup="gml:AbstractFeatureCollection"/>
+<complexType name="ROSATTEDatasetType" abstract="true">
+<complexContent>
+<extension base="gml:AbstractFeatureCollectionType">
+<sequence>
+<!--
+The type for metadata shall in the final version be gmd:MD_Metadata_Type
+-->
+<element name="metadata" type="rst:MetadataType" minOccurs="0"/>
+</sequence>
+</extension>
+</complexContent>
+</complexType>
+<complexType name="ROSATTEDatasetPropertyType">
+<sequence minOccurs="0">
+<element ref="rst:ROSATTEDataset"/>
+</sequence>
+<attributeGroup ref="gml:AssociationAttributeGroup"/>
+<attributeGroup ref="gml:OwnershipAttributeGroup"/>
+</complexType>
+<element name="ROSATTESafetyFeatureDataset" type="rst:ROSATTESafetyFeatureDatasetType" substitutionGroup="rst:ROSATTEDataset"/>
+<complexType name="ROSATTESafetyFeatureDatasetType">
+<complexContent>
+<extension base="rst:ROSATTEDatasetType">
+<sequence>
+<!--
+element name="safetyFeatures" type="rst:SafetyFeaturePropertyType" minOccurs="0" maxOccurs="unbounded"/
+-->
+<element name="type" type="rst:DatasetTypeType"/>
+</sequence>
+</extension>
+</complexContent>
+</complexType>
+<complexType name="ROSATTESafetyFeatureDatasetPropertyType">
+<sequence minOccurs="0">
+<element ref="rst:ROSATTESafetyFeatureDataset"/>
+</sequence>
+<attributeGroup ref="gml:AssociationAttributeGroup"/>
+<attributeGroup ref="gml:OwnershipAttributeGroup"/>
+</complexType>
+<simpleType name="DatasetTypeType">
+<restriction base="string">
+<enumeration value="Update"/>
+<enumeration value="Snapshot"/>
+</restriction>
+</simpleType>
+<element name="ROSATTEFeedbackDataset" type="rst:ROSATTEFeedbackDatasetType" substitutionGroup="rst:ROSATTEDataset"/>
+<complexType name="ROSATTEFeedbackDatasetType">
+<complexContent>
+<extension base="rst:ROSATTEDatasetType">
+<sequence>
+<element name="feedbackInfo" type="rst:FeedbackInformationPropertyType"/>
+</sequence>
+</extension>
+</complexContent>
+</complexType>
+<complexType name="ROSATTEFeedbackDatasetPropertyType">
+<sequence minOccurs="0">
+<element ref="rst:ROSATTEFeedbackDataset"/>
+</sequence>
+<attributeGroup ref="gml:AssociationAttributeGroup"/>
+<attributeGroup ref="gml:OwnershipAttributeGroup"/>
+</complexType>
+</schema>

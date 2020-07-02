@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+xmlns:gml="http://www.opengis.net/gml/3.2"
+xmlns:rst="http://www.ertico.com/en/subprojects/rosatte/rst"
+targetNamespace="http://www.ertico.com/en/subprojects/rosatte/rst"
+elementFormDefault="qualified" version="2009-05-20">
+  <annotation>
+    <documentation>Main schema file for the ROSATTE exchange schema, version 1.0</documentation>
+  </annotation>
+  <import namespace="http://www.opengis.net/gml/3.2"
+    schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
+    <include schemaLocation="LocationReferencing.xsd"/>
+    <include schemaLocation="Update.xsd"/>
+    <include schemaLocation="Conditions.xsd"/>
+    <include schemaLocation="SafetyFeatures.xsd"/>
+    <include schemaLocation="Feedback.xsd"/>
+    <include schemaLocation="Dataset.xsd"/>
+  </schema>
