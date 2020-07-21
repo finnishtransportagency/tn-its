@@ -62,7 +62,7 @@ class Digiroad2TnItsApi extends ScalatraServlet with FutureSupport {
       }
 
     <rst:ROSATTERestDatasetRefList xmlns:xlink="http://www.w3.org/1999/xlink"
-                                   xmlns:rst="http://tn-its-test.herokuapp.com/old-schemas/"
+                                   xmlns:rst="https://tn-its-test.herokuapp.com/old-schemas/"
                                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
       {wantedDataSetIds.map(dataSetElement)}
     </rst:ROSATTERestDatasetRefList>

@@ -27,8 +27,8 @@ object RosatteConverter {
             xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:gmd="http://www.isotc211.org/2005/gmd"
             xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:net="urn:x-inspire:specification:gmlas:Network:3.2"
             xmlns:openlr="http://www.openlr.org/openlr" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xmlns:TPEG="TPEG" xmlns:rst="http://tn-its-test.herokuapp.com/old-schemas/"
-            xsi:schemaLocation="http://tn-its-test.herokuapp.com/old-schemas/ https://tn-its-test.herokuapp.com/old-schemas/Rosatte.xsd"
+            xmlns:TPEG="TPEG" xmlns:rst="https://tn-its-test.herokuapp.com/old-schemas/"
+            xsi:schemaLocation="https://tn-its-test.herokuapp.com/old-schemas/ https://tn-its-test.herokuapp.com/old-schemas/Rosatte.xsd"
             gml:id="${UUID.randomUUID().toString}">""")
 
     featureMembers.foreach { case (assetType, changes) =>
