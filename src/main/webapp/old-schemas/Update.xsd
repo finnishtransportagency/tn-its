@@ -1,4 +1,4 @@
-<schema targetNamespace="https://tn-its-test.herokuapp.com/old-schemas/" elementFormDefault="qualified" version="2009-05-20">
+<schema targetNamespace="http://www.ertico.com/en/subprojects/rosatte/rst" elementFormDefault="qualified" version="2009-05-20">
 <import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
 <!--XML Schema document created by ShapeChange-->
 <simpleType name="UpdateTypeType">

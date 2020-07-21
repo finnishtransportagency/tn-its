@@ -1,5 +1,5 @@
 <schema targetNamespace="http://www.ptvag.com/rosatte/dataexchange/rest" elementFormDefault="qualified" version="2009-05-20">
-<import namespace="https://tn-its-test.herokuapp.com/old-schemas/" schemaLocation="./Rosatte.xsd"/>
+<import namespace="http://www.ertico.com/en/subprojects/rosatte/rst" schemaLocation="https://tn-its-test.herokuapp.com/old-schemas/Rosatte.xsd"/>
 <import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
 <!--
 <import namespace="http://www.w3.org/1999/xlink" schemaLocation="./xlink/xlinks.xsd"/>

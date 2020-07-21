@@ -6,7 +6,7 @@
 <!--
 2009-12-02    18                   LWi        Added weight condition in response to action 63 from Paris meeting 9-10 Nov 2009
 -->
-<schema targetNamespace="https://tn-its-test.herokuapp.com/old-schemas/" elementFormDefault="qualified" version="2009-05-20">
+<schema targetNamespace="http://www.ertico.com/en/subprojects/rosatte/rst" elementFormDefault="qualified" version="2009-05-20">
 <import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
 <!--XML Schema document created by ShapeChange-->
 <element name="LoadCondition" type="rst:LoadConditionType" substitutionGroup="rst:Condition"/>
