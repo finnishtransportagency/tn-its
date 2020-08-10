@@ -92,7 +92,7 @@ class PointRosatteSpec extends FunSuite {
             xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:net="urn:x-inspire:specification:gmlas:Network:3.2"
             xmlns:openlr="http://www.openlr.org/openlr" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xmlns:TPEG="TPEG" xmlns:rst="http://www.ertico.com/en/subprojects/rosatte/rst"
-            xsi:schemaLocation="http://www.ertico.com/en/subprojects/rosatte/rst http://rosatte-no.triona.se/schemas/Rosatte.xsd"
+            xsi:schemaLocation="http://www.ertico.com/en/subprojects/rosatte/rst https://tn-its.herokuapp.com/old-schemas/Rosatte.xsd"
             gml:id="ID-FOO"><gml:featureMember>
           <rst:GenericSafetyFeature gml:id="ID-FOO">
             <rst:id>
@@ -217,7 +217,7 @@ class PointRosatteSpec extends FunSuite {
             xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:net="urn:x-inspire:specification:gmlas:Network:3.2"
             xmlns:openlr="http://www.openlr.org/openlr" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xmlns:TPEG="TPEG" xmlns:rst="http://www.ertico.com/en/subprojects/rosatte/rst"
-            xsi:schemaLocation="http://www.ertico.com/en/subprojects/rosatte/rst http://rosatte-no.triona.se/schemas/Rosatte.xsd"
+            xsi:schemaLocation="http://www.ertico.com/en/subprojects/rosatte/rst https://tn-its.herokuapp.com/old-schemas/Rosatte.xsd"
             gml:id="ID-FOO"><gml:featureMember>
           <rst:GenericSafetyFeature gml:id="ID-FOO">
             <rst:id>
@@ -347,7 +347,7 @@ class PointRosatteSpec extends FunSuite {
             xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:net="urn:x-inspire:specification:gmlas:Network:3.2"
             xmlns:openlr="http://www.openlr.org/openlr" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xmlns:TPEG="TPEG" xmlns:rst="http://www.ertico.com/en/subprojects/rosatte/rst"
-            xsi:schemaLocation="http://www.ertico.com/en/subprojects/rosatte/rst http://rosatte-no.triona.se/schemas/Rosatte.xsd"
+            xsi:schemaLocation="http://www.ertico.com/en/subprojects/rosatte/rst https://tn-its.herokuapp.com/old-schemas/Rosatte.xsd"
             gml:id="ID-FOO"><gml:featureMember>
           <rst:GenericSafetyFeature gml:id="ID-FOO">
             <rst:id>
