@@ -1,118 +1,123 @@
-<schema targetNamespace="http://www.ertico.com/en/subprojects/rosatte/rst" elementFormDefault="qualified" version="2009-05-20">
-<import namespace="urn:x-inspire:specification:gmlas:Network:3.2" schemaLocation="http://inspire.ec.europa.eu/schemas/net/3.2/Network.xsd"/>
-<import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
-<import namespace="http://www.openlr.org/openlr" schemaLocation="./openlr.xsd"/>
-<import namespace="TPEG" schemaLocation="./Agora_DLR1LocationReference.xsd"/>
-<!--XML Schema document created by ShapeChange-->
-<element name="LocationReference" type="rst:LocationReferenceType" abstract="true" substitutionGroup="gml:AbstractGML"/>
-<complexType name="LocationReferenceType" abstract="true">
-<complexContent>
-<extension base="gml:AbstractGMLType">
-<sequence/>
-</extension>
-</complexContent>
-</complexType>
-<complexType name="LocationReferencePropertyType">
-<sequence minOccurs="0">
-<element ref="rst:LocationReference"/>
-</sequence>
-<attributeGroup ref="gml:AssociationAttributeGroup"/>
-<attributeGroup ref="gml:OwnershipAttributeGroup"/>
-</complexType>
-<element name="DirectLocationReference" type="rst:DirectLocationReferenceType" abstract="true" substitutionGroup="rst:LocationReference"/>
-<complexType name="DirectLocationReferenceType" abstract="true">
-<complexContent>
-<extension base="rst:LocationReferenceType">
-<sequence/>
-</extension>
-</complexContent>
-</complexType>
-<complexType name="DirectLocationReferencePropertyType">
-<sequence minOccurs="0">
-<element ref="rst:DirectLocationReference"/>
-</sequence>
-<attributeGroup ref="gml:AssociationAttributeGroup"/>
-<attributeGroup ref="gml:OwnershipAttributeGroup"/>
-</complexType>
-<element name="IndirectLocationReference" type="rst:IndirectLocationReferenceType" abstract="true" substitutionGroup="rst:LocationReference"/>
-<complexType name="IndirectLocationReferenceType" abstract="true">
-<complexContent>
-<extension base="rst:LocationReferenceType">
-<sequence/>
-</extension>
-</complexContent>
-</complexType>
-<element name="INSPIRELinearLocation" type="rst:INSPIRELinearLocationType" abstract="false" substitutionGroup="rst:IndirectLocationReference"/>
-<complexType name="INSPIRELinearLocationType" abstract="false">
-<complexContent>
-<extension base="rst:IndirectLocationReferenceType">
-<sequence>
-<element ref="net:NetworkReference"/>
-</sequence>
-</extension>
-</complexContent>
-</complexType>
-<complexType name="IndirectLocationReferencePropertyType">
-<sequence minOccurs="0">
-<element ref="rst:IndirectLocationReference"/>
-</sequence>
-<attributeGroup ref="gml:AssociationAttributeGroup"/>
-<attributeGroup ref="gml:OwnershipAttributeGroup"/>
-</complexType>
-<element name="AgoraLocationString" type="rst:AgoraLocationStringType" abstract="false" substitutionGroup="rst:DirectLocationReference"/>
-<complexType name="AgoraLocationStringType" abstract="false">
-<complexContent>
-<extension base="rst:DirectLocationReferenceType">
-<sequence>
-<element name="base64String" type="string"/>
-<element name="agoraBinaryVersion" type="rst:AgoraBinaryVersionType"/>
-</sequence>
-</extension>
-</complexContent>
-</complexType>
-<element name="AgoraLocation" type="rst:AgoraLocationType" abstract="false" substitutionGroup="rst:DirectLocationReference"/>
-<complexType name="AgoraLocationType" abstract="false">
-<complexContent>
-<extension base="rst:DirectLocationReferenceType">
-<sequence>
-<element ref="TPEG:DLR1LocationReference"/>
-</sequence>
-</extension>
-</complexContent>
-</complexType>
-<simpleType name="OpenLRBinaryVersionType">
-<restriction base="string">
-<enumeration value="1.4"/>
-</restriction>
-</simpleType>
-<simpleType name="AgoraBinaryVersionType">
-<restriction base="string">
-<enumeration value="1.0"/>
-<enumeration value="1.3"/>
-<enumeration value="2.4"/>
-<enumeration value="2.5"/>
-<enumeration value="3.0"/>
-</restriction>
-</simpleType>
-<element name="OpenLRLocationString" type="rst:OpenLRLocationStringType" abstract="false" substitutionGroup="rst:DirectLocationReference"/>
-<complexType name="OpenLRLocationStringType" abstract="false">
-<complexContent>
-<extension base="rst:DirectLocationReferenceType">
-<sequence>
-<element name="base64String" type="string"/>
-<element name="OpenLRBinaryVersion" type="rst:OpenLRBinaryVersionType"/>
-</sequence>
-</extension>
-</complexContent>
-</complexType>
-<element name="OpenLRLocation" type="rst:OpenLRLocationType" abstract="false" substitutionGroup="rst:DirectLocationReference"/>
-<complexType name="OpenLRLocationType" abstract="false">
-<complexContent>
-<extension base="rst:DirectLocationReferenceType">
-<sequence>
-<element ref="openlr:OpenLR"/>
-</sequence>
-</extension>
-</complexContent>
-</complexType>
+<?xml version="1.0" encoding="windows-1252"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:net="urn:x-inspire:specification:gmlas:Network:3.2"
+        xmlns:rst="http://www.ertico.com/en/subprojects/rosatte/rst" xmlns:openlr="http://www.openlr.org/openlr" xmlns:TPEG="TPEG"
+        targetNamespace="http://www.ertico.com/en/subprojects/rosatte/rst" elementFormDefault="qualified" version="2009-05-20">
+
+    <import namespace="urn:x-inspire:specification:gmlas:Network:3.2" schemaLocation="http://inspire.ec.europa.eu/schemas/net/3.2/Network.xsd"/>
+    <import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
+    <import namespace="http://www.openlr.org/openlr" schemaLocation="./openlr.xsd"/>
+    <import namespace="TPEG" schemaLocation="./Agora_DLR1LocationReference.xsd"/>
+
+    <!--XML Schema document created by ShapeChange-->
+    <element name="LocationReference" type="rst:LocationReferenceType" abstract="true" substitutionGroup="gml:AbstractGML"/>
+    <complexType name="LocationReferenceType" abstract="true">
+        <complexContent>
+            <extension base="gml:AbstractGMLType">
+                <sequence/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="LocationReferencePropertyType">
+        <sequence minOccurs="0">
+            <element ref="rst:LocationReference"/>
+        </sequence>
+        <attributeGroup ref="gml:AssociationAttributeGroup"/>
+        <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+    </complexType>
+    <element name="DirectLocationReference" type="rst:DirectLocationReferenceType" abstract="true" substitutionGroup="rst:LocationReference"/>
+    <complexType name="DirectLocationReferenceType" abstract="true">
+        <complexContent>
+            <extension base="rst:LocationReferenceType">
+                <sequence/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="DirectLocationReferencePropertyType">
+        <sequence minOccurs="0">
+            <element ref="rst:DirectLocationReference"/>
+        </sequence>
+        <attributeGroup ref="gml:AssociationAttributeGroup"/>
+        <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+    </complexType>
+    <element name="IndirectLocationReference" type="rst:IndirectLocationReferenceType" abstract="true" substitutionGroup="rst:LocationReference"/>
+    <complexType name="IndirectLocationReferenceType" abstract="true">
+        <complexContent>
+            <extension base="rst:LocationReferenceType">
+                <sequence/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <element name="INSPIRELinearLocation" type="rst:INSPIRELinearLocationType" abstract="false" substitutionGroup="rst:IndirectLocationReference"/>
+    <complexType name="INSPIRELinearLocationType" abstract="false">
+        <complexContent>
+            <extension base="rst:IndirectLocationReferenceType">
+                <sequence>
+                    <element ref="net:NetworkReference"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="IndirectLocationReferencePropertyType">
+        <sequence minOccurs="0">
+            <element ref="rst:IndirectLocationReference"/>
+        </sequence>
+        <attributeGroup ref="gml:AssociationAttributeGroup"/>
+        <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+    </complexType>
+    <element name="AgoraLocationString" type="rst:AgoraLocationStringType" abstract="false" substitutionGroup="rst:DirectLocationReference"/>
+    <complexType name="AgoraLocationStringType" abstract="false">
+        <complexContent>
+            <extension base="rst:DirectLocationReferenceType">
+                <sequence>
+                    <element name="base64String" type="string"/>
+                    <element name="agoraBinaryVersion" type="rst:AgoraBinaryVersionType"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <element name="AgoraLocation" type="rst:AgoraLocationType" abstract="false" substitutionGroup="rst:DirectLocationReference"/>
+    <complexType name="AgoraLocationType" abstract="false">
+        <complexContent>
+            <extension base="rst:DirectLocationReferenceType">
+                <sequence>
+                    <element ref="TPEG:DLR1LocationReference"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <simpleType name="OpenLRBinaryVersionType">
+        <restriction base="string">
+            <enumeration value="1.4"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="AgoraBinaryVersionType">
+        <restriction base="string">
+            <enumeration value="1.0"/>
+            <enumeration value="1.3"/>
+            <enumeration value="2.4"/>
+            <enumeration value="2.5"/>
+            <enumeration value="3.0"/>
+        </restriction>
+    </simpleType>
+    <element name="OpenLRLocationString" type="rst:OpenLRLocationStringType" abstract="false" substitutionGroup="rst:DirectLocationReference"/>
+    <complexType name="OpenLRLocationStringType" abstract="false">
+        <complexContent>
+            <extension base="rst:DirectLocationReferenceType">
+                <sequence>
+                    <element name="base64String" type="string"/>
+                    <element name="OpenLRBinaryVersion" type="rst:OpenLRBinaryVersionType"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <element name="OpenLRLocation" type="rst:OpenLRLocationType" abstract="false" substitutionGroup="rst:DirectLocationReference"/>
+    <complexType name="OpenLRLocationType" abstract="false">
+        <complexContent>
+            <extension base="rst:DirectLocationReferenceType">
+                <sequence>
+                    <element ref="openlr:OpenLR"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
 </schema>

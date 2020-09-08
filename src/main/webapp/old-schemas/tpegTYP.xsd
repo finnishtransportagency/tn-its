@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"  xmlns:TPEG="TPEG" targetNamespace="TPEG" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:simpleType name="IntUnTi">
+		<xs:annotation>
+			<xs:documentation>1 byte unsigned</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="0"/>
+			<xs:maxInclusive value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IntUnLi">
+		<xs:annotation>
+			<xs:documentation>2 byte unsigned</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="0"/>
+			<xs:maxInclusive value="65535"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IntUn24">
+		<xs:annotation>
+			<xs:documentation>3 byte unsigned</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="0"/>
+			<xs:maxInclusive value="16777215"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IntUnLo">
+		<xs:annotation>
+			<xs:documentation>4 byte unsigned</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="0"/>
+			<xs:maxInclusive value="4294967295"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IntUnLoMB">
+		<xs:annotation>
+			<xs:documentation>4 byte unsigned with variable length in binary</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="0"/>
+			<xs:maxInclusive value="4294967295"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IntSiTi">
+		<xs:annotation>
+			<xs:documentation>1 byte signed</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="-128"/>
+			<xs:maxInclusive value="127"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IntSiLi">
+		<xs:annotation>
+			<xs:documentation>2 byte signed</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="-32768"/>
+			<xs:maxInclusive value="32767"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IntSi24">
+		<xs:annotation>
+			<xs:documentation>3 byte signed</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="-8388608"/>
+			<xs:maxInclusive value="8388607"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IntSiLo">
+		<xs:annotation>
+			<xs:documentation>4 byte signed</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="-2147483648"/>
+			<xs:maxInclusive value="2147483647"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IntSiLoMB">
+		<xs:annotation>
+			<xs:documentation>4 byte signed with varable length in binary</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="-2147483648"/>
+			<xs:maxInclusive value="2147483647"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Boolean">
+		<xs:annotation>
+			<xs:documentation>boolean</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:boolean"/>
+	</xs:simpleType>
+	<xs:simpleType name="ShortString">
+		<xs:annotation>
+			<xs:documentation>text in 8 char width</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Time_t">
+		<xs:annotation>
+			<xs:documentation>time In seconds since 1970</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="TPEG:IntUnLo"/>
+	</xs:simpleType>
+	<xs:simpleType name="Float">
+		<xs:restriction base="xs:float"/>
+	</xs:simpleType>
+	<xs:simpleType name="Numag">
+		<xs:restriction base="xs:integer"/>
+	</xs:simpleType>
+</xs:schema>
+

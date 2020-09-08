@@ -1,428 +1,413 @@
-<!--Change history:-->
-<!--Date                D3.1 version  Author   Change-->
-<!--
-================================================================================================
--->
-<!--
-2009-12-02    18                   LWi        Added weight condition in response to action 63 from Paris meeting 9-10 Nov 2009
--->
-<schema targetNamespace="http://www.ertico.com/en/subprojects/rosatte/rst" elementFormDefault="qualified" version="2009-05-20">
-<import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
-<!--XML Schema document created by ShapeChange-->
-<element name="LoadCondition" type="rst:LoadConditionType" substitutionGroup="rst:Condition"/>
-<complexType name="LoadConditionType">
-<complexContent>
-<extension base="rst:ConditionType">
-<sequence>
-<element name="loadType" type="rst:LoadTypeType"/>
-</sequence>
-</extension>
-</complexContent>
-</complexType>
-<complexType name="LoadConditionPropertyType">
-<sequence>
-<element ref="rst:LoadCondition"/>
-</sequence>
-</complexType>
-<element name="AreaCondition" type="rst:AreaConditionType" substitutionGroup="rst:Condition"/>
-<complexType name="AreaConditionType">
-<complexContent>
-<extension base="rst:ConditionType">
-<sequence>
-<element name="areaType" type="rst:AreaTypeType"/>
-</sequence>
-</extension>
-</complexContent>
-</complexType>
-<complexType name="AreaConditionPropertyType">
-<sequence>
-<element ref="rst:AreaCondition"/>
-</sequence>
-</complexType>
-<simpleType name="ConditionOperatorType">
-<restriction base="string">
-<enumeration value="OR"/>
-<enumeration value="XOR"/>
-<enumeration value="AND"/>
-</restriction>
-</simpleType>
-<element name="Condition" type="rst:ConditionType" abstract="true" substitutionGroup="gml:AbstractObject"/>
-<complexType name="ConditionType" abstract="true">
-<sequence>
-<element name="negate" type="boolean" minOccurs="0"/>
-</sequence>
-</complexType>
-<complexType name="ConditionPropertyType">
-<sequence>
-<element ref="rst:Condition"/>
-</sequence>
-</complexType>
-<element name="RoadCategoryCondition" type="rst:RoadCategoryConditionType" substitutionGroup="rst:Condition"/>
-<complexType name="RoadCategoryConditionType">
-<complexContent>
-<extension base="rst:ConditionType">
-<sequence>
-<element name="roadCategory" type="rst:RoadCategoryTypeType"/>
-</sequence>
-</extension>
-</complexContent>
-</complexType>
-<complexType name="RoadCategoryConditionPropertyType">
-<sequence>
-<element ref="rst:RoadCategoryCondition"/>
-</sequence>
-</complexType>
-<element name="IntegerInterval" type="rst:IntegerIntervalType" substitutionGroup="gml:AbstractObject"/>
-<complexType name="IntegerIntervalType">
-<sequence>
-<element name="start" type="integer"/>
-<element name="length" type="integer" minOccurs="0"/>
-</sequence>
-</complexType>
-<complexType name="IntegerIntervalPropertyType">
-<sequence>
-<element ref="rst:IntegerInterval"/>
-</sequence>
-</complexType>
-<simpleType name="RoadCategoryTypeType">
-<union memberTypes="rst:RoadCategoryTypeEnumerationType rst:RoadCategoryTypeOtherType"/>
-</simpleType>
-<simpleType name="RoadCategoryTypeEnumerationType">
-<restriction base="string">
-<enumeration value="Motorway"/>
-<enumeration value="RoadWithDualCarriageway"/>
-<enumeration value="RoadWithSingleCarriageway"/>
-<enumeration value="UrbanRoad"/>
-<enumeration value="ResidentialAreaRoad"/>
-<enumeration value="OtherRoad"/>
-</restriction>
-</simpleType>
-<simpleType name="RoadCategoryTypeOtherType">
-<restriction base="string">
-<pattern value="other: \w{2,}"/>
-</restriction>
-</simpleType>
-<simpleType name="FuzzyTimeType">
-<annotation>
-<documentation>Not precised described time. [EuroRoadS]</documentation>
-</annotation>
-<union memberTypes="rst:FuzzyTimeEnumerationType rst:FuzzyTimeOtherType"/>
-</simpleType>
-<simpleType name="FuzzyTimeEnumerationType">
-<annotation>
-<documentation>Not precised described time. [EuroRoadS]</documentation>
-</annotation>
-<restriction base="string">
-<enumeration value="External"/>
-<enumeration value="Dawn"/>
-<enumeration value="Dusk"/>
-<enumeration value="School"/>
-<enumeration value="Holiday"/>
-<enumeration value="Winter"/>
-<enumeration value="Spring"/>
-<enumeration value="Summer"/>
-<enumeration value="Autumn"/>
-<enumeration value="HighTide"/>
-<enumeration value="LowTide"/>
-<enumeration value="HighWater"/>
-<enumeration value="LowWater"/>
-<enumeration value="WetSeason"/>
-<enumeration value="DrySeason"/>
-<enumeration value="PeakHours"/>
-<enumeration value="OffPeakHours"/>
-<enumeration value="Day"/>
-<enumeration value="Night"/>
-</restriction>
-</simpleType>
-<simpleType name="FuzzyTimeOtherType">
-<restriction base="string">
-<pattern value="other: \w{2,}"/>
-</restriction>
-</simpleType>
-<element name="ValidityPeriod" type="rst:ValidityPeriodType" substitutionGroup="gml:AbstractObject">
-<annotation>
-<documentation>Definition of a validity period. [TWG TN]</documentation>
-</annotation>
-</element>
-<complexType name="ValidityPeriodType">
-<sequence>
-<element name="timePeriodType" type="rst:TimePeriodTypeType" minOccurs="0"/>
-<element name="timePeriodValidity" type="rst:TimePeriodValidityType" minOccurs="0"/>
-<element name="description" type="string" minOccurs="0"/>
-<element name="year" type="rst:IntegerIntervalPropertyType" minOccurs="0"/>
-<element name="month" type="rst:IntegerIntervalPropertyType" minOccurs="0"/>
-<element name="week" type="rst:IntegerIntervalPropertyType" minOccurs="0"/>
-<element name="day" type="rst:IntegerIntervalPropertyType" minOccurs="0"/>
-<element name="weekdayType" type="rst:WeekdayTypeType" minOccurs="0"/>
-<element name="weekday" type="rst:IntegerIntervalPropertyType" minOccurs="0"/>
-<element name="time" type="rst:TimeIntervalType" minOccurs="0"/>
-<element name="fuzzyTimePeriod" type="rst:FuzzyTimePeriodPropertyType" minOccurs="0"/>
-<!--Added after v14-->
-<element name="timeDomainGDF" type="string" minOccurs="0"/>
-</sequence>
-</complexType>
-<complexType name="ValidityPeriodPropertyType">
-<sequence>
-<element ref="rst:ValidityPeriod"/>
-</sequence>
-</complexType>
-<simpleType name="WeatherTypeType">
-<annotation>
-<documentation>Value list for weatherCondition. [Euroroads]</documentation>
-</annotation>
-<union memberTypes="rst:WeatherTypeEnumerationType rst:WeatherTypeOtherType"/>
-</simpleType>
-<simpleType name="WeatherTypeEnumerationType">
-<annotation>
-<documentation>Value list for weatherCondition. [Euroroads]</documentation>
-</annotation>
-<restriction base="string">
-<enumeration value="Fog"/>
-<enumeration value="Ice"/>
-<enumeration value="Rain"/>
-<enumeration value="AirPollution"/>
-<enumeration value="Snow"/>
-<enumeration value="Wind"/>
-<enumeration value="Wet"/>
-</restriction>
-</simpleType>
-<simpleType name="WeatherTypeOtherType">
-<restriction base="string">
-<pattern value="other: \w{2,}"/>
-</restriction>
-</simpleType>
-<simpleType name="TimePeriodValidityType">
-<annotation>
-<documentation>
-Defines if the time period is included or excluded. [EuroRoadS]
-</documentation>
-</annotation>
-<restriction base="string">
-<enumeration value="IncludePeriod"/>
-<enumeration value="ExcludePeriod"/>
-</restriction>
-</simpleType>
-<element name="LaneCondition" type="rst:LaneConditionType" substitutionGroup="rst:Condition"/>
-<complexType name="LaneConditionType">
-<complexContent>
-<extension base="rst:ConditionType">
-<sequence>
-<element name="startLane" type="integer"/>
-<element name="laneExtension" type="integer"/>
-</sequence>
-</extension>
-</complexContent>
-</complexType>
-<complexType name="LaneConditionPropertyType">
-<sequence>
-<element ref="rst:LaneCondition"/>
-</sequence>
-</complexType>
-<simpleType name="TimePeriodTypeType">
-<annotation>
-<documentation>
-Defines if the time period occurs once or are repeated. [EuroRoadS]
-</documentation>
-</annotation>
-<restriction base="string">
-<enumeration value="OccursOnce"/>
-<enumeration value="Yearly"/>
-<enumeration value="Monthly"/>
-<enumeration value="Weekly"/>
-<enumeration value="Daily"/>
-</restriction>
-</simpleType>
-<simpleType name="VehicleTypeType">
-<annotation>
-<documentation>A type of vehicle. [TWG TN]</documentation>
-</annotation>
-<restriction base="string">
-<enumeration value="AllVehicle"/>
-<enumeration value="Bicycle"/>
-<enumeration value="CarWithTrailer"/>
-<enumeration value="DeliveryTruck"/>
-<enumeration value="EmergencyVehicle"/>
-<enumeration value="EmployeeVehicle"/>
-<enumeration value="FacilityVehicle"/>
-<enumeration value="FarmVehicle"/>
-<enumeration value="HighOccupancyVehicle"/>
-<enumeration value="LightRail"/>
-<enumeration value="MailVehicle"/>
-<enumeration value="MilitaryVehicle"/>
-<enumeration value="Moped"/>
-<enumeration value="Motorcycle"/>
-<enumeration value="PassengerCar"/>
-<enumeration value="Pedestrian"/>
-<enumeration value="PrivateBus"/>
-<enumeration value="PublicBus"/>
-<enumeration value="ResidentialVehicle"/>
-<enumeration value="SchoolBus"/>
-<enumeration value="SnowChainEquippedVehicle"/>
-<enumeration value="Tanker"/>
-<enumeration value="Taxi"/>
-<enumeration value="TransportTruck"/>
-<enumeration value="TrolleyBus"/>
-<enumeration value="VehicleForDisabledPerson"/>
-<enumeration value="VehicleWithSnowChainsOrSnowTyres"/>
-</restriction>
-</simpleType>
-<element name="ConditionSet" type="rst:ConditionSetType" substitutionGroup="rst:Condition"/>
-<complexType name="ConditionSetType">
-<complexContent>
-<extension base="rst:ConditionType">
-<sequence>
-<element name="conditions" type="rst:ConditionPropertyType" maxOccurs="unbounded"/>
-<element name="operator" type="rst:ConditionOperatorType"/>
-</sequence>
-</extension>
-</complexContent>
-</complexType>
-<complexType name="ConditionSetPropertyType">
-<sequence>
-<element ref="rst:ConditionSet"/>
-</sequence>
-</complexType>
-<element name="FuzzyTimePeriod" type="rst:FuzzyTimePeriodType" substitutionGroup="gml:AbstractObject">
-<annotation>
-<documentation>Time described with a fuzzy time. [EuroRoadS]</documentation>
-</annotation>
-</element>
-<complexType name="FuzzyTimePeriodType">
-<sequence>
-<element name="beginOrDuration" type="rst:FuzzyTimeType"/>
-<element name="endOrDuration" type="rst:FuzzyTimeType" minOccurs="0"/>
-</sequence>
-</complexType>
-<complexType name="FuzzyTimePeriodPropertyType">
-<sequence>
-<element ref="rst:FuzzyTimePeriod"/>
-</sequence>
-</complexType>
-<element name="WeatherCondition" type="rst:WeatherConditionType" substitutionGroup="rst:Condition"/>
-<complexType name="WeatherConditionType">
-<complexContent>
-<extension base="rst:ConditionType">
-<sequence>
-<element name="weatherType" type="rst:WeatherTypeType"/>
-</sequence>
-</extension>
-</complexContent>
-</complexType>
-<complexType name="WeatherConditionPropertyType">
-<sequence>
-<element ref="rst:WeatherCondition"/>
-</sequence>
-</complexType>
-<element name="TimeCondition" type="rst:TimeConditionType" substitutionGroup="rst:Condition"/>
-<complexType name="TimeConditionType">
-<complexContent>
-<extension base="rst:ConditionType">
-<sequence>
-<element name="validityPeriod" type="rst:ValidityPeriodPropertyType"/>
-</sequence>
-</extension>
-</complexContent>
-</complexType>
-<complexType name="TimeConditionPropertyType">
-<sequence>
-<element ref="rst:TimeCondition"/>
-</sequence>
-</complexType>
-<simpleType name="WeekdayTypeType">
-<annotation>
-<documentation>
-Defines where the week number is counted from. [EuroRoadS]
-</documentation>
-</annotation>
-<restriction base="string">
-<enumeration value="Absolute"/>
-<enumeration value="FromEndOfMonth"/>
-<enumeration value="FromStartOfMonth"/>
-</restriction>
-</simpleType>
-<simpleType name="AreaTypeType">
-<annotation>
-<documentation>
-Specifies a reason for the existance of the safety feature
-</documentation>
-</annotation>
-<union memberTypes="rst:AreaTypeEnumerationType rst:AreaTypeOtherType"/>
-</simpleType>
-<simpleType name="AreaTypeEnumerationType">
-<annotation>
-<documentation>
-Specifies a reason for the existance of the safety feature
-</documentation>
-</annotation>
-<restriction base="string">
-<enumeration value="InNationalPark"/>
-<enumeration value="InsideCities"/>
-<enumeration value="NearRailroadCrossing"/>
-<enumeration value="NearSchool"/>
-<enumeration value="OutsideCities"/>
-<enumeration value="TrafficCalmingArea"/>
-</restriction>
-</simpleType>
-<simpleType name="AreaTypeOtherType">
-<restriction base="string">
-<pattern value="other: \w{2,}"/>
-</restriction>
-</simpleType>
-<simpleType name="LoadTypeType">
-<union memberTypes="rst:LoadTypeEnumerationType rst:LoadTypeOtherType"/>
-</simpleType>
-<simpleType name="LoadTypeEnumerationType">
-<restriction base="string">
-<enumeration value="ExplosiveLoad"/>
-<enumeration value="WaterPollutingLoad"/>
-<enumeration value="OtherDangerousLoad"/>
-</restriction>
-</simpleType>
-<simpleType name="LoadTypeOtherType">
-<restriction base="string">
-<pattern value="other: \w{2,}"/>
-</restriction>
-</simpleType>
-<element name="VehicleCondition" type="rst:VehicleConditionType" substitutionGroup="rst:Condition"/>
-<complexType name="VehicleConditionType">
-<complexContent>
-<extension base="rst:ConditionType">
-<sequence>
-<element name="vehicleType" type="rst:VehicleTypeType"/>
-</sequence>
-</extension>
-</complexContent>
-</complexType>
-<complexType name="VehicleConditionPropertyType">
-<sequence>
-<element ref="rst:VehicleCondition"/>
-</sequence>
-</complexType>
-<element name="TimeInterval" type="rst:TimeIntervalType" substitutionGroup="gml:AbstractObject"/>
-<complexType name="TimeIntervalType">
-<sequence>
-<element name="begin" type="time"/>
-<element name="lengthSeconds" type="integer" minOccurs="0"/>
-</sequence>
-</complexType>
-<complexType name="TimeIntervalPropertyType">
-<sequence>
-<element ref="rst:TimeInterval"/>
-</sequence>
-</complexType>
-<element name="WeightCondition" type="rst:WeightConditionType" substitutionGroup="rst:Condition"/>
-<complexType name="WeightConditionType">
-<complexContent>
-<extension base="rst:ConditionType">
-<sequence>
-<element name="totalWeight" type="gml:MeasureType"/>
-</sequence>
-</extension>
-</complexContent>
-</complexType>
-<complexType name="WeightConditionPropertyType">
-<sequence>
-<element ref="rst:WeightCondition"/>
-</sequence>
-</complexType>
+<?xml version="1.0" encoding="windows-1252"?>
+<!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by Lars Bergström (Triona AB) -->
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml/3.2"
+        xmlns:rst="http://www.ertico.com/en/subprojects/rosatte/rst" targetNamespace="http://www.ertico.com/en/subprojects/rosatte/rst" elementFormDefault="qualified" version="2009-05-20">
+    <import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
+    <!--XML Schema document created by ShapeChange-->
+    <element name="LoadCondition" type="rst:LoadConditionType" substitutionGroup="rst:Condition"/>
+    <complexType name="LoadConditionType">
+        <complexContent>
+            <extension base="rst:ConditionType">
+                <sequence>
+                    <element name="loadType" type="rst:LoadTypeType"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="LoadConditionPropertyType">
+        <sequence>
+            <element ref="rst:LoadCondition"/>
+        </sequence>
+    </complexType>
+    <element name="AreaCondition" type="rst:AreaConditionType" substitutionGroup="rst:Condition"/>
+    <complexType name="AreaConditionType">
+        <complexContent>
+            <extension base="rst:ConditionType">
+                <sequence>
+                    <element name="areaType" type="rst:AreaTypeType"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="AreaConditionPropertyType">
+        <sequence>
+            <element ref="rst:AreaCondition"/>
+        </sequence>
+    </complexType>
+    <simpleType name="ConditionOperatorType">
+        <restriction base="string">
+            <enumeration value="OR"/>
+            <enumeration value="XOR"/>
+            <enumeration value="AND"/>
+        </restriction>
+    </simpleType>
+    <element name="Condition" type="rst:ConditionType" abstract="true" substitutionGroup="gml:AbstractObject"/>
+    <complexType name="ConditionType" abstract="true">
+        <sequence>
+            <element name="negate" type="boolean" minOccurs="0"/>
+        </sequence>
+    </complexType>
+    <complexType name="ConditionPropertyType">
+        <sequence>
+            <element ref="rst:Condition"/>
+        </sequence>
+    </complexType>
+    <element name="RoadCategoryCondition" type="rst:RoadCategoryConditionType" substitutionGroup="rst:Condition"/>
+    <complexType name="RoadCategoryConditionType">
+        <complexContent>
+            <extension base="rst:ConditionType">
+                <sequence>
+                    <element name="roadCategory" type="rst:RoadCategoryTypeType"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="RoadCategoryConditionPropertyType">
+        <sequence>
+            <element ref="rst:RoadCategoryCondition"/>
+        </sequence>
+    </complexType>
+    <element name="IntegerInterval" type="rst:IntegerIntervalType" substitutionGroup="gml:AbstractObject"/>
+    <complexType name="IntegerIntervalType">
+        <sequence>
+            <element name="start" type="integer"/>
+            <element name="length" type="integer" minOccurs="0"/>
+        </sequence>
+    </complexType>
+    <complexType name="IntegerIntervalPropertyType">
+        <sequence>
+            <element ref="rst:IntegerInterval"/>
+        </sequence>
+    </complexType>
+    <simpleType name="RoadCategoryTypeType">
+        <union memberTypes="rst:RoadCategoryTypeEnumerationType rst:RoadCategoryTypeOtherType"/>
+    </simpleType>
+    <simpleType name="RoadCategoryTypeEnumerationType">
+        <restriction base="string">
+            <enumeration value="Motorway"/>
+            <enumeration value="RoadWithDualCarriageway"/>
+            <enumeration value="RoadWithSingleCarriageway"/>
+            <enumeration value="UrbanRoad"/>
+            <enumeration value="ResidentialAreaRoad"/>
+            <enumeration value="OtherRoad"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="RoadCategoryTypeOtherType">
+        <restriction base="string">
+            <pattern value="other: \w{2,}"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="FuzzyTimeType">
+        <annotation>
+            <documentation>Not precised described time. [EuroRoadS]</documentation>
+        </annotation>
+        <union memberTypes="rst:FuzzyTimeEnumerationType rst:FuzzyTimeOtherType"/>
+    </simpleType>
+    <simpleType name="FuzzyTimeEnumerationType">
+        <annotation>
+            <documentation>Not precised described time. [EuroRoadS]</documentation>
+        </annotation>
+        <restriction base="string">
+            <enumeration value="External"/>
+            <enumeration value="Dawn"/>
+            <enumeration value="Dusk"/>
+            <enumeration value="School"/>
+            <enumeration value="Holiday"/>
+            <enumeration value="Winter"/>
+            <enumeration value="Spring"/>
+            <enumeration value="Summer"/>
+            <enumeration value="Autumn"/>
+            <enumeration value="HighTide"/>
+            <enumeration value="LowTide"/>
+            <enumeration value="HighWater"/>
+            <enumeration value="LowWater"/>
+            <enumeration value="WetSeason"/>
+            <enumeration value="DrySeason"/>
+            <enumeration value="PeakHours"/>
+            <enumeration value="OffPeakHours"/>
+            <enumeration value="Day"/>
+            <enumeration value="Night"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="FuzzyTimeOtherType">
+        <restriction base="string">
+            <pattern value="other: \w{2,}"/>
+        </restriction>
+    </simpleType>
+    <element name="ValidityPeriod" type="rst:ValidityPeriodType" substitutionGroup="gml:AbstractObject">
+        <annotation>
+            <documentation>Definition of a validity period. [TWG TN]</documentation>
+        </annotation>
+    </element>
+    <complexType name="ValidityPeriodType">
+        <sequence>
+            <element name="timePeriodType" type="rst:TimePeriodTypeType" minOccurs="0"/>
+            <element name="timePeriodValidity" type="rst:TimePeriodValidityType" minOccurs="0"/>
+            <element name="description" type="string" minOccurs="0"/>
+            <element name="year" type="rst:IntegerIntervalPropertyType" minOccurs="0"/>
+            <element name="month" type="rst:IntegerIntervalPropertyType" minOccurs="0"/>
+            <element name="week" type="rst:IntegerIntervalPropertyType" minOccurs="0"/>
+            <element name="day" type="rst:IntegerIntervalPropertyType" minOccurs="0"/>
+            <element name="weekdayType" type="rst:WeekdayTypeType" minOccurs="0"/>
+            <element name="weekday" type="rst:IntegerIntervalPropertyType" minOccurs="0"/>
+            <element name="time" type="rst:TimeIntervalType" minOccurs="0"/>
+            <element name="fuzzyTimePeriod" type="rst:FuzzyTimePeriodPropertyType" minOccurs="0"/>
+            <!--Added after v14-->
+            <element name="timeDomainGDF" type="string" minOccurs="0"/>
+        </sequence>
+    </complexType>
+    <complexType name="ValidityPeriodPropertyType">
+        <sequence>
+            <element ref="rst:ValidityPeriod"/>
+        </sequence>
+    </complexType>
+    <simpleType name="WeatherTypeType">
+        <annotation>
+            <documentation>Value list for weatherCondition.[Euroroads]</documentation>
+        </annotation>
+        <union memberTypes="rst:WeatherTypeEnumerationType rst:WeatherTypeOtherType"/>
+    </simpleType>
+    <simpleType name="WeatherTypeEnumerationType">
+        <annotation>
+            <documentation>Value list for weatherCondition. [Euroroads]</documentation>
+        </annotation>
+        <restriction base="string">
+            <enumeration value="Fog"/>
+            <enumeration value="Ice"/>
+            <enumeration value="Rain"/>
+            <enumeration value="AirPollution"/>
+            <enumeration value="Snow"/>
+            <enumeration value="Wind"/>
+            <enumeration value="Wet"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="WeatherTypeOtherType">
+        <restriction base="string">
+            <pattern value="other: \w{2,}"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="TimePeriodValidityType">
+        <annotation>
+            <documentation>Defines if the time period is included or excluded. [EuroRoadS]</documentation>
+        </annotation>
+        <restriction base="string">
+            <enumeration value="IncludePeriod"/>
+            <enumeration value="ExcludePeriod"/>
+        </restriction>
+    </simpleType>
+    <element name="LaneCondition" type="rst:LaneConditionType" substitutionGroup="rst:Condition"/>
+    <complexType name="LaneConditionType">
+        <complexContent>
+            <extension base="rst:ConditionType">
+                <sequence>
+                    <element name="startLane" type="integer"/>
+                    <element name="laneExtension" type="integer"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="LaneConditionPropertyType">
+        <sequence>
+            <element ref="rst:LaneCondition"/>
+        </sequence>
+    </complexType>
+    <simpleType name="TimePeriodTypeType">
+        <annotation>
+            <documentation>Defines if the time period occurs once or are repeated. [EuroRoadS]</documentation>
+        </annotation>
+        <restriction base="string">
+            <enumeration value="OccursOnce"/>
+            <enumeration value="Yearly"/>
+            <enumeration value="Monthly"/>
+            <enumeration value="Weekly"/>
+            <enumeration value="Daily"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="VehicleTypeType">
+        <annotation>
+            <documentation>A type of vehicle. [TWG TN]</documentation>
+        </annotation>
+        <restriction base="string">
+            <enumeration value="AllVehicle"/>
+            <enumeration value="Bicycle"/>
+            <enumeration value="CarWithTrailer"/>
+            <enumeration value="DeliveryTruck"/>
+            <enumeration value="EmergencyVehicle"/>
+            <enumeration value="EmployeeVehicle"/>
+            <enumeration value="FacilityVehicle"/>
+            <enumeration value="FarmVehicle"/>
+            <enumeration value="HighOccupancyVehicle"/>
+            <enumeration value="LightRail"/>
+            <enumeration value="MailVehicle"/>
+            <enumeration value="MilitaryVehicle"/>
+            <enumeration value="Moped"/>
+            <enumeration value="Motorcycle"/>
+            <enumeration value="PassengerCar"/>
+            <enumeration value="Pedestrian"/>
+            <enumeration value="PrivateBus"/>
+            <enumeration value="PublicBus"/>
+            <enumeration value="ResidentialVehicle"/>
+            <enumeration value="SchoolBus"/>
+            <enumeration value="SnowChainEquippedVehicle"/>
+            <enumeration value="Tanker"/>
+            <enumeration value="Taxi"/>
+            <enumeration value="TransportTruck"/>
+            <enumeration value="TrolleyBus"/>
+            <enumeration value="VehicleForDisabledPerson"/>
+            <enumeration value="VehicleWithSnowChainsOrSnowTyres"/>
+        </restriction>
+    </simpleType>
+    <element name="ConditionSet" type="rst:ConditionSetType" substitutionGroup="rst:Condition"/>
+    <complexType name="ConditionSetType">
+        <complexContent>
+            <extension base="rst:ConditionType">
+                <sequence>
+                    <element name="conditions" type="rst:ConditionPropertyType" maxOccurs="unbounded"/>
+                    <element name="operator" type="rst:ConditionOperatorType"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="ConditionSetPropertyType">
+        <sequence>
+            <element ref="rst:ConditionSet"/>
+        </sequence>
+    </complexType>
+    <element name="FuzzyTimePeriod" type="rst:FuzzyTimePeriodType" substitutionGroup="gml:AbstractObject">
+        <annotation>
+            <documentation>Time described with a fuzzy time. [EuroRoadS]</documentation>
+        </annotation>
+    </element>
+    <complexType name="FuzzyTimePeriodType">
+        <sequence>
+            <element name="beginOrDuration" type="rst:FuzzyTimeType"/>
+            <element name="endOrDuration" type="rst:FuzzyTimeType" minOccurs="0"/>
+        </sequence>
+    </complexType>
+    <complexType name="FuzzyTimePeriodPropertyType">
+        <sequence>
+            <element ref="rst:FuzzyTimePeriod"/>
+        </sequence>
+    </complexType>
+    <element name="WeatherCondition" type="rst:WeatherConditionType" substitutionGroup="rst:Condition"/>
+    <complexType name="WeatherConditionType">
+        <complexContent>
+            <extension base="rst:ConditionType">
+                <sequence>
+                    <element name="weatherType" type="rst:WeatherTypeType"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="WeatherConditionPropertyType">
+        <sequence>
+            <element ref="rst:WeatherCondition"/>
+        </sequence>
+    </complexType>
+    <element name="TimeCondition" type="rst:TimeConditionType" substitutionGroup="rst:Condition"/>
+    <complexType name="TimeConditionType">
+        <complexContent>
+            <extension base="rst:ConditionType">
+                <sequence>
+                    <element name="validityPeriod" type="rst:ValidityPeriodPropertyType"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="TimeConditionPropertyType">
+        <sequence>
+            <element ref="rst:TimeCondition"/>
+        </sequence>
+    </complexType>
+    <simpleType name="WeekdayTypeType">
+        <annotation>
+            <documentation>Defines where the week number is counted from. [EuroRoadS]</documentation>
+        </annotation>
+        <restriction base="string">
+            <enumeration value="Absolute"/>
+            <enumeration value="FromEndOfMonth"/>
+            <enumeration value="FromStartOfMonth"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="AreaTypeType">
+        <annotation>
+            <documentation>Specifies a reason for the existance of the safety feature</documentation>
+        </annotation>
+        <union memberTypes="rst:AreaTypeEnumerationType rst:AreaTypeOtherType"/>
+    </simpleType>
+    <simpleType name="AreaTypeEnumerationType">
+        <annotation>
+            <documentation>Specifies a reason for the existance of the safety feature</documentation>
+        </annotation>
+        <restriction base="string">
+            <enumeration value="InNationalPark"/>
+            <enumeration value="InsideCities"/>
+            <enumeration value="NearRailroadCrossing"/>
+            <enumeration value="NearSchool"/>
+            <enumeration value="OutsideCities"/>
+            <enumeration value="TrafficCalmingArea"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="AreaTypeOtherType">
+        <restriction base="string">
+            <pattern value="other: \w{2,}"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="LoadTypeType">
+        <union memberTypes="rst:LoadTypeEnumerationType rst:LoadTypeOtherType"/>
+    </simpleType>
+    <simpleType name="LoadTypeEnumerationType">
+        <restriction base="string">
+            <enumeration value="ExplosiveLoad"/>
+            <enumeration value="WaterPollutingLoad"/>
+            <enumeration value="OtherDangerousLoad"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="LoadTypeOtherType">
+        <restriction base="string">
+            <pattern value="other: \w{2,}"/>
+        </restriction>
+    </simpleType>
+    <element name="VehicleCondition" type="rst:VehicleConditionType" substitutionGroup="rst:Condition"/>
+    <complexType name="VehicleConditionType">
+        <complexContent>
+            <extension base="rst:ConditionType">
+                <sequence>
+                    <element name="vehicleType" type="rst:VehicleTypeType"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="VehicleConditionPropertyType">
+        <sequence>
+            <element ref="rst:VehicleCondition"/>
+        </sequence>
+    </complexType>
+    <element name="TimeInterval" type="rst:TimeIntervalType" substitutionGroup="gml:AbstractObject"/>
+    <complexType name="TimeIntervalType">
+        <sequence>
+            <element name="begin" type="time"/>
+            <element name="lengthSeconds" type="integer" minOccurs="0"/>
+        </sequence>
+    </complexType>
+    <complexType name="TimeIntervalPropertyType">
+        <sequence>
+            <element ref="rst:TimeInterval"/>
+        </sequence>
+    </complexType>
+    <element name="WeightCondition" type="rst:WeightConditionType" substitutionGroup="rst:Condition"/>
+    <complexType name="WeightConditionType">
+        <complexContent>
+            <extension base="rst:ConditionType">
+                <sequence>
+                    <element name="totalWeight" type="gml:MeasureType"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="WeightConditionPropertyType">
+        <sequence>
+            <element ref="rst:WeightCondition"/>
+        </sequence>
+    </complexType>
 </schema>

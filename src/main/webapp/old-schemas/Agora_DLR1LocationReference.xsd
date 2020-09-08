@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:TPEG="TPEG" targetNamespace="TPEG" elementFormDefault="qualified">
+
+	<include schemaLocation="./tpegTYP.xsd"/>
+	<include schemaLocation="./tpegDLR-Tables.xsd"/>
+
+	<element name="DLR1LocationReference" type="TPEG:DLR1LocationReferenceType"/>
+	<complexType name="LinearLocation">
+		<sequence>
+			<element name="CorePoint" type="TPEG:CorePoint" maxOccurs="unbounded"/>
+			<element name="AttributeList" type="TPEG:AttributeList" minOccurs="0"/>
+			<element name="ExtendedLocation" type="TPEG:ExtendedLocation" minOccurs="0"/>
+		</sequence>
+		<attribute name="locationDirection" type="TPEG:Boolean" use="required"/>
+		<attribute name="locationType" type="TPEG:dlr001" use="optional"/>
+	</complexType>
+	<complexType name="Attribute">
+		<sequence>
+			<element name="shortString" type="TPEG:ShortString" minOccurs="0"/>
+			<element name="intSiLoMB" type="TPEG:IntSiLoMB" minOccurs="0"/>
+			<element name="intUnLoMB" type="TPEG:IntUnLoMB" minOccurs="0"/>
+		</sequence>
+		<attribute name="attrNum" type="TPEG:IntUnTi" use="required"/>
+	</complexType>
+	<complexType name="AttributeList">
+		<sequence>
+			<element name="Attribute" type="TPEG:Attribute" maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+	<complexType name="RPSignature">
+		<attribute name="bearing" type="TPEG:IntUnTi" use="required"/>
+		<attribute name="accessibleForRoutingFlag" type="TPEG:Boolean" use="required"/>
+		<attribute name="routingPointDistance0" type="TPEG:Boolean" use="required"/>
+		<attribute name="routingPointDistPrecision" type="TPEG:Boolean" use="required"/>
+		<attribute name="routingPointDistance" type="TPEG:IntUnLoMB" use="optional"/>
+		<attribute name="parCarriagewayInd" type="TPEG:IntUnLoMB" use="optional"/>
+	</complexType>
+	<complexType name="CorePoint">
+		<sequence>
+			<element name="RPSignature" type="TPEG:RPSignature" minOccurs="0"/>
+			<element name="IPSignature" type="TPEG:IPSignature" minOccurs="0"/>
+			<element name="SideRoadSignature" type="TPEG:SideRoadSignature" minOccurs="0"/>
+			<element name="AttributeList" type="TPEG:AttributeList" minOccurs="0"/>
+		</sequence>
+		<attribute name="locationPoint" type="TPEG:Boolean" use="required"/>
+		<attribute name="Dperp" type="TPEG:IntUnTi" use="optional"/>
+		<attribute name="longitude1" type="TPEG:IntSiTi" use="optional"/>
+		<attribute name="longitude2" type="TPEG:IntSiLi" use="optional"/>
+		<attribute name="longitudeAbs3" type="TPEG:IntSi24" use="optional"/>
+		<attribute name="longitudeAbs4" type="TPEG:IntSiLoMB" use="optional"/>
+		<attribute name="latitude1" type="TPEG:IntSiTi" use="optional"/>
+		<attribute name="latitude2" type="TPEG:IntSiLi" use="optional"/>
+		<attribute name="latitudeAbs3" type="TPEG:IntSi24" use="optional"/>
+		<attribute name="latitudeAbs4" type="TPEG:IntSiLoMB" use="optional"/>
+	</complexType>
+	<complexType name="SideRoadSignature">
+		<attribute name="connectionAngle" type="TPEG:IntSiTi" use="required"/>
+		<attribute name="accessibleForRoutingFlag" type="TPEG:Boolean" use="required"/>
+	</complexType>
+	<complexType name="GeoPoint">
+		<attribute name="longitude1" type="TPEG:IntSiTi" use="optional"/>
+		<attribute name="longitude2" type="TPEG:IntSiLi" use="optional"/>
+		<attribute name="longitudeAbs3" type="TPEG:IntSi24" use="optional"/>
+		<attribute name="longitudeAbs4" type="TPEG:IntSiLoMB" use="optional"/>
+		<attribute name="latitude1" type="TPEG:IntSiTi" use="optional"/>
+		<attribute name="latitude2" type="TPEG:IntSiLi" use="optional"/>
+		<attribute name="latitudeAbs3" type="TPEG:IntSi24" use="optional"/>
+		<attribute name="latitudeAbs4" type="TPEG:IntSiLoMB" use="optional"/>
+	</complexType>
+	<complexType name="LocationReferenceConnection">
+		<attribute name="subNetworkIndex" type="TPEG:IntUnLoMB" use="required"/>
+		<attribute name="connectionPointIndex" type="TPEG:IntUnLoMB" use="required"/>
+	</complexType>
+	<complexType name="ExtendedLocation">
+		<sequence>
+			<element name="ExtendedPoint" type="TPEG:ExtendedPoint" maxOccurs="unbounded"/>
+		</sequence>
+		<attribute name="fcMin" type="TPEG:IntUnTi" use="required"/>
+		<attribute name="connectionPointIndex" type="TPEG:IntUnLoMB" use="required"/>
+	</complexType>
+	<complexType name="IPSignature">
+		<attribute name="functionalRoadClass" type="TPEG:IntUnTi" use="required"/>
+		<attribute name="drivingAlignedAllowed" type="TPEG:Boolean" use="required"/>
+		<attribute name="drivingReverseAllowed" type="TPEG:Boolean" use="required"/>
+		<attribute name="intersectionType" type="TPEG:dlr003" use="optional"/>
+		<attribute name="numOfInterIntersect" type="TPEG:IntUnTi" use="optional"/>
+		<attribute name="formOfWay" type="TPEG:dlr005" use="optional"/>
+		<attribute name="roadDescriptor" type="TPEG:ShortString" use="optional"/>
+	</complexType>
+	<complexType name="CoreLocation">
+		<sequence>
+			<element name="CorePoint" type="TPEG:CorePoint" maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+	<complexType name="ExplicitAreaLocation">
+		<sequence>
+			<element name="ExpAreaSegment" type="TPEG:ExpAreaSegment" maxOccurs="unbounded"/>
+		</sequence>
+		<attribute name="expAreaType" type="TPEG:dlr007" use="required"/>
+		<attribute name="isClosed" type="TPEG:Boolean" use="required"/>
+		<attribute name="radiusA" type="TPEG:IntUnLoMB" use="optional"/>
+		<attribute name="radiusB" type="TPEG:IntUnLoMB" use="optional"/>
+		<attribute name="rotationAngle" type="TPEG:IntUnTi" use="optional"/>
+	</complexType>
+	<complexType name="ExpAreaSegment">
+		<sequence>
+			<element name="LinearLocation" type="TPEG:LinearLocation" minOccurs="0"/>
+			<element name="GeoPoint" type="TPEG:GeoPoint" minOccurs="0" maxOccurs="unbounded"/>
+		</sequence>
+		<attribute name="isPartOfLoc" type="TPEG:Boolean" use="required"/>
+	</complexType>
+	<complexType name="ImplicitAreaLocation">
+		<sequence>
+			<element name="SubNetworkLocationReference" type="TPEG:SubNetworkLocationReference" maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+	<complexType name="SubNetworkLocationReference">
+		<sequence>
+			<element name="LinearLocation" type="TPEG:LinearLocation"/>
+			<element name="LocationReferenceConnection" type="TPEG:LocationReferenceConnection"/>
+		</sequence>
+	</complexType>
+	<complexType name="ExtendedPoint">
+		<sequence>
+			<element name="AttributeList" type="TPEG:AttributeList" minOccurs="0"/>
+		</sequence>
+		<attribute name="destinationPoint" type="TPEG:Boolean" use="required"/>
+		<attribute name="Dperp" type="TPEG:IntUnTi" use="optional"/>
+		<attribute name="longitude1" type="TPEG:IntSiTi" use="optional"/>
+		<attribute name="longitude2" type="TPEG:IntSiLi" use="optional"/>
+		<attribute name="longitudeAbs3" type="TPEG:IntSi24" use="optional"/>
+		<attribute name="longitudeAbs4" type="TPEG:IntSiLoMB" use="optional"/>
+		<attribute name="latitude1" type="TPEG:IntSiTi" use="optional"/>
+		<attribute name="latitude2" type="TPEG:IntSiLi" use="optional"/>
+		<attribute name="latitudeAbs3" type="TPEG:IntSi24" use="optional"/>
+		<attribute name="latitudeAbs4" type="TPEG:IntSiLoMB" use="optional"/>
+	</complexType>
+	<complexType name="DLR1LocationReferenceType">
+		<sequence>
+			<element name="LinearLocation" type="TPEG:LinearLocation" minOccurs="0"/>
+			<element name="ExplicitAreaLocation" type="TPEG:ExplicitAreaLocation" minOccurs="0"/>
+			<element name="ImplicitAreaLocation" type="TPEG:ImplicitAreaLocation" minOccurs="0"/>
+		</sequence>
+		<attribute name="version" type="TPEG:IntUnTi" use="required"/>
+	</complexType>
+</schema>

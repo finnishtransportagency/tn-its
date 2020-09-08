@@ -1,0 +1,2955 @@
+<?xml version="1.0"?>
+<rst:ROSATTESafetyFeatureDataset xmlns:xlink="http://www.w3.org/1999/xlink"
+                                 xmlns:gml="http://www.opengis.net/gml/3.2"
+                                 xmlns:gmd="http://www.isotc211.org/2005/gmd"
+                                 xmlns:gco="http://www.isotc211.org/2005/gco"
+                                 xmlns:net="urn:x-inspire:specification:gmlas:Network:3.2"
+                                 xmlns:openlr="http://www.openlr.org/openlr"
+                                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                 xmlns:TPEG="TPEG"
+                                 xmlns:rst="http://www.ertico.com/en/subprojects/rosatte/rst"
+                                 xsi:schemaLocation="http://www.ertico.com/en/subprojects/rosatte/rst http://rosatte-no.triona.se/schemas/Rosatte.xsd" >
+
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231716</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation gml:id="5c814d236-f1c5-4c0c-9c8d-f287e61a233c">
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.5625779"/>
+                    <net:applicableDirection>inDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">70.568</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString>
+                <rst:base64String>CxEW5ismICugAQAxADcrEw==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString gml:id="a201fcf8-b240-40be-9ec9-65b5feab3e0b" srsDimension="2">
+                <gml:posList> 24.03202045342866 60.67816752051208 24.032034041547995 60.67822439792102 24.032029888809866 60.67828496097269 24.032028081679144 60.678350481632926 24.032057319727027 60.67843351883975 24.032344528252374 60.678624592438894 24.03251514639938 60.67872187789881 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231716</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.5625779"/>
+                    <net:applicableDirection>inOppositeDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">70.568</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString gml:id="aad7267e-64db-40d8-8c00-b2bdbfec41c5">
+                <rst:base64String>CxEW/SsmOiuzAf/P/8krAA==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString srsDimension="2">
+                <gml:posList> 24.03202045342866 60.67816752051208 24.032034041547995 60.67822439792102 24.032029888809866 60.67828496097269 24.032028081679144 60.678350481632926 24.032057319727027 60.67843351883975 24.032344528252374 60.678624592438894 24.03251514639938 60.67872187789881 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature>
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231710</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.6856715"/>
+                    <net:applicableDirection>inDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">147.501</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxEV6yslhyumAgCVAGArEw==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString  srsDimension="2">
+                <gml:posList> 24.02663964265991 60.674883011141304 24.02667178005053 60.67488664508133 24.026894613999325 60.67491827051733 24.02712859861251 60.67495926265589 24.02730212933633 60.67499246971758 24.027413812981127 60.67502345842966 24.027493767362806 60.67506048086258 24.027546545211532 60.675125848203464 24.02760736411071 60.67522534703313 24.0276438910421 60.67533523168647 24.027674114680305 60.67544693499753 24.027772668723824 60.67560613005825 24.02784647295649 60.67568957405413 24.027944636256592 60.675759533882406 24.02812843325275 60.67584365713278 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature gml:id="c15a109d-ccc6-40e2-aec8-405e98792dd6">
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231710</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.6856715"/>
+                    <net:applicableDirection>inOppositeDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">147.501</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxEWMSsltCuzAv9r/6ArBg==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString srsDimension="2">
+                <gml:posList> 24.02663964265991 60.674883011141304 24.02667178005053 60.67488664508133 24.026894613999325 60.67491827051733 24.02712859861251 60.67495926265589 24.02730212933633 60.67499246971758 24.027413812981127 60.67502345842966 24.027493767362806 60.67506048086258 24.027546545211532 60.675125848203464 24.02760736411071 60.67522534703313 24.0276438910421 60.67533523168647 24.027674114680305 60.67544693499753 24.027772668723824 60.67560613005825 24.02784647295649 60.67568957405413 24.027944636256592 60.675759533882406 24.02812843325275 60.67584365713278 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231686</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.2998786"/>
+                    <net:applicableDirection>inDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">125.735</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxIxQCvv5iumAgDsAAkrFw==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString srsDimension="2">
+                <gml:posList> 25.583017680895807 61.786533563673615 25.58343470678796 61.786580271763704 25.583874093491367 61.78661415465028 25.584340295496208 61.78662039883918 25.58466830301518 61.78660544658337 25.58494622530289 61.78660831120454 25.585230815756344 61.786619162898724 25.585380748229383 61.78662593316217 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature gml:id="d75eaefe-647d-4e6a-93c5-23a98f2a5c7e">
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231686</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.2998786"/>
+                    <net:applicableDirection>inOppositeDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">125.735</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString>
+                <rst:base64String>CxIxrivv6iu3Av8U//crBg==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString srsDimension="2">
+                <gml:posList> 25.583017680895807 61.786533563673615 25.58343470678796 61.786580271763704 25.583874093491367 61.78661415465028 25.584340295496208 61.78662039883918 25.58466830301518 61.78660544658337 25.58494622530289 61.78660831120454 25.585230815756344 61.786619162898724 25.585380748229383 61.78662593316217 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46230821</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation gml:id="b97644e6-302f-41f5-a85e-b6e5eb61a387">
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.2998741"/>
+                    <net:applicableDirection>inDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">177.939</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxI1aSvwsCulAwErADorFw==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString srsDimension="2">
+                <gml:posList> 25.60588336324725 61.790882200595895 25.606190726006062 61.790957820780335 25.606423288613104 61.79102383751018 25.60656515746001 61.79106014005455 25.606719253415445 61.79111375102312 25.6067856588252 61.79113999505587 25.606987626516418 61.79122876569748 25.607183596416192 61.79131892070605 25.607389393087082 61.79139814970696 25.607599154441893 61.79143756382855 25.60784800272787 61.791444746689464 25.608190953372468 61.79145248788301 25.608550903565746 61.79146177416113 25.608875366736655 61.79146229628261 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46230821</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation gml:id="ecbf281f-637b-47f2-9e62-c81da4391e0a">
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.2998741"/>
+                    <net:applicableDirection>inOppositeDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">177.939</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString gml:id="ac646224-a8a6-4ad1-ac66-257cd5d6a52f">
+                <rst:base64String>CxI19Svwyyu3A/7V/8YrBQ==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString  srsDimension="2">
+                <gml:posList> 25.60588336324725 61.790882200595895 25.606190726006062 61.790957820780335 25.606423288613104 61.79102383751018 25.60656515746001 61.79106014005455 25.606719253415445 61.79111375102312 25.6067856588252 61.79113999505587 25.606987626516418 61.79122876569748 25.607183596416192 61.79131892070605 25.607389393087082 61.79139814970696 25.607599154441893 61.79143756382855 25.60784800272787 61.791444746689464 25.608190953372468 61.79145248788301 25.608550903565746 61.79146177416113 25.608875366736655 61.79146229628261 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46230825</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation gml:id="f2c04588-a96a-4d47-9489-c3b2b01d05c9">
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.2998770"/>
+                    <net:applicableDirection>inDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">87.481</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString gml:id="f3371f5b-f836-43b7-9548-6f81c443d647">
+                <rst:base64String>CxIyZyvwwCurAQCKAA0rFA==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString gml:id="e1d88e82-400b-453c-82d2-ea2ddfb09a67" srsDimension="2">
+                <gml:posList> 25.58935990230282 61.79122508878994 25.589490768104106 61.791148913958516 25.589619229461718 61.791109462733445 25.589794414948788 61.791102032222994 25.589993838150164 61.791109925038036 25.59017909937857 61.791143368221626 25.590359320260514 61.79122847474751 25.590547812039983 61.79130114111625 25.590720197013898 61.79135032512353 25.590743719776512 61.791354355403364 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature gml:id="e62be207-5296-4b0f-8cbf-0ac1864241c2">
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46230825</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.2998770"/>
+                    <net:applicableDirection>inOppositeDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">87.481</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxIyqCvwxiu1Af92//MrCw==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString srsDimension="2">
+                <gml:posList> 25.58935990230282 61.79122508878994 25.589490768104106 61.791148913958516 25.589619229461718 61.791109462733445 25.589794414948788 61.791102032222994 25.589993838150164 61.791109925038036 25.59017909937857 61.791143368221626 25.590359320260514 61.79122847474751 25.590547812039983 61.79130114111625 25.590720197013898 61.79135032512353 25.590743719776512 61.791354355403364 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231692</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation gml:id="c620d24e-7b39-459f-8fa3-4a9ec068673f">
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.2998800"/>
+                    <net:applicableDirection>inDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">1039.766</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxIxxyvv7iunEQV8ASErDw==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString gml:id="fa247a32-39a1-43e0-b835-dfaf6a8cfad3" srsDimension="2">
+                <gml:posList> 25.585917707356682 61.78670469205547 25.586186933483205 61.786716487857795 25.586473131778522 61.78670639800404 25.586697986781136 61.786682630560385 25.587109788144193 61.78663634752401 25.587508847053407 61.786642087518615 25.587927613335832 61.78666921798341 25.588243063057558 61.78669690996531 25.588460824751216 61.78675293826189 25.58866053615532 61.786826710464034 25.588978029879197 61.786930235069626 25.58935432080545 61.787025698899505 25.589505868984922 61.78706058351651 25.589659612516236 61.7870823282323 25.58988387028974 61.787102642178134 25.590236518339697 61.78711158764805 25.590708239239355 61.78711012746617 25.591111921877022 61.787108209941096 25.591500731637286 61.78709895597058 25.59184755457628 61.78709015915362 25.592223941851362 61.78708797637783 25.592508790471005 61.78707010279236 25.59276319418952 61.78705075837763 25.59303711038303 61.78701607190802 25.593385521234477 61.78696087836487 25.593691427183426 61.78690335416456 25.594050502907336 61.78680891605586 25.59429943021139 61.786735023105706 25.594394065203048 61.78670865286507 25.59470567283405 61.7866337219073 25.59502302060024 61.78657508185307 25.59530175078163 61.78653822251999 25.595339196062906 61.78653545420928 25.595630022508317 61.7865468329537 25.595854718008756 61.78657541966497 25.596335119888327 61.78662457710194 25.596726983741753 61.7866858286301 25.597246815075394 61.78673534991892 25.597555465758795 61.786755543837806 25.597959907479634 61.78683757946542 25.598241408552497 61.78692513745132 25.598483444071817 61.78700988581069 25.598719961269147 61.78708550030753 25.598955089858098 61.78712374132861 25.599206728697197 61.787219225714296 25.599304483022827 61.78734676375812 25.599457885488356 61.787450358489046 25.599873317098044 61.78760543153763 25.600137302375742 61.787753572333365 25.600288061400384 61.787909976678 25.60038994710614 61.788051481409354 25.600430710709563 61.78822431695843 25.60046432159488 61.78840349011648 25.60050934398099 61.788544828130995 25.600469526901872 61.78870188440322 25.600380625596014 61.788790644905966 25.600199428951452 61.78889640319405 25.600081116943187 61.78897005839625 25.59998580237896 61.789063017979174 25.599943889010504 61.7892085514853 25.59997095922941 61.789385970133814 25.599961387728168 61.789592201253065 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature gml:id="fa88dff0-e746-4fb4-9a4c-3820a9e493e4">
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231692</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.2998800"/>
+                    <net:applicableDirection>inOppositeDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">1039.766</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxI0VSvwdCuvEfqE/t8rBw==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString srsDimension="2">
+                <gml:posList> 25.585917707356682 61.78670469205547 25.586186933483205 61.786716487857795 25.586473131778522 61.78670639800404 25.586697986781136 61.786682630560385 25.587109788144193 61.78663634752401 25.587508847053407 61.786642087518615 25.587927613335832 61.78666921798341 25.588243063057558 61.78669690996531 25.588460824751216 61.78675293826189 25.58866053615532 61.786826710464034 25.588978029879197 61.786930235069626 25.58935432080545 61.787025698899505 25.589505868984922 61.78706058351651 25.589659612516236 61.7870823282323 25.58988387028974 61.787102642178134 25.590236518339697 61.78711158764805 25.590708239239355 61.78711012746617 25.591111921877022 61.787108209941096 25.591500731637286 61.78709895597058 25.59184755457628 61.78709015915362 25.592223941851362 61.78708797637783 25.592508790471005 61.78707010279236 25.59276319418952 61.78705075837763 25.59303711038303 61.78701607190802 25.593385521234477 61.78696087836487 25.593691427183426 61.78690335416456 25.594050502907336 61.78680891605586 25.59429943021139 61.786735023105706 25.594394065203048 61.78670865286507 25.59470567283405 61.7866337219073 25.59502302060024 61.78657508185307 25.59530175078163 61.78653822251999 25.595339196062906 61.78653545420928 25.595630022508317 61.7865468329537 25.595854718008756 61.78657541966497 25.596335119888327 61.78662457710194 25.596726983741753 61.7866858286301 25.597246815075394 61.78673534991892 25.597555465758795 61.786755543837806 25.597959907479634 61.78683757946542 25.598241408552497 61.78692513745132 25.598483444071817 61.78700988581069 25.598719961269147 61.78708550030753 25.598955089858098 61.78712374132861 25.599206728697197 61.787219225714296 25.599304483022827 61.78734676375812 25.599457885488356 61.787450358489046 25.599873317098044 61.78760543153763 25.600137302375742 61.787753572333365 25.600288061400384 61.787909976678 25.60038994710614 61.788051481409354 25.600430710709563 61.78822431695843 25.60046432159488 61.78840349011648 25.60050934398099 61.788544828130995 25.600469526901872 61.78870188440322 25.600380625596014 61.788790644905966 25.600199428951452 61.78889640319405 25.600081116943187 61.78897005839625 25.59998580237896 61.789063017979174 25.599943889010504 61.7892085514853 25.59997095922941 61.789385970133814 25.599961387728168 61.789592201253065 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature gml:id="ef905546-770c-470a-b3a2-5b695c2319db">
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231718</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation gml:id="fc60f8b7-9c3f-4012-be9b-2f0636c6ea93">
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.5625792"/>
+                    <net:applicableDirection>inDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">61.144</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxEWMSsltCukAQBUACQrEw==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString gml:id="ac6b0c81-bd7e-4fa5-bd61-4aece0c0468f" srsDimension="2">
+                <gml:posList> 24.028128437662303 60.67584365915102 24.02832104383343 60.67592030675972 24.02869026441706 60.67606491734572 24.02884788892163 60.67613025759907 24.02897266777271 60.676201775821745 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231718</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation gml:id="bc0d4fec-d39d-4930-9f24-9c2f59eb5835">
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.5625792"/>
+                    <net:applicableDirection>inOppositeDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">61.144</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString>
+                <rst:base64String>CxEWWCslxSuzAf+s/9wrBA==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString srsDimension="2">
+                <gml:posList> 24.028128437662303 60.67584365915102 24.02832104383343 60.67592030675972 24.02869026441706 60.67606491734572 24.02884788892163 60.67613025759907 24.02897266777271 60.676201775821745 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231682</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation gml:id="f0639c60-3624-409d-9164-cb90e03a9f2c">
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.2998756"/>
+                    <net:applicableDirection>inDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">679.693</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxI19SvwyyunCwQiALsrGQ==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString srsDimension="2">
+                <gml:posList> 25.608875366736655 61.79146229628261 25.609134923131524 61.791467978169706 25.609162122517084 61.791468765430196 25.60948167249159 61.791504988010225 25.609834751144056 61.79158957429147 25.610162878810712 61.79171559343028 25.610481083967606 61.79185686427488 25.610764828379466 61.7919519693956 25.610993681618393 61.792002219697714 25.611215017394166 61.792027002917735 25.61137608749103 61.792060002040934 25.611445709135033 61.792095802285566 25.611523380659996 61.792143194083835 25.611740061394862 61.79228632636245 25.611872735532977 61.7923879732776 25.611979111218908 61.79244404968473 25.612082620681456 61.79247411380848 25.612259555507784 61.79250068213699 25.612471554703845 61.79250464700528 25.61271469481603 61.792464905505796 25.612922391420827 61.79241452540514 25.613062131908524 61.79235654535438 25.61331851525933 61.79225015590519 25.613438814780075 61.792200993380405 25.613567624238154 61.792167107968304 25.613712559334502 61.7921503811671 25.613870495984287 61.79215406744936 25.614036975877514 61.79218620224563 25.614215969883478 61.79225422371755 25.61435749404036 61.79233220089004 25.614477980978776 61.79242038048605 25.61462445877838 61.79256066291451 25.614805254156476 61.79266205616182 25.614965062526714 61.79273251373163 25.615120595348294 61.792786309152035 25.61536422164705 61.7928326787735 25.61561319275281 61.79287198204672 25.615874987077607 61.79292222398977 25.616018681798327 61.792998910436715 25.61613717072826 61.79309625318059 25.616256575227542 61.79319434126199 25.61647012713707 61.79333009006747 25.616687660193904 61.79341571687239 25.616858488517074 61.79345850432429 25.617144416722958 61.793499020959366 25.61743215659012 61.79349923370017 25.617840386271947 61.793475977280885 25.6182292721048 61.793453494668825 25.618719321700976 61.79341719641843 25.61919452527635 61.79335835528463 25.619459873431072 61.79333171799261 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231682</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation gml:id="ae0d8054-793b-496f-b93b-d659f843c46f">
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.2998756"/>
+                    <net:applicableDirection>inOppositeDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">679.693</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxI34ivxIyu5C/ve/0UrBw==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString  srsDimension="2">
+                <gml:posList> 25.608875366736655 61.79146229628261 25.609134923131524 61.791467978169706 25.609162122517084 61.791468765430196 25.60948167249159 61.791504988010225 25.609834751144056 61.79158957429147 25.610162878810712 61.79171559343028 25.610481083967606 61.79185686427488 25.610764828379466 61.7919519693956 25.610993681618393 61.792002219697714 25.611215017394166 61.792027002917735 25.61137608749103 61.792060002040934 25.611445709135033 61.792095802285566 25.611523380659996 61.792143194083835 25.611740061394862 61.79228632636245 25.611872735532977 61.7923879732776 25.611979111218908 61.79244404968473 25.612082620681456 61.79247411380848 25.612259555507784 61.79250068213699 25.612471554703845 61.79250464700528 25.61271469481603 61.792464905505796 25.612922391420827 61.79241452540514 25.613062131908524 61.79235654535438 25.61331851525933 61.79225015590519 25.613438814780075 61.792200993380405 25.613567624238154 61.792167107968304 25.613712559334502 61.7921503811671 25.613870495984287 61.79215406744936 25.614036975877514 61.79218620224563 25.614215969883478 61.79225422371755 25.61435749404036 61.79233220089004 25.614477980978776 61.79242038048605 25.61462445877838 61.79256066291451 25.614805254156476 61.79266205616182 25.614965062526714 61.79273251373163 25.615120595348294 61.792786309152035 25.61536422164705 61.7928326787735 25.61561319275281 61.79287198204672 25.615874987077607 61.79292222398977 25.616018681798327 61.792998910436715 25.61613717072826 61.79309625318059 25.616256575227542 61.79319434126199 25.61647012713707 61.79333009006747 25.616687660193904 61.79341571687239 25.616858488517074 61.79345850432429 25.617144416722958 61.793499020959366 25.61743215659012 61.79349923370017 25.617840386271947 61.793475977280885 25.6182292721048 61.793453494668825 25.618719321700976 61.79341719641843 25.61919452527635 61.79335835528463 25.619459873431072 61.79333171799261 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature gml:id="fefc78c2-0e70-46e7-822f-fded8155f320">
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231720</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation gml:id="d90208cf-0dd8-4b85-ac21-b2a904f817ed">
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.5625761"/>
+                    <net:applicableDirection>inDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">195.099</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString>
+                <rst:base64String>CxEWWCslxSuiAwB/AKArEg==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString srsDimension="2">
+                <gml:posList> 24.028972671298767 60.67620177784276 24.029063928220683 60.676288869909804 24.02913351367758 60.67639089851615 24.029212920639765 60.676505993086025 24.029379785860343 60.67666122230659 24.02949750571858 60.676757319940386 24.02960364390823 60.676810591281196 24.029684671932174 60.676856899267165 24.029805199834573 60.67694123515121 24.02990771394745 60.6770409661679 24.029938625407752 60.67710340340113 24.029947912939953 60.677124444828905 24.029988471454175 60.67720879397519 24.03000249283371 60.67734057709485 24.030018415577818 60.67749524131112 24.030074005462037 60.67762853075317 24.0301612362597 60.67771009692268 24.030238406816913 60.67780141898225 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231720</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation gml:id="f73a3f19-5ad2-451a-becb-900f86dedccb">
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.5625761"/>
+                    <net:applicableDirection>inOppositeDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">195.099</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString gml:id="ad82544c-136a-4eb3-9f81-2bbcb573baa4">
+                <rst:base64String>CxEWkysmDyuyA/+B/2ArAg==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString  srsDimension="2">
+                <gml:posList> 24.028972671298767 60.67620177784276 24.029063928220683 60.676288869909804 24.02913351367758 60.67639089851615 24.029212920639765 60.676505993086025 24.029379785860343 60.67666122230659 24.02949750571858 60.676757319940386 24.02960364390823 60.676810591281196 24.029684671932174 60.676856899267165 24.029805199834573 60.67694123515121 24.02990771394745 60.6770409661679 24.029938625407752 60.67710340340113 24.029947912939953 60.677124444828905 24.029988471454175 60.67720879397519 24.03000249283371 60.67734057709485 24.030018415577818 60.67749524131112 24.030074005462037 60.67762853075317 24.0301612362597 60.67771009692268 24.030238406816913 60.67780141898225 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature gml:id="afd45fc4-0c49-4461-84f0-661cc9ec0af1">
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231712</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.5625797"/>
+                    <net:applicableDirection>inDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">174.764</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxEVIislHSuiAgCfAIYrEQ==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString srsDimension="2">
+                <gml:posList> 24.022322960778425 60.672597609872 24.022517666625337 60.672801967133594 24.022681780973787 60.6730179165903 24.022798876953946 60.673139433368306 24.02295125596168 60.67326422360135 24.023150905461932 60.67336761237956 24.023349080271114 60.67347904524699 24.023547666834666 60.67357374854353 24.023720279016068 60.673698044390946 24.02384942645317 60.67384440116335 24.02390990478314 60.67393633823222 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231712</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation gml:id="c0cf5b40-f5c0-4549-ab73-ae1cef61567a">
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.5625797"/>
+                    <net:applicableDirection>inOppositeDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">174.764</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxEVbCslWyuxAv9h/3orAg==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString srsDimension="2">
+                <gml:posList> 24.022322960778425 60.672597609872 24.022517666625337 60.672801967133594 24.022681780973787 60.6730179165903 24.022798876953946 60.673139433368306 24.02295125596168 60.67326422360135 24.023150905461932 60.67336761237956 24.023349080271114 60.67347904524699 24.023547666834666 60.67357374854353 24.023720279016068 60.673698044390946 24.02384942645317 60.67384440116335 24.02390990478314 60.67393633823222 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231688</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.2998784"/>
+                    <net:applicableDirection>inDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">29.897</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString gml:id="baf7ad68-afb7-47f3-bf73-fe689e122399">
+                <rst:base64String>CxIxrivv6iumAAA2AAgrFg==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString  srsDimension="2">
+                <gml:posList> 25.585380748229383 61.78662593316217 25.585538111532472 61.786633587867186 25.585731558933716 61.786674313315146 25.585917707356682 61.78670469205547 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231688</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.2998784"/>
+                    <net:applicableDirection>inOppositeDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">29.897</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxIxxyvv7iu2AP/K//grBg==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString srsDimension="2">
+                <gml:posList> 25.585380748229383 61.78662593316217 25.585538111532472 61.786633587867186 25.585731558933716 61.786674313315146 25.585917707356682 61.78670469205547 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46230823</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.2998769"/>
+                    <net:applicableDirection>inDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">143.21</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxIzUivwqCu7Av8QADYrCQ==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString  srsDimension="2">
+                <gml:posList> 25.5944010608178 61.79070405511748 25.59390847515891 61.790862112642806 25.593656226751232 61.790946502683596 25.593398111230588 61.791039307733094 25.593154172168575 61.79112192346892 25.59286757711432 61.7911722015869 25.592575848828968 61.79118955675106 25.592194732760714 61.791210681592524 25.592003693807257 61.791244600363264 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46230823</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation gml:id="da2d1e8e-f86d-426f-a5c1-04bac3f1ba8d">
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.2998769"/>
+                    <net:applicableDirection>inOppositeDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">143.21</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxIy4ivwwSupAgDw/8orGw==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString srsDimension="2">
+                <gml:posList> 25.5944010608178 61.79070405511748 25.59390847515891 61.790862112642806 25.593656226751232 61.790946502683596 25.593398111230588 61.791039307733094 25.593154172168575 61.79112192346892 25.59286757711432 61.7911722015869 25.592575848828968 61.79118955675106 25.592194732760714 61.791210681592524 25.592003693807257 61.791244600363264 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature gml:id="c6d5b695-c2ec-4927-9206-ca8c34ba1b3e">
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231690</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.11510756"/>
+                    <net:applicableDirection>inDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">97.945</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString gml:id="d777b440-3a9e-444b-8782-0466952143d5">
+                <rst:base64String>CxIw9Cvv2yuiAQCiABYrGA==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString  srsDimension="2">
+                <gml:posList> 25.581402410809915 61.78631113543212 25.58158905868779 61.78645604451359 25.58170278506591 61.786505298580124 25.581911038775214 61.7865554480916 25.582269250122142 61.78656653657715 25.5830176731993 61.78653356401273 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231690</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.11510756"/>
+                    <net:applicableDirection>inOppositeDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">97.945</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString gml:id="b865c920-082b-456e-a225-9465386f421f">
+                <rst:base64String>CxIxQCvv5iu4Af9e/+orAg==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString  srsDimension="2">
+                <gml:posList> 25.581402410809915 61.78631113543212 25.58158905868779 61.78645604451359 25.58170278506591 61.786505298580124 25.581911038775214 61.7865554480916 25.582269250122142 61.78656653657715 25.5830176731993 61.78653356401273 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46230815</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.2998759"/>
+                    <net:applicableDirection>inDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">337.786</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString gml:id="ae5017bf-759d-4dc0-b402-0dac9a88faf2">
+                <rst:base64String>CxI0VSvwdCu3Bf3UAG8rCg==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString srsDimension="2">
+                <gml:posList> 25.599961387612325 61.78959220374922 25.59981453553578 61.78956737164129 25.59964126211803 61.789559292851074 25.599273189935904 61.78957565005954 25.598918258303463 61.78960245648153 25.598628947737982 61.78965750421195 25.59824688169642 61.78970208742364 25.597999687658223 61.78972346404111 25.59768756627236 61.78974839697059 25.597371981186086 61.789752778296126 25.597023346392444 61.78975369675097 25.596754924985255 61.789776416476045 25.596509473735612 61.7898136011431 25.596505036641126 61.7898144177116 25.596170294308177 61.78988618946164 25.595893368255634 61.78999343250867 25.59565272027447 61.79014223870329 25.595421979647313 61.790298723558685 25.595273046265646 61.79040258787799 25.5950604389848 61.79049745070424 25.59482864521079 61.79057802086238 25.5944010608178 61.79070405511748 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46230815</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.2998759"/>
+                    <net:applicableDirection>inOppositeDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">337.786</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString gml:id="dcf32a28-1a4d-4987-b121-2e80339045b8">
+                <rst:base64String>CxIzUivwqCuqBQIs/5ErFw==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString srsDimension="2">
+                <gml:posList> 25.599961387612325 61.78959220374922 25.59981453553578 61.78956737164129 25.59964126211803 61.789559292851074 25.599273189935904 61.78957565005954 25.598918258303463 61.78960245648153 25.598628947737982 61.78965750421195 25.59824688169642 61.78970208742364 25.597999687658223 61.78972346404111 25.59768756627236 61.78974839697059 25.597371981186086 61.789752778296126 25.597023346392444 61.78975369675097 25.596754924985255 61.789776416476045 25.596509473735612 61.7898136011431 25.596505036641126 61.7898144177116 25.596170294308177 61.78988618946164 25.595893368255634 61.78999343250867 25.59565272027447 61.79014223870329 25.595421979647313 61.790298723558685 25.595273046265646 61.79040258787799 25.5950604389848 61.79049745070424 25.59482864521079 61.79057802086238 25.5944010608178 61.79070405511748 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231706</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation gml:id="ac8d91ac-92b2-466c-b1c5-6e2a99fe9114">
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.5625793"/>
+                    <net:applicableDirection>inDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">152.387</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString gml:id="daa1176c-fa88-409b-9ad1-f4dfc9afb00a">
+                <rst:base64String>CxEVbCslWyuhAgCqAGErFw==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString srsDimension="2">
+                <gml:posList> 24.02390990478314 60.67393633823222 24.023955448102207 60.67400735933992 24.02407784915639 60.67417165194657 24.024204866262778 60.67430125848071 24.02432317370685 60.674425235524396 24.024474878675534 60.67452711594807 24.024626309244272 60.67463951110827 24.02480587568082 60.674737203701824 24.025014903409684 60.67481833630049 24.025230598043276 60.674884010401406 24.02542335181454 60.67490617378688 24.025612566051613 60.67490713538597 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231706</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.5625793"/>
+                    <net:applicableDirection>inOppositeDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">152.387</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxEVuysliCu3Av9W/58rAQ==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString gml:id="e25d4477-2ca0-4193-b8aa-7aaff5ec51f3" srsDimension="2">
+                <gml:posList> 24.02390990478314 60.67393633823222 24.023955448102207 60.67400735933992 24.02407784915639 60.67417165194657 24.024204866262778 60.67430125848071 24.02432317370685 60.674425235524396 24.024474878675534 60.67452711594807 24.024626309244272 60.67463951110827 24.02480587568082 60.674737203701824 24.025014903409684 60.67481833630049 24.025230598043276 60.674884010401406 24.02542335181454 60.67490617378688 24.025612566051613 60.67490713538597 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231684</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation gml:id="c0d238e8-cfe0-4613-bbc9-f3c443950615">
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.11510754"/>
+                    <net:applicableDirection>inDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">79.177</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxIw+Cvvuyu/Af/4AEYrEA==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString  srsDimension="2">
+                <gml:posList> 25.581478873526926 61.785607436629334 25.581477230625186 61.785624981372855 25.581448941455736 61.78574630129304 25.581427703925765 61.78584915370435 25.58136701515984 61.78597318252061 25.58135037587211 61.78612766324073 25.581377885245633 61.78627219417741 25.581402410809915 61.78631113543212 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231684</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.11510754"/>
+                    <net:applicableDirection>inOppositeDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">79.177</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxIw9Cvv2yuwAQAI/7orHw==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString  srsDimension="2">
+                <gml:posList> 25.581478873526926 61.785607436629334 25.581477230625186 61.785624981372855 25.581448941455736 61.78574630129304 25.581427703925765 61.78584915370435 25.58136701515984 61.78597318252061 25.58135037587211 61.78612766324073 25.581377885245633 61.78627219417741 25.581402410809915 61.78631113543212 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46230813</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation gml:id="f25c9c7d-8fe7-47c1-b7e3-18962a39021b">
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.2998767"/>
+                    <net:applicableDirection>inDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">222.155</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString gml:id="ead5429a-212a-4eba-b98b-eef662dc4f0a">
+                <rst:base64String>CxI0VSvwdCujAwE9AIArFQ==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString srsDimension="2">
+                <gml:posList> 25.599961387612325 61.78959220374922 25.600052727403803 61.78963377099387 25.600179301412922 61.789694991825975 25.60031316619394 61.789764798320626 25.600541138565045 61.78990459827981 25.600738939637758 61.790008527197415 25.601007907011464 61.79005637497584 25.60126130363048 61.790109675069175 25.60149704757463 61.790194210093695 25.60166784764119 61.790294792039326 25.60186657335952 61.790387272343175 25.60207081112196 61.79048702704546 25.602280974048565 61.7905883052136 25.6025134670264 61.79067566045856 25.602823724222397 61.7907758644726 25.603084516203484 61.79085529149357 25.603126862729653 61.790867338452 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46230813</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation gml:id="c54361d2-a807-4f4c-aef6-c1331f2a6f21">
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.2998767"/>
+                    <net:applicableDirection>inOppositeDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">222.155</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString gml:id="a104c4a6-8609-441a-82f2-02c8a1dfe8a3">
+                <rst:base64String>CxI06SvwsCu1A/7D/4ArAw==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString gml:id="fd8cbba7-f0b1-434b-9f93-ca961fba27ec" srsDimension="2">
+                <gml:posList> 25.599961387612325 61.78959220374922 25.600052727403803 61.78963377099387 25.600179301412922 61.789694991825975 25.60031316619394 61.789764798320626 25.600541138565045 61.78990459827981 25.600738939637758 61.790008527197415 25.601007907011464 61.79005637497584 25.60126130363048 61.790109675069175 25.60149704757463 61.790194210093695 25.60166784764119 61.790294792039326 25.60186657335952 61.790387272343175 25.60207081112196 61.79048702704546 25.602280974048565 61.7905883052136 25.6025134670264 61.79067566045856 25.602823724222397 61.7907758644726 25.603084516203484 61.79085529149357 25.603126862729653 61.790867338452 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231708</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation gml:id="fd847b0c-40f0-4f86-a3b2-280af977c285">
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.5625768"/>
+                    <net:applicableDirection>inDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">112.63</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString gml:id="ca094692-6e40-4427-b2df-8b5a32030507">
+                <rst:base64String>CxEWkysmDyumAQCyACUrEg==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString gml:id="a306e3e6-0e63-427a-97ca-aeea3c0be30c" srsDimension="2">
+                <gml:posList> 24.030238409191103 60.677801421791806 24.030395579809035 60.677819167406085 24.03064085558662 60.677850610265445 24.030931735244383 60.67787476245288 24.031207003735478 60.67789321292188 24.03148430678394 60.6779172155112 24.031722226955175 60.67796190726352 24.03186940465251 60.67801118115268 24.031961898922752 60.67806988013001 24.032020452304142 60.67816751863693 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature gml:id="eda95430-db7e-4d15-96fb-9698934048b8">
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231708</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.5625768"/>
+                    <net:applicableDirection>inOppositeDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">112.63</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxEW5ismICuyAf9O/9srBg==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString gml:id="e717fe17-5791-4b6a-852e-2e1a6ad26e71" srsDimension="2">
+                <gml:posList> 24.030238409191103 60.677801421791806 24.030395579809035 60.677819167406085 24.03064085558662 60.677850610265445 24.030931735244383 60.67787476245288 24.031207003735478 60.67789321292188 24.03148430678394 60.6779172155112 24.031722226955175 60.67796190726352 24.03186940465251 60.67801118115268 24.031961898922752 60.67806988013001 24.032020452304142 60.67816751863693 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature gml:id="e3da0535-f778-48cf-bd29-3bc5fb6e0165">
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46230817</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation gml:id="bbe29188-9360-4f22-8259-6f665fd00900">
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.2998768"/>
+                    <net:applicableDirection>inDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">150.893</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxI1aSvwsCu1Av7s//8rBg==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString gml:id="d10ff722-8ade-4929-bd62-5fbfe8b2398a" srsDimension="2">
+                <gml:posList> 25.60588336324725 61.790882200595895 25.605693058174133 61.7908345956134 25.605457431554186 61.790796918015296 25.605206317370907 61.79078378206772 25.604829443199655 61.79078111159653 25.60434846823619 61.79082652044903 25.60381053508497 61.79090209927624 25.603557738479527 61.79092519770354 25.603391195772186 61.790925335503715 25.603256751443773 61.790901046348154 25.603126869255643 61.790867340308544 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46230817</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.2998768"/>
+                    <net:applicableDirection>inOppositeDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">150.893</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxI06SvwsCumAgEUAAErFQ==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString gml:id="ac424f8c-1088-4059-a5c3-ebdea0797829" srsDimension="2">
+                <gml:posList> 25.60588336324725 61.790882200595895 25.605693058174133 61.7908345956134 25.605457431554186 61.790796918015296 25.605206317370907 61.79078378206772 25.604829443199655 61.79078111159653 25.60434846823619 61.79082652044903 25.60381053508497 61.79090209927624 25.603557738479527 61.79092519770354 25.603391195772186 61.790925335503715 25.603256751443773 61.790901046348154 25.603126869255643 61.790867340308544 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231714</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.6856717"/>
+                    <net:applicableDirection>inDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">56.63</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString gml:id="b3ad2b35-ba6c-4b7c-abfd-bd0e73e35c86">
+                <rst:base64String>CxEV6yslhyu3AP+ZAAIrCA==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString gml:id="b6b5d65c-311e-4cfd-aa73-353b8adfc0b4" srsDimension="2">
+                <gml:posList> 24.02663964265991 60.674883011141304 24.026558970664805 60.67487401329733 24.026446178767134 60.674866152649905 24.026266757501556 60.67486760211244 24.02604553674139 60.67487564272064 24.02581890257069 60.67489728222336 24.02562669263565 60.6749067125229 24.025612575327017 60.67490713521771 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature gml:id="e2a78c55-9ebc-4e31-bb85-b5020c459623">
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231714</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation gml:id="efacffdc-97b4-445c-af39-f1e7f4015e14">
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.6856717"/>
+                    <net:applicableDirection>inOppositeDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">56.63</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxEVuysliCuoAABn//4rFw==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString srsDimension="2">
+                <gml:posList> 24.02663964265991 60.674883011141304 24.026558970664805 60.67487401329733 24.026446178767134 60.674866152649905 24.026266757501556 60.67486760211244 24.02604553674139 60.67487564272064 24.02581890257069 60.67489728222336 24.02562669263565 60.6749067125229 24.025612575327017 60.67490713521771 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46230819</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.2998772"/>
+                    <net:applicableDirection>inDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">68.337</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxIy4ivwwSu5Af+CAAsrCA==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString gml:id="bb779f0e-b5b6-4c9d-b684-4ec6b0a94fe9" srsDimension="2">
+                <gml:posList> 25.592003693807257 61.791244600363264 25.59168944823626 61.79129145907424 25.59145631366839 61.791325995819044 25.591172818865832 61.79135029193819 25.590921963258054 61.791367560157006 25.590743719776512 61.791354355403364 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature gml:id="b26f2139-283d-4064-aad6-61db024d30e8">
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46230819</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimpleLinearReference>
+                    <net:element xlink:href="FI.1000018.2998772"/>
+                    <net:applicableDirection>inOppositeDirection</net:applicableDirection>
+                    <net:fromPosition uom="meter">0.0</net:fromPosition>
+                    <net:toPosition uom="meter">68.337</net:toPosition>
+                </net:SimpleLinearReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxIyqCvwxiuoAQB+//UrGQ==</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:LineString  srsDimension="2">
+                <gml:posList> 25.592003693807257 61.791244600363264 25.59168944823626 61.79129145907424 25.59145631366839 61.791325995819044 25.591172818865832 61.79135029193819 25.590921963258054 61.791367560157006 25.590743719776512 61.791354355403364 </gml:posList>
+            </gml:LineString>
+        </rst:encodedGeometry>
+        <rst:type>SpeedLimit</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>MaximumSpeedLimit</rst:type>
+                <rst:propertyValue>
+                    <gml:measure uom="kmph">30</gml:measure>
+                </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature gml:id="daf25e16-99c4-4548-a1e6-1bf15c25ce47">
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231624</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimplePointReference>
+                    <net:element xlink:href="FI.1000018.4150374"/>
+                    <net:applicableDirection> inOppositeDirection </net:applicableDirection>
+                    <net:atPosition uom="meter"> 16.244</net:atPosition>
+                </net:SimplePointReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString gml:id="d6fb7175-da94-4673-9595-8eb579371453">
+                <rst:base64String>CxQbUC7/4SOFDgLuAKcjbwT6</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Modify</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:Point srsDimension="2">
+                <gml:pos> 28.27534175892797 66.0931265682104 </gml:pos>
+            </gml:Point>
+        </rst:encodedGeometry>
+        <rst:type>PassingWithoutStoppingProhibited</rst:type>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature gml:id="fa186aec-0225-44e2-907b-3f8ada3102d7">
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231639</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimplePointReference>
+                    <net:element xlink:href="FI.1000018.4150356"/>
+                    <net:applicableDirection> inDirection </net:applicableDirection>
+                    <net:atPosition uom="meter"> 9.958</net:atPosition>
+                </net:SimplePointReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxQbUy7/UCODBv/5ATcjbQX6</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Modify</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:Point  srsDimension="2">
+                <gml:pos> 28.27522850265562 66.09002759570762 </gml:pos>
+            </gml:Point>
+        </rst:encodedGeometry>
+        <rst:type>PassingWithoutStoppingProhibited</rst:type>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231671</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation gml:id="a4a06f73-1148-4cb8-b5a0-46e1781a4964">
+                <net:SimplePointReference>
+                    <net:element xlink:href="FI.1000018.4148542"/>
+                    <net:applicableDirection> inDirection </net:applicableDirection>
+                    <net:atPosition uom="meter"> 27.766</net:atPosition>
+                </net:SimplePointReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString gml:id="bbc45c68-e46d-4bf7-a80a-c7cc643de72b">
+                <rst:base64String>CxQFli8FfSOIAQCpABAjdVel</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:Point  srsDimension="2">
+                <gml:pos> 28.15628170559704 66.12388610595228 </gml:pos>
+            </gml:Point>
+        </rst:encodedGeometry>
+        <rst:type>PassingWithoutStoppingProhibited</rst:type>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231592</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimplePointReference>
+                    <net:element xlink:href="FI.1000018.4150415"/>
+                    <net:applicableDirection> inOppositeDirection </net:applicableDirection>
+                    <net:atPosition uom="meter"> 8.174</net:atPosition>
+                </net:SimplePointReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxQd6y8BKiu7AP/vAAUra+Mc</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Modify</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:Point gml:id="e31f23ad-96de-47f3-9183-033f77e29bf0" srsDimension="2">
+                <gml:pos> 28.289190146026574 66.1001701870166 </gml:pos>
+            </gml:Point>
+        </rst:encodedGeometry>
+        <rst:type>PassingWithoutStoppingProhibited</rst:type>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231632</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation gml:id="a713e53a-e873-4c97-9fb9-f7e97481c75b">
+                <net:SimplePointReference>
+                    <net:element xlink:href="FI.1000018.4150356"/>
+                    <net:applicableDirection> inDirection </net:applicableDirection>
+                    <net:atPosition uom="meter"> 30.555</net:atPosition>
+                </net:SimplePointReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxQbUy7/UCODBv/5ATcjbRPs</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Modify</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:Point  srsDimension="2">
+                <gml:pos> 28.275540808009698 66.0901615921599 </gml:pos>
+            </gml:Point>
+        </rst:encodedGeometry>
+        <rst:type>PassingWithoutStoppingProhibited</rst:type>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature gml:id="ed20a2f6-1947-4cfc-8949-39cd36fc909f">
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46230787</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimplePointReference>
+                    <net:element xlink:href="FI.1000018.4150418"/>
+                    <net:applicableDirection> inDirection </net:applicableDirection>
+                    <net:atPosition uom="meter"> 1.846</net:atPosition>
+                </net:SimplePointReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString gml:id="a587f467-eb65-4fca-b14f-8cb76d7c6d20">
+                <rst:base64String>CxQdwy8AyiukAAAUAAYrdBfR</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Modify</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:Point srsDimension="2">
+                <gml:pos> 28.28850640212963 66.09807790506429 </gml:pos>
+            </gml:Point>
+        </rst:encodedGeometry>
+        <rst:type>PassingWithoutStoppingProhibited</rst:type>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231582</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimplePointReference>
+                    <net:element xlink:href="FI.1000018.4148753"/>
+                    <net:applicableDirection> inDirection </net:applicableDirection>
+                    <net:atPosition uom="meter"> 3.64</net:atPosition>
+                </net:SimplePointReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxQJzy8DKyOaAP+8AAwjahfg</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Modify</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:Point gml:id="f616a82e-75c8-4547-833a-fb4439b78260" srsDimension="2">
+                <gml:pos> 28.178803017455927 66.11114678293565 </gml:pos>
+            </gml:Point>
+        </rst:encodedGeometry>
+        <rst:type>PassingWithoutStoppingProhibited</rst:type>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46230827</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation>
+                <net:SimplePointReference>
+                    <net:element xlink:href="FI.1000018.5625779"/>
+                    <net:applicableDirection> inOppositeDirection </net:applicableDirection>
+                    <net:atPosition uom="meter"> 60.407</net:atPosition>
+                </net:SimplePointReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxEW5ismICugAQAxADcrc9sk</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:Point srsDimension="2">
+                <gml:pos> 24.032393806231326 60.67865269053342 </gml:pos>
+            </gml:Point>
+        </rst:encodedGeometry>
+        <rst:type>PassingWithoutStoppingProhibited</rst:type>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231609</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation gml:id="edb57830-4e6a-44c4-bd32-432d10933705">
+                <net:SimplePointReference>
+                    <net:element xlink:href="FI.1000018.4150373"/>
+                    <net:applicableDirection> inOppositeDirection </net:applicableDirection>
+                    <net:atPosition uom="meter"> 4.652</net:atPosition>
+                </net:SimplePointReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxQcrS8AMyu+C/xfAIMrfAH+</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Modify</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:Point srsDimension="2">
+                <gml:pos> 28.282491032992542 66.09487641772026 </gml:pos>
+            </gml:Point>
+        </rst:encodedGeometry>
+        <rst:type>PassingWithoutStoppingProhibited</rst:type>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231574</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimplePointReference>
+                    <net:element xlink:href="FI.1000018.4148753"/>
+                    <net:applicableDirection> inDirection </net:applicableDirection>
+                    <net:atPosition uom="meter"> 1.995</net:atPosition>
+                </net:SimplePointReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString gml:id="d06997a7-abab-419c-92a8-c4f7eb3fe635">
+                <rst:base64String>CxQJzy8DKyOaAP+8AAwjagfw</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Remove</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:Point  srsDimension="2">
+                <gml:pos> 28.17883602554439 66.11114056191424 </gml:pos>
+            </gml:Point>
+        </rst:encodedGeometry>
+        <rst:type>PassingWithoutStoppingProhibited</rst:type>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature>
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231598</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimplePointReference>
+                    <net:element xlink:href="FI.1000018.4150423"/>
+                    <net:applicableDirection> inDirection </net:applicableDirection>
+                    <net:atPosition uom="meter"> 221.541</net:atPosition>
+                </net:SimplePointReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxQeIy8ANSOXA/5XADIjbf0C</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Modify</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:Point gml:id="b3b097e0-b928-4301-95cb-06c53abb9566" srsDimension="2">
+                <gml:pos> 28.286308107495124 66.09535269446698 </gml:pos>
+            </gml:Point>
+        </rst:encodedGeometry>
+        <rst:type>PassingWithoutStoppingProhibited</rst:type>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature gml:id="d4442d81-772c-4b08-a516-8c68334858eb">
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231618</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimplePointReference>
+                    <net:element xlink:href="FI.1000018.4150359"/>
+                    <net:applicableDirection> inOppositeDirection </net:applicableDirection>
+                    <net:atPosition uom="meter"> 2.925</net:atPosition>
+                </net:SimplePointReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxQbEC8ADiu3B//VANQrbwH+</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Modify</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:Point  srsDimension="2">
+                <gml:pos> 28.27358589299076 66.0940265143025 </gml:pos>
+            </gml:Point>
+        </rst:encodedGeometry>
+        <rst:type>PassingWithoutStoppingProhibited</rst:type>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature gml:id="ef111b63-1991-4e76-99a3-4ede6252412d">
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231578</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimplePointReference>
+                    <net:element xlink:href="FI.1000018.4148753"/>
+                    <net:applicableDirection> inDirection </net:applicableDirection>
+                    <net:atPosition uom="meter"> 0.037</net:atPosition>
+                </net:SimplePointReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxQJzy8DKyOaAP+8AAwjKv8=</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Remove</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:Point gml:id="ec1e2700-ba25-4cb0-ada0-884479fab92f" srsDimension="2">
+                <gml:pos> 28.178875314178068 66.1111331571878 </gml:pos>
+            </gml:Point>
+        </rst:encodedGeometry>
+        <rst:type>PassingWithoutStoppingProhibited</rst:type>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature gml:id="b41a79eb-dcdf-472b-ab2d-3e5bb159abe9">
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231586</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation gml:id="ca68115d-f649-45f3-b89c-13e84f9cbd2a">
+                <net:SimplePointReference>
+                    <net:element xlink:href="FI.1000018.4150401"/>
+                    <net:applicableDirection> inOppositeDirection </net:applicableDirection>
+                    <net:atPosition uom="meter"> 13.062</net:atPosition>
+                </net:SimplePointReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxQdRC8BRSOBAwFRAGYjdA/w</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Modify</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:Point  srsDimension="2">
+                <gml:pos> 28.285803277580094 66.10082971619774 </gml:pos>
+            </gml:Point>
+        </rst:encodedGeometry>
+        <rst:type>PassingWithoutStoppingProhibited</rst:type>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231615</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimplePointReference>
+                    <net:element xlink:href="FI.1000018.4150376"/>
+                    <net:applicableDirection> inOppositeDirection </net:applicableDirection>
+                    <net:atPosition uom="meter"> 7.299</net:atPosition>
+                </net:SimplePointReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxQa/C8AcCukAgERAAkregzz</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Modify</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:Point srsDimension="2">
+                <gml:pos> 28.27332926472386 66.09619544025973 </gml:pos>
+            </gml:Point>
+        </rst:encodedGeometry>
+        <rst:type>PassingWithoutStoppingProhibited</rst:type>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46230805</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimplePointReference>
+                    <net:element xlink:href="FI.1000018.4148908"/>
+                    <net:applicableDirection> inOppositeDirection </net:applicableDirection>
+                    <net:atPosition uom="meter"> 33.058</net:atPosition>
+                </net:SimplePointReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString gml:id="d25316ee-9c96-4b99-8bf7-8acaee9e29e6">
+                <rst:base64String>CxQFqS8DdiOEAQBqACcjdIR8</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:Point  srsDimension="2">
+                <gml:pos> 28.156608751041844 66.1129548260126 </gml:pos>
+            </gml:Point>
+        </rst:encodedGeometry>
+        <rst:type>PassingWithoutStoppingProhibited</rst:type>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature gml:id="b2bc83f8-1916-40b1-b79a-88498adc3fbe">
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231612</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimplePointReference>
+                    <net:element xlink:href="FI.1000018.4150373"/>
+                    <net:applicableDirection> inOppositeDirection </net:applicableDirection>
+                    <net:atPosition uom="meter"> 4.919</net:atPosition>
+                </net:SimplePointReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxQcrS8AMyu+C/xfAIMrfAH+</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Modify</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:Point srsDimension="2">
+                <gml:pos> 28.2824894447088 66.09487872231165 </gml:pos>
+            </gml:Point>
+        </rst:encodedGeometry>
+        <rst:type>PassingWithoutStoppingProhibited</rst:type>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231627</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimplePointReference>
+                    <net:element xlink:href="FI.1000018.4150356"/>
+                    <net:applicableDirection> inOppositeDirection </net:applicableDirection>
+                    <net:atPosition uom="meter"> 198.234</net:atPosition>
+                </net:SimplePointReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString gml:id="dc43fec0-5c34-4e6d-bbbd-230902034c3d">
+                <rst:base64String>CxQbUy7/UCODBv/5ATcjbYN8</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Modify</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:Point gml:id="dc0313e7-bb5a-4592-9d24-e9661dea0a8f" srsDimension="2">
+                <gml:pos> 28.276617557591955 66.09154392403073 </gml:pos>
+            </gml:Point>
+        </rst:encodedGeometry>
+        <rst:type>PassingWithoutStoppingProhibited</rst:type>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature gml:id="d71ac111-4817-41b3-b996-4b30f9d64a48">
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46230790</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimplePointReference>
+                    <net:element xlink:href="FI.1000018.4150357"/>
+                    <net:applicableDirection> inDirection </net:applicableDirection>
+                    <net:atPosition uom="meter"> 205.627</net:atPosition>
+                </net:SimplePointReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxQc/C8AsiunAwGqADMrVP8=</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Modify</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:Point srsDimension="2">
+                <gml:pos> 28.288473948881723 66.09806678035362 </gml:pos>
+            </gml:Point>
+        </rst:encodedGeometry>
+        <rst:type>PassingWithoutStoppingProhibited</rst:type>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46230783</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimplePointReference>
+                    <net:element xlink:href="FI.1000018.4148730"/>
+                    <net:applicableDirection> inDirection </net:applicableDirection>
+                    <net:atPosition uom="meter"> 2.641</net:atPosition>
+                </net:SimplePointReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxQJgy8DOCOaAf+BACcjagf1</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Modify</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:Point srsDimension="2">
+                <gml:pos> 28.177186637265823 66.11142932158106 </gml:pos>
+            </gml:Point>
+        </rst:encodedGeometry>
+        <rst:type>PassingWithoutStoppingProhibited</rst:type>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature gml:id="acc047ab-62ca-41dc-9dd4-a560c7a8ddc1">
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231694</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation gml:id="acd302c8-d768-4d32-a5cb-1c34ec83bdfc">
+                <net:SimplePointReference>
+                    <net:element xlink:href="FI.1000018.2998756"/>
+                    <net:applicableDirection> inOppositeDirection </net:applicableDirection>
+                    <net:atPosition uom="meter"> 648.543</net:atPosition>
+                </net:SimplePointReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxI19SvwyyunCwQiALsrefQL</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:Point srsDimension="2">
+                <gml:pos> 25.61888548577815 61.793396621696296 </gml:pos>
+            </gml:Point>
+        </rst:encodedGeometry>
+        <rst:type>PassingWithoutStoppingProhibited</rst:type>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature gml:id="e8a4d244-cab7-4553-9cd2-9946fa4426e3">
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231621</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimplePointReference>
+                    <net:element xlink:href="FI.1000018.4150374"/>
+                    <net:applicableDirection> inDirection </net:applicableDirection>
+                    <net:atPosition uom="meter"> 847.442</net:atPosition>
+                </net:SimplePointReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString gml:id="bfdc43f5-3078-417f-8d8d-524c68e63b72">
+                <rst:base64String>CxQbUC7/4SOFDgLuAKcjb/wC</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Modify</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:Point gml:id="f61d3419-27a9-4e8c-8930-ba42c11303a0" srsDimension="2">
+                <gml:pos> 28.282525530174414 66.09463988995255 </gml:pos>
+            </gml:Point>
+        </rst:encodedGeometry>
+        <rst:type>PassingWithoutStoppingProhibited</rst:type>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231589</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation gml:id="ef709064-3bc5-4a8a-abed-b809a0e9cc17">
+                <net:SimplePointReference>
+                    <net:element xlink:href="FI.1000018.4150415"/>
+                    <net:applicableDirection> inOppositeDirection </net:applicableDirection>
+                    <net:atPosition uom="meter"> 6.548</net:atPosition>
+                </net:SimplePointReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxQd6y8BKiu7AP/vAAUra6pV</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Modify</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:Point srsDimension="2">
+                <gml:pos> 28.289216573006435 66.1001602928276 </gml:pos>
+            </gml:Point>
+        </rst:encodedGeometry>
+        <rst:type>PassingWithoutStoppingProhibited</rst:type>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231722</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation gml:id="d500999c-5cb0-482a-9915-16d104125e82">
+                <net:SimplePointReference>
+                    <net:element xlink:href="FI.1000018.5625779"/>
+                    <net:applicableDirection> inOppositeDirection </net:applicableDirection>
+                    <net:atPosition uom="meter"> 61.8</net:atPosition>
+                </net:SimplePointReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString gml:id="ab36b7f2-14f3-48c4-8a16-23fd85a73a4f">
+                <rst:base64String>CxEW5ismICugAQAxADcrc98d</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:Point gml:id="d14ff3f0-1168-4b34-aeff-0d392a77fbbf" srsDimension="2">
+                <gml:pos> 24.032410399469207 60.678662151912306 </gml:pos>
+            </gml:Point>
+        </rst:encodedGeometry>
+        <rst:type>PassingWithoutStoppingProhibited</rst:type>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature gml:id="f6769c73-f0dc-4778-8fc6-0358aa04f290">
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231636</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation gml:id="ba23e5b0-8bf7-4f43-9814-8f440670c68f">
+                <net:SimplePointReference>
+                    <net:element xlink:href="FI.1000018.4150356"/>
+                    <net:applicableDirection> inOppositeDirection </net:applicableDirection>
+                    <net:atPosition uom="meter"> 9.903</net:atPosition>
+                </net:SimplePointReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString gml:id="ebbb12f1-ac0c-4bdf-ba08-1762debc6608">
+                <rst:base64String>CxQbUy7/UCODBv/5ATcjbQX6</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Modify</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:Point srsDimension="2">
+                <gml:pos> 28.27522774181977 66.09002721091187 </gml:pos>
+            </gml:Point>
+        </rst:encodedGeometry>
+        <rst:type>PassingWithoutStoppingProhibited</rst:type>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231595</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimplePointReference>
+                    <net:element xlink:href="FI.1000018.4150399"/>
+                    <net:applicableDirection> inOppositeDirection </net:applicableDirection>
+                    <net:atPosition uom="meter"> 9.267</net:atPosition>
+                </net:SimplePointReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString gml:id="ecf79315-66be-4f26-b141-3395e8d0344b">
+                <rst:base64String>CxQexC8BUCOAAQAGAEYjcB3i</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Modify</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>Regulation</rst:source>
+        <rst:encodedGeometry>
+            <gml:Point  srsDimension="2">
+                <gml:pos> 28.293994334881194 66.1010367872059 </gml:pos>
+            </gml:Point>
+        </rst:encodedGeometry>
+        <rst:type>PassingWithoutStoppingProhibited</rst:type>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<gml:featureMember>
+    <rst:GenericSafetyFeature >
+        <rst:id>
+            <rst:SafetyFeatureId>
+                <rst:providerId>FI.LiVi.OTH</rst:providerId>
+                <rst:id>46231671</rst:id>
+            </rst:SafetyFeatureId>
+        </rst:id>
+        <rst:locationReference>
+            <rst:INSPIRELinearLocation >
+                <net:SimplePointReference>
+                    <net:element xlink:href="FI.1000018.4148542"/>
+                    <net:applicableDirection> inDirection </net:applicableDirection>
+                    <net:atPosition uom="meter"> 27.766</net:atPosition>
+                </net:SimplePointReference>
+            </rst:INSPIRELinearLocation>
+        </rst:locationReference>
+        <rst:locationReference>
+            <rst:OpenLRLocationString >
+                <rst:base64String>CxQFli8FfSOIAQCpABAjdVel</rst:base64String>
+                <rst:OpenLRBinaryVersion>1.4</rst:OpenLRBinaryVersion>
+            </rst:OpenLRLocationString>
+        </rst:locationReference>
+        <rst:updateInfo>
+            <rst:UpdateInfo>
+                <rst:type>Add</rst:type>
+            </rst:UpdateInfo>
+        </rst:updateInfo>
+        <rst:source>FixedTrafficSign</rst:source>
+        <rst:encodedGeometry>
+            <gml:Point srsDimension="2">
+                <gml:pos> 28.15628170559704 66.12388610595228 </gml:pos>
+            </gml:Point>
+        </rst:encodedGeometry>
+        <rst:type>WarningSign</rst:type>
+        <rst:properties>
+            <rst:SafetyFeaturePropertyValue>
+                <rst:type>WarningSignType</rst:type>
+                <rst:propertyValue> UnevenRoadSurface </rst:propertyValue>
+            </rst:SafetyFeaturePropertyValue>
+        </rst:properties>
+    </rst:GenericSafetyFeature>
+</gml:featureMember>
+<rst:metadata>
+    <rst:datasetId>+QBW3IlFSIWYYPDwF4Vc/QAAAABfAvOtAAAAAF8Drgk=</rst:datasetId>
+    <rst:datasetCreationTime>2020-07-06T23:04:41.165Z</rst:datasetCreationTime>
+</rst:metadata>
+<rst:type>Update</rst:type>
+</rst:ROSATTESafetyFeatureDataset>
