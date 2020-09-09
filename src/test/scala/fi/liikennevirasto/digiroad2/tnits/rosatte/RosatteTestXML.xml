@@ -19,7 +19,7 @@
             </rst:SafetyFeatureId>
         </rst:id>
         <rst:locationReference>
-            <rst:INSPIRELinearLocation gml:id="5c814d236-f1c5-4c0c-9c8d-f287e61a233c">
+            <rst:INSPIRELinearLocation gml:id="c814d236-f1c5-4c0c-9c8d-f287e61a233c">
                 <net:SimpleLinearReference>
                     <net:element xlink:href="FI.1000018.5625779"/>
                     <net:applicableDirection>inDirection</net:applicableDirection>

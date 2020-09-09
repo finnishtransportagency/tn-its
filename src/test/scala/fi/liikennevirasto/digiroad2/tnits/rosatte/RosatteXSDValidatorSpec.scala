@@ -4,13 +4,34 @@ import java.io.{FileInputStream, StringReader}
 import javax.xml.XMLConstants
 import javax.xml.parsers.{SAXParser, SAXParserFactory}
 import javax.xml.transform.stream.StreamSource
-import javax.xml.validation.SchemaFactory
+import javax.xml.validation.{Schema, SchemaFactory}
 import org.scalatest.FunSuite
 import org.scalatest.Matchers.{be, convertToAnyShouldWrapper}
 import scala.util.Try
 import scala.xml.{Elem, SAXParseException}
 import scala.xml.factory.XMLLoader
 import scala.xml.parsing.{FactoryAdapter, NoBindingFactoryAdapter}
+
+
+/*
+*  XML Validator class
+*  It is a little Java style because I haven't found the correspondent class in scala
+*/
+class XMLValidator(schema: Schema) extends  XMLLoader[Elem] {
+
+  override def adapter: FactoryAdapter = new NoBindingFactoryAdapter() {
+    override def error(e: SAXParseException) = {
+      throw e
+    }
+  }
+
+  override def parser: SAXParser = {
+    val saxPF = SAXParserFactory.newInstance()
+    saxPF.setNamespaceAware(true)
+    saxPF.setSchema(schema)
+    saxPF.newSAXParser()
+  }
+}
 
 
 class RosatteXSDValidatorSpec extends FunSuite {
@@ -32,27 +53,12 @@ class RosatteXSDValidatorSpec extends FunSuite {
       factory.newSchema(new StreamSource( new StringReader(W3C_XSD_TOP_ELEMENT), "xsdTop"))
     }
 
-    /* Validator */
-    val loader = new XMLLoader[Elem] {
-      override def adapter: FactoryAdapter = new NoBindingFactoryAdapter() {
-        override def error(e: SAXParseException) = {
-          throw e
-        }
-      }
-
-      override def parser: SAXParser = {
-        val saxPF = SAXParserFactory.newInstance()
-        saxPF.setNamespaceAware(true)
-        saxPF.setSchema(schema)
-        saxPF.newSAXParser()
-      }
-    }
-
-    /* Validate XML against the schema */
+    /* Instantiate the XML validator and validate the XML against the schema */
     val result = Try {
-        loader.load(xmlToTest)
+      new XMLValidator(schema).load(xmlToTest)
     }
 
+    /* Close the file */
     xmlToTest.close()
 
     if (result.isFailure) {
@@ -61,6 +67,6 @@ class RosatteXSDValidatorSpec extends FunSuite {
 
     result.isFailure should be (false)
     result.isSuccess should be (true)
-
   }
+
 }
