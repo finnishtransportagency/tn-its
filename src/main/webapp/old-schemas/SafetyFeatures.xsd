@@ -1,213 +1,219 @@
-<schema targetNamespace="http://www.ertico.com/en/subprojects/rosatte/rst" elementFormDefault="qualified" version="2009-05-20">
-<include schemaLocation="Update.xsd"/>
-<include schemaLocation="LocationReferencing.xsd"/>
-<include schemaLocation="Conditions.xsd"/>
-<import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
-<!--XML Schema document created by ShapeChange-->
-<simpleType name="SafetyFeatureTypeCodeType">
-<union memberTypes="rst:SafetyFeatureTypeCodeEnumerationType rst:SafetyFeatureTypeCodeOtherType"/>
-</simpleType>
-<simpleType name="SafetyFeatureTypeCodeEnumerationType">
-<restriction base="string">
-<enumeration value="PedestrianCrossing"/>
-<enumeration value="RestrictionForVehicles"/>
-<enumeration value="SpeedLimit"/>
-<enumeration value="StartOfSpeedLimit"/>
-<enumeration value="EndOfSpeedLimit"/>
-<enumeration value="ProhibitionOfOvertaking"/>
-<enumeration value="StartOfProhibitionOfOvertaking"/>
-<enumeration value="UseOfAudibleWarningDevicesProhibited"/>
-<enumeration value="StartOfUseOfAudibleWarningDevicesProhibited"/>
-<enumeration value="EndOfProhibitionOrRestriction"/>
-<enumeration value="ProhibitedTurn"/>
-<enumeration value="PassingWithoutStoppingProhibited"/>
-<enumeration value="Motorway"/>
-<enumeration value="StartOfMotorway"/>
-<enumeration value="EndOfMotorway"/>
-<enumeration value="NoEntry"/>
-<enumeration value="ClosedToAllVehiclesInBothDirections"/>
-<enumeration value="DirectionToBeFollowed"/>
-<enumeration value="SnowChainsCompulsory"/>
-<enumeration value="CompulsoryDirectionForVehicleCarryingDangerousGoods"/>
-<enumeration value="RoadForMotorVehicles"/>
-<enumeration value="StartOfRoadForMotorVehicles"/>
-<enumeration value="EndOfRoadForMotorVehicles"/>
-<enumeration value="BuiltUpArea"/>
-<enumeration value="StartOfBuiltUpArea"/>
-<enumeration value="EndOfBuiltUpArea"/>
-<enumeration value="ResidentialArea"/>
-<enumeration value="StartOfResidentialArea"/>
-<enumeration value="EndOfResidentialArea"/>
-<enumeration value="WarningSign"/>
-<enumeration value="RoadNumber"/>
-<enumeration value="RoadName"/>
-</restriction>
-</simpleType>
-<simpleType name="SafetyFeatureTypeCodeOtherType">
-<restriction base="string">
-<pattern value="other: \w{2,}"/>
-</restriction>
-</simpleType>
-<simpleType name="SafetyFeaturePropertyTypeCodeType">
-<union memberTypes="rst:SafetyFeaturePropertyTypeCodeEnumerationType rst:SafetyFeaturePropertyTypeCodeOtherType"/>
-</simpleType>
-<simpleType name="SafetyFeaturePropertyTypeCodeEnumerationType">
-<restriction base="string">
-<enumeration value="MaximumSpeedLimit"/>
-<enumeration value="MinimumSpeedLimit"/>
-<enumeration value="RecommendedMaximumSpeedLimit"/>
-<enumeration value="RecommendedMinimumSpeedLimit"/>
-<enumeration value="MaximumWeightPerSingleAxle"/>
-<enumeration value="MaximumHeight"/>
-<enumeration value="MaximumWidth"/>
-<enumeration value="MaximumLadenWeight"/>
-<enumeration value="MaximumLength"/>
-<enumeration value="MaximumDistanceBetweenVehicles"/>
-<enumeration value="WarningSignType"/>
-<enumeration value="Controlled"/>
-<enumeration value="RoadNumber"/>
-<enumeration value="RoadName"/>
-</restriction>
-</simpleType>
-<simpleType name="SafetyFeaturePropertyTypeCodeOtherType">
-<restriction base="string">
-<pattern value="other: \w{2,}"/>
-</restriction>
-</simpleType>
-<simpleType name="WarningSignTypeType">
-<union memberTypes="rst:WarningSignTypeEnumerationType rst:WarningSignTypeOtherType"/>
-</simpleType>
-<simpleType name="WarningSignTypeEnumerationType">
-<restriction base="string">
-<enumeration value="Danger"/>
-<enumeration value="DangerousIntersection"/>
-<enumeration value="DangerousCurve"/>
-<enumeration value="Slope"/>
-<enumeration value="UnevenRoadSurface"/>
-<enumeration value="SnowIceOrBlackIce"/>
-<enumeration value="SlipperyRoad"/>
-<enumeration value="Rockfall"/>
-<enumeration value="GravelOnTheRoad"/>
-<enumeration value="SideWind"/>
-<enumeration value="NarrowingRoad"/>
-<enumeration value="ConstructionWork"/>
-<enumeration value="Congestion"/>
-<enumeration value="TwoWayTraffic"/>
-<enumeration value="MovingBridge"/>
-<enumeration value="TrafficLightsAhead"/>
-<enumeration value="ChildrenPlaying"/>
-<enumeration value="PedestriansCrossing"/>
-<enumeration value="CyclistsCrossing"/>
-<enumeration value="AnimalsCrossing"/>
-<enumeration value="AirTraffic"/>
-<enumeration value="BusStops"/>
-<enumeration value="RailwayCrossing"/>
-<enumeration value="MooseCrossing"/>
-</restriction>
-</simpleType>
-<simpleType name="WarningSignTypeOtherType">
-<restriction base="string">
-<pattern value="other: \w{2,}"/>
-</restriction>
-</simpleType>
-<element name="SafetyAttributePropertyType" type="rst:SafetyAttributePropertyTypeType" substitutionGroup="gml:AbstractGML"/>
-<complexType name="SafetyAttributePropertyTypeType">
-<complexContent>
-<extension base="gml:AbstractGMLType">
-<sequence>
-<element name="EAID_1AA56D56_F5FD_4f5a_919E_CF38BC520604.SE" type="rst:SafetyFeaturePropertyValuePropertyType" minOccurs="0" maxOccurs="unbounded"/>
-<element name="unitOfmeasure" type="gml:UnitOfMeasureType"/>
-</sequence>
-</extension>
-</complexContent>
-</complexType>
-<complexType name="SafetyAttributePropertyTypePropertyType">
-<sequence minOccurs="0">
-<element ref="rst:SafetyAttributePropertyType"/>
-</sequence>
-<attributeGroup ref="gml:AssociationAttributeGroup"/>
-<attributeGroup ref="gml:OwnershipAttributeGroup"/>
-</complexType>
-<element name="SafetyFeature" type="rst:SafetyFeatureType" abstract="true" substitutionGroup="gml:AbstractFeature"/>
-<complexType name="SafetyFeatureType" abstract="true">
-<complexContent>
-<extension base="gml:AbstractFeatureType">
-<sequence>
-<element name="id" type="rst:SafetyFeatureIdPropertyType"/>
-<element name="locationReference" type="rst:LocationReferencePropertyType" minOccurs="0" maxOccurs="unbounded"/>
-<!--validFrom made optional after v14-->
-<element name="validFrom" type="date" minOccurs="0"/>
-<element name="validTo" type="date" minOccurs="0"/>
-<element name="updateInfo" type="rst:UpdateInfoPropertyType" minOccurs="0"/>
-<!--source made optional after v14-->
-<element name="source" type="rst:SafetyFeatureSourceType" minOccurs="0"/>
-<!--v17 after London meeting-->
-<element name="encodedGeometry" type="gml:GeometricPrimitivePropertyType" minOccurs="0"/>
-</sequence>
-</extension>
-</complexContent>
-</complexType>
-<complexType name="SafetyFeaturePropertyType">
-<sequence minOccurs="0">
-<element ref="rst:SafetyFeature"/>
-</sequence>
-<attributeGroup ref="gml:AssociationAttributeGroup"/>
-<attributeGroup ref="gml:OwnershipAttributeGroup"/>
-</complexType>
-<simpleType name="SafetyFeatureSourceType">
-<annotation>
-<documentation>Value list for speedLimitSource. [Euroroads]</documentation>
-</annotation>
-<restriction base="string">
-<enumeration value="FixedTrafficSign"/>
-<enumeration value="VariableTrafficSign"/>
-<enumeration value="Regulation"/>
-<enumeration value="TemporarySafetyFeature"/>
-<enumeration value="Other"/>
-</restriction>
-</simpleType>
-<element name="GenericSafetyFeature" type="rst:GenericSafetyFeatureType" substitutionGroup="rst:SafetyFeature"/>
-<complexType name="GenericSafetyFeatureType">
-<complexContent>
-<extension base="rst:SafetyFeatureType">
-<sequence>
-<!--type made optional after v14-->
-<element name="type" type="rst:SafetyFeatureTypeCodeType" minOccurs="0"/>
-<element name="properties" type="rst:SafetyFeaturePropertyValuePropertyType" minOccurs="0" maxOccurs="unbounded"/>
-<element name="condition" type="rst:ConditionPropertyType" minOccurs="0"/>
-</sequence>
-</extension>
-</complexContent>
-</complexType>
-<complexType name="GenericSafetyFeaturePropertyType">
-<sequence minOccurs="0">
-<element ref="rst:GenericSafetyFeature"/>
-</sequence>
-<attributeGroup ref="gml:AssociationAttributeGroup"/>
-<attributeGroup ref="gml:OwnershipAttributeGroup"/>
-</complexType>
-<element name="SafetyFeatureId" type="rst:SafetyFeatureIdType" substitutionGroup="gml:AbstractObject"/>
-<complexType name="SafetyFeatureIdType">
-<sequence>
-<element name="providerId" type="string"/>
-<element name="id" type="string"/>
-</sequence>
-</complexType>
-<complexType name="SafetyFeatureIdPropertyType">
-<sequence>
-<element ref="rst:SafetyFeatureId"/>
-</sequence>
-</complexType>
-<element name="SafetyFeaturePropertyValue" type="rst:SafetyFeaturePropertyValueType" substitutionGroup="gml:AbstractObject"/>
-<complexType name="SafetyFeaturePropertyValueType">
-<sequence>
-<element name="type" type="rst:SafetyFeaturePropertyTypeCodeType"/>
-<element name="propertyValue" maxOccurs="unbounded"/>
-</sequence>
-</complexType>
-<complexType name="SafetyFeaturePropertyValuePropertyType">
-<sequence>
-<element ref="rst:SafetyFeaturePropertyValue"/>
-</sequence>
-</complexType>
+<?xml version="1.0" encoding="windows-1252"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:gml="http://www.opengis.net/gml/3.2"
+        xmlns:rst="http://www.ertico.com/en/subprojects/rosatte/rst"
+        targetNamespace="http://www.ertico.com/en/subprojects/rosatte/rst" elementFormDefault="qualified" version="2009-05-20">
+
+    <include schemaLocation="Update.xsd"/>
+    <include schemaLocation="LocationReferencing.xsd"/>
+    <include schemaLocation="Conditions.xsd"/>
+    <import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
+
+    <!--XML Schema document created by ShapeChange-->
+    <simpleType name="SafetyFeatureTypeCodeType">
+        <union memberTypes="rst:SafetyFeatureTypeCodeEnumerationType rst:SafetyFeatureTypeCodeOtherType"/>
+    </simpleType>
+    <simpleType name="SafetyFeatureTypeCodeEnumerationType">
+        <restriction base="string">
+            <enumeration value="PedestrianCrossing"/>
+            <enumeration value="RestrictionForVehicles"/>
+            <enumeration value="SpeedLimit"/>
+            <enumeration value="StartOfSpeedLimit"/>
+            <enumeration value="EndOfSpeedLimit"/>
+            <enumeration value="ProhibitionOfOvertaking"/>
+            <enumeration value="StartOfProhibitionOfOvertaking"/>
+            <enumeration value="UseOfAudibleWarningDevicesProhibited"/>
+            <enumeration value="StartOfUseOfAudibleWarningDevicesProhibited"/>
+            <enumeration value="EndOfProhibitionOrRestriction"/>
+            <enumeration value="ProhibitedTurn"/>
+            <enumeration value="PassingWithoutStoppingProhibited"/>
+            <enumeration value="Motorway"/>
+            <enumeration value="StartOfMotorway"/>
+            <enumeration value="EndOfMotorway"/>
+            <enumeration value="NoEntry"/>
+            <enumeration value="ClosedToAllVehiclesInBothDirections"/>
+            <enumeration value="DirectionToBeFollowed"/>
+            <enumeration value="SnowChainsCompulsory"/>
+            <enumeration value="CompulsoryDirectionForVehicleCarryingDangerousGoods"/>
+            <enumeration value="RoadForMotorVehicles"/>
+            <enumeration value="StartOfRoadForMotorVehicles"/>
+            <enumeration value="EndOfRoadForMotorVehicles"/>
+            <enumeration value="BuiltUpArea"/>
+            <enumeration value="StartOfBuiltUpArea"/>
+            <enumeration value="EndOfBuiltUpArea"/>
+            <enumeration value="ResidentialArea"/>
+            <enumeration value="StartOfResidentialArea"/>
+            <enumeration value="EndOfResidentialArea"/>
+            <enumeration value="WarningSign"/>
+            <enumeration value="RoadNumber"/>
+            <enumeration value="RoadName"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="SafetyFeatureTypeCodeOtherType">
+        <restriction base="string">
+            <pattern value="other: \w{2,}"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="SafetyFeaturePropertyTypeCodeType">
+        <union memberTypes="rst:SafetyFeaturePropertyTypeCodeEnumerationType rst:SafetyFeaturePropertyTypeCodeOtherType"/>
+    </simpleType>
+    <simpleType name="SafetyFeaturePropertyTypeCodeEnumerationType">
+        <restriction base="string">
+            <enumeration value="MaximumSpeedLimit"/>
+            <enumeration value="MinimumSpeedLimit"/>
+            <enumeration value="RecommendedMaximumSpeedLimit"/>
+            <enumeration value="RecommendedMinimumSpeedLimit"/>
+            <enumeration value="MaximumWeightPerSingleAxle"/>
+            <enumeration value="MaximumHeight"/>
+            <enumeration value="MaximumWidth"/>
+            <enumeration value="MaximumLadenWeight"/>
+            <enumeration value="MaximumLength"/>
+            <enumeration value="MaximumDistanceBetweenVehicles"/>
+            <enumeration value="WarningSignType"/>
+            <enumeration value="Controlled"/>
+            <enumeration value="RoadNumber"/>
+            <enumeration value="RoadName"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="SafetyFeaturePropertyTypeCodeOtherType">
+        <restriction base="string">
+            <pattern value="other: \w{2,}"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="WarningSignTypeType">
+        <union memberTypes="rst:WarningSignTypeEnumerationType rst:WarningSignTypeOtherType"/>
+    </simpleType>
+    <simpleType name="WarningSignTypeEnumerationType">
+        <restriction base="string">
+            <enumeration value="Danger"/>
+            <enumeration value="DangerousIntersection"/>
+            <enumeration value="DangerousCurve"/>
+            <enumeration value="Slope"/>
+            <enumeration value="UnevenRoadSurface"/>
+            <enumeration value="SnowIceOrBlackIce"/>
+            <enumeration value="SlipperyRoad"/>
+            <enumeration value="Rockfall"/>
+            <enumeration value="GravelOnTheRoad"/>
+            <enumeration value="SideWind"/>
+            <enumeration value="NarrowingRoad"/>
+            <enumeration value="ConstructionWork"/>
+            <enumeration value="Congestion"/>
+            <enumeration value="TwoWayTraffic"/>
+            <enumeration value="MovingBridge"/>
+            <enumeration value="TrafficLightsAhead"/>
+            <enumeration value="ChildrenPlaying"/>
+            <enumeration value="PedestriansCrossing"/>
+            <enumeration value="CyclistsCrossing"/>
+            <enumeration value="AnimalsCrossing"/>
+            <enumeration value="AirTraffic"/>
+            <enumeration value="BusStops"/>
+            <enumeration value="RailwayCrossing"/>
+            <enumeration value="MooseCrossing"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="WarningSignTypeOtherType">
+        <restriction base="string">
+            <pattern value="other: \w{2,}"/>
+        </restriction>
+    </simpleType>
+    <element name="SafetyAttributePropertyType" type="rst:SafetyAttributePropertyTypeType" substitutionGroup="gml:AbstractGML"/>
+    <complexType name="SafetyAttributePropertyTypeType">
+        <complexContent>
+            <extension base="gml:AbstractGMLType">
+                <sequence>
+                    <element name="EAID_1AA56D56_F5FD_4f5a_919E_CF38BC520604.SE" type="rst:SafetyFeaturePropertyValuePropertyType" minOccurs="0" maxOccurs="unbounded"/>
+                    <element name="unitOfmeasure" type="gml:UnitOfMeasureType"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="SafetyAttributePropertyTypePropertyType">
+        <sequence minOccurs="0">
+            <element ref="rst:SafetyAttributePropertyType"/>
+        </sequence>
+        <attributeGroup ref="gml:AssociationAttributeGroup"/>
+        <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+    </complexType>
+    <element name="SafetyFeature" type="rst:SafetyFeatureType" abstract="true" substitutionGroup="gml:AbstractFeature"/>
+    <complexType name="SafetyFeatureType" abstract="true">
+        <complexContent>
+            <extension base="gml:AbstractFeatureType">
+                <sequence>
+                    <element name="id" type="rst:SafetyFeatureIdPropertyType"/>
+                    <element name="locationReference" type="rst:LocationReferencePropertyType" minOccurs="0" maxOccurs="unbounded"/>
+                    <!--validFrom made optional after v14-->
+                    <element name="validFrom" type="date" minOccurs="0"/>
+                    <element name="validTo" type="date" minOccurs="0"/>
+                    <element name="updateInfo" type="rst:UpdateInfoPropertyType" minOccurs="0"/>
+                    <!--source made optional after v14-->
+                    <element name="source" type="rst:SafetyFeatureSourceType" minOccurs="0"/>
+                    <!--v17 after London meeting-->
+                    <element name="encodedGeometry" type="gml:GeometricPrimitivePropertyType" minOccurs="0"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="SafetyFeaturePropertyType">
+        <sequence minOccurs="0">
+            <element ref="rst:SafetyFeature"/>
+        </sequence>
+        <attributeGroup ref="gml:AssociationAttributeGroup"/>
+        <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+    </complexType>
+    <simpleType name="SafetyFeatureSourceType">
+        <annotation>
+            <documentation>Value list for speedLimitSource. [Euroroads]</documentation>
+        </annotation>
+        <restriction base="string">
+            <enumeration value="FixedTrafficSign"/>
+            <enumeration value="VariableTrafficSign"/>
+            <enumeration value="Regulation"/>
+            <enumeration value="TemporarySafetyFeature"/>
+            <enumeration value="Other"/>
+        </restriction>
+    </simpleType>
+    <element name="GenericSafetyFeature" type="rst:GenericSafetyFeatureType" substitutionGroup="rst:SafetyFeature"/>
+    <complexType name="GenericSafetyFeatureType">
+        <complexContent>
+            <extension base="rst:SafetyFeatureType">
+                <sequence>
+                    <!--type made optional after v14-->
+                    <element name="type" type="rst:SafetyFeatureTypeCodeType" minOccurs="0"/>
+                    <element name="properties" type="rst:SafetyFeaturePropertyValuePropertyType" minOccurs="0" maxOccurs="unbounded"/>
+                    <element name="condition" type="rst:ConditionPropertyType" minOccurs="0"/>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="GenericSafetyFeaturePropertyType">
+        <sequence minOccurs="0">
+            <element ref="rst:GenericSafetyFeature"/>
+        </sequence>
+        <attributeGroup ref="gml:AssociationAttributeGroup"/>
+        <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+    </complexType>
+    <element name="SafetyFeatureId" type="rst:SafetyFeatureIdType" substitutionGroup="gml:AbstractObject"/>
+    <complexType name="SafetyFeatureIdType">
+        <sequence>
+            <element name="providerId" type="string"/>
+            <element name="id" type="string"/>
+        </sequence>
+    </complexType>
+    <complexType name="SafetyFeatureIdPropertyType">
+        <sequence>
+            <element ref="rst:SafetyFeatureId"/>
+        </sequence>
+    </complexType>
+    <element name="SafetyFeaturePropertyValue" type="rst:SafetyFeaturePropertyValueType" substitutionGroup="gml:AbstractObject"/>
+    <complexType name="SafetyFeaturePropertyValueType">
+        <sequence>
+            <element name="type" type="rst:SafetyFeaturePropertyTypeCodeType"/>
+            <element name="propertyValue" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    <complexType name="SafetyFeaturePropertyValuePropertyType">
+        <sequence>
+            <element ref="rst:SafetyFeaturePropertyValue"/>
+        </sequence>
+    </complexType>
 </schema>

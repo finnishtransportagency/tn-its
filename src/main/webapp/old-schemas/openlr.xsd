@@ -1,302 +1,340 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:openlr="http://www.openlr.org/openlr" targetNamespace="http://www.openlr.org/openlr" elementFormDefault="qualified" attributeFormDefault="unqualified">
-	<xs:annotation>
-		<xs:documentation xml:lang="en">
-This schema describes the XML format for OpenLR location references. This format includes a XMLLocationReference but also supports BinaryLocationReference. The XMLLocationReference shall make use of the raw data for any type so that no compression techniques are used (e.g. use of intervals for the description of length values). The BinaryLocationReference shall represent the compressed format of the location reference. For further information on the relevant fields see the OpenLR white paper at http://www.openlr.org.
-OpenLR is a trade mark of TomTom International B.V.
-author: TomTom International B.V.
-</xs:documentation>
-	</xs:annotation>
-	<xs:simpleType name="FRC_Type">
-		<xs:annotation>
-			<xs:documentation xml:lang="en">
-The functional road class is a road classification based on the importance of a road.
-</xs:documentation>
-		</xs:annotation>
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="FRC0"/>
-			<xs:enumeration value="FRC1"/>
-			<xs:enumeration value="FRC2"/>
-			<xs:enumeration value="FRC3"/>
-			<xs:enumeration value="FRC4"/>
-			<xs:enumeration value="FRC5"/>
-			<xs:enumeration value="FRC6"/>
-			<xs:enumeration value="FRC7"/>
-		</xs:restriction>
-	</xs:simpleType>
-	<xs:simpleType name="FOW_Type">
-		<xs:annotation>
-			<xs:documentation xml:lang="en">
-The form of way describes the physical road type.
-</xs:documentation>
-		</xs:annotation>
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="UNDEFINED"/>
-			<xs:enumeration value="MOTORWAY"/>
-			<xs:enumeration value="MULTIPLE_CARRIAGEWAY"/>
-			<xs:enumeration value="SINGLE_CARRIAGEWAY"/>
-			<xs:enumeration value="ROUNDABOUT"/>
-			<xs:enumeration value="TRAFFICSQUARE"/>
-			<xs:enumeration value="SLIPROAD"/>
-			<xs:enumeration value="OTHER"/>
-		</xs:restriction>
-	</xs:simpleType>
-	<xs:simpleType name="Bearing_Type">
-		<xs:annotation>
-			<xs:documentation xml:lang="en">
-The bearing describes the angle between the true North and a line. The values range from 0 to 359 degree.
-</xs:documentation>
-		</xs:annotation>
-		<xs:restriction base="xs:integer">
-			<xs:minInclusive value="0"/>
-			<xs:maxExclusive value="360"/>
-		</xs:restriction>
-	</xs:simpleType>
-	<xs:simpleType name="SideOfRoad_Type">
-		<xs:annotation>
-			<xs:documentation xml:lang="en">
-The side of the road is valid only for point locations and indicates on which side of the referenced road the point
-location is located.
-</xs:documentation>
-		</xs:annotation>
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="ON_ROAD_OR_UNKNOWN"/>
-			<xs:enumeration value="RIGHT"/>
-			<xs:enumeration value="LEFT"/>
-			<xs:enumeration value="BOTH"/>
-		</xs:restriction>
-	</xs:simpleType>
-	<xs:simpleType name="Orientation_Type">
-		<xs:annotation>
-			<xs:documentation xml:lang="en">
-The orientation is only valid for point locations and indicates for which direction the point information is relevant.
-</xs:documentation>
-		</xs:annotation>
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="NO_ORIENTATION_OR_UNKNOWN"/>
-			<xs:enumeration value="WITH_LINE_DIRECTION"/>
-			<xs:enumeration value="AGAINST_LINE_DIRECTION"/>
-			<xs:enumeration value="BOTH"/>
-		</xs:restriction>
-	</xs:simpleType>
-	<xs:complexType name="LineAttributes">
-		<xs:annotation>
-			<xs:documentation xml:lang="en">
-Line attributes describe features of a line in a network. The attributes the functional road class, form of way and the bearing of a line.
-</xs:documentation>
-		</xs:annotation>
-		<xs:all>
-			<xs:element name="FRC" type="openlr:FRC_Type"/>
-			<xs:element name="FOW" type="openlr:FOW_Type"/>
-			<xs:element name="BEAR" type="openlr:Bearing_Type"/>
-		</xs:all>
-	</xs:complexType>
-	<xs:complexType name="PathAttributes">
-		<xs:annotation>
-			<xs:documentation xml:lang="en">
-Path attributes describes features of a path. The LFRCNP attribute is the lowest functional road class value which appears in the path. The highest FRC value is FRC0 and the lowest possible FRC value is FRC7.
-</xs:documentation>
-		</xs:annotation>
-		<xs:all>
-			<xs:element name="LFRCNP" type="openlr:FRC_Type"/>
-			<xs:element name="DNP" type="xs:integer"/>
-		</xs:all>
-	</xs:complexType>
-	<xs:complexType name="Coordinates">
-		<xs:annotation>
-			<xs:documentation xml:lang="en">
-Coordinates stands for a pair of WGS84 longitude and latitude values. This coordinate pair specifies a geometric point in a digital map.
-</xs:documentation>
-		</xs:annotation>
-		<xs:all>
-			<xs:element name="Longitude" type="xs:double"/>
-			<xs:element name="Latitude" type="xs:double"/>
-		</xs:all>
-	</xs:complexType>
-	<xs:complexType name="BoundingBox">
-		<xs:annotation>
-			<xs:documentation xml:lang="en">
-The bounding box describes a rectangle which covers the location completely. The rectangle is defined by the coordinates of the lower left and upper right corners.
-</xs:documentation>
-		</xs:annotation>
-		<xs:all>
-			<xs:element name="LowerLeft" type="openlr:Coordinates"/>
-			<xs:element name="UpperRight" type="openlr:Coordinates"/>
-		</xs:all>
-	</xs:complexType>
-	<xs:complexType name="Offsets">
-		<xs:annotation>
-			<xs:documentation xml:lang="en">
-Offsets are used to shorten the location reference path at its start and end. The new positions along the location reference path indicate the real start and end of the location. The positive offset is the difference of the start point of the location reference and the start point of the desired location along the location reference path. The negative offset is the difference of the end point of the desired location and the end point of the location reference along the location reference path. Both values are measured in meter.
-</xs:documentation>
-		</xs:annotation>
-		<xs:all>
-			<xs:element name="PosOff" type="xs:integer" minOccurs="0"/>
-			<xs:element name="NegOff" type="xs:integer" minOccurs="0"/>
-		</xs:all>
-	</xs:complexType>
-	<xs:complexType name="AdditionalData">
-		<xs:annotation>
-			<xs:documentation xml:lang="en">
-AdditionalData can be used to add any other kind of information needed like debug information or additional encoder/decoder flags.
-</xs:documentation>
-		</xs:annotation>
-		<xs:sequence>
-			<xs:any minOccurs="0" maxOccurs="unbounded"/>
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="AdditionalInformation">
-		<xs:annotation>
-			<xs:documentation xml:lang="en">
-AdditionalInformation can be added if necessary. This includes the bounding box covering the location and information on the map used for encoding. The AdditionalData section also provides the freedom to add any other information needed.
-</xs:documentation>
-		</xs:annotation>
-		<xs:all>
-			<xs:element name="BoundingBox" type="openlr:BoundingBox" minOccurs="0"/>
-			<xs:element name="MapDatabase" type="xs:string" minOccurs="0"/>
-			<xs:element name="AdditionalData" type="openlr:AdditionalData" minOccurs="0"/>
-		</xs:all>
-	</xs:complexType>
-	<xs:complexType name="LocationReferencePoint">
-		<xs:annotation>
-			<xs:documentation xml:lang="en">
-The basis of a location reference is a sequence of location reference points (LRPs). Such a LRP contains a coordinate pair, specified in WGS84 longitude and latitude values and additionally several line and path attributes.
-</xs:documentation>
-		</xs:annotation>
-		<xs:all>
-			<xs:element name="Coordinates" type="openlr:Coordinates"/>
-			<xs:element name="LineAttributes" type="openlr:LineAttributes"/>
-			<xs:element name="PathAttributes" type="openlr:PathAttributes"/>
-		</xs:all>
-	</xs:complexType>
-	<xs:complexType name="LastLocationReferencePoint">
-		<xs:annotation>
-			<xs:documentation xml:lang="en">
-The sequence of location reference points is terminated by a last location reference point. This LRP does not need to have any path attributes.
-</xs:documentation>
-		</xs:annotation>
-		<xs:all>
-			<xs:element name="Coordinates" type="openlr:Coordinates"/>
-			<xs:element name="LineAttributes" type="openlr:LineAttributes"/>
-		</xs:all>
-	</xs:complexType>
-	<xs:complexType name="BinaryLocationReference">
-		<xs:annotation>
-			<xs:documentation xml:lang="en">
-The BinaryLocationReference is the Base64-encoded binary representation of the location reference. Each binary location reference needs to have an identifier and a version. The version is defined by the version of the binary physical format.
-</xs:documentation>
-		</xs:annotation>
-		<xs:simpleContent>
-			<xs:extension base="xs:base64Binary">
-				<xs:attribute name="id" type="xs:string" use="required"/>
-				<xs:attribute name="version" type="xs:string" use="required"/>
-			</xs:extension>
-		</xs:simpleContent>
-	</xs:complexType>
-	<xs:complexType name="LineLocationReference">
-		<xs:annotation>
-			<xs:documentation xml:lang="en">
-A LineLocationReference is defined by an ordered sequence of location reference points and a terminating last location reference point.
-</xs:documentation>
-		</xs:annotation>
-		<xs:sequence>
-			<xs:element name="LocationReferencePoint" type="openlr:LocationReferencePoint" maxOccurs="unbounded"/>
-			<xs:element name="LastLocationReferencePoint" type="openlr:LastLocationReferencePoint"/>
-			<xs:element name="Offsets" type="openlr:Offsets" minOccurs="0"/>
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="GeoCoordinate">
-		<xs:annotation>
-			<xs:documentation xml:lang="en">
-GeoCoordinate is a point location which consists of exactly one oordinate pair.
-</xs:documentation>
-		</xs:annotation>
-		<xs:all>
-			<xs:element name="Coordinates" type="openlr:Coordinates"/>
-		</xs:all>
-	</xs:complexType>
-	<xs:complexType name="PointAlongLine">
-		<xs:annotation>
-			<xs:documentation xml:lang="en">
-Point along line is a point location which is defined by a line and an offset value. The line will be referenced by two
-location reference points and the concrete position on that line is referenced using the positive offset. Additionally
-information about the side of the road where the point is located and the orientation with respect to the direction of
-the line can be added.
-</xs:documentation>
-		</xs:annotation>
-		<xs:all>
-			<xs:element name="LocationReferencePoint" type="openlr:LocationReferencePoint"/>
-			<xs:element name="LastLocationReferencePoint" type="openlr:LastLocationReferencePoint"/>
-			<xs:element name="Offsets" type="openlr:Offsets" minOccurs="0"/>
-			<xs:element name="SideOfRoad" type="openlr:SideOfRoad_Type" default="ON_ROAD_OR_UNKNOWN" minOccurs="0"/>
-			<xs:element name="Orientation" type="openlr:Orientation_Type" default="NO_ORIENTATION_OR_UNKNOWN" minOccurs="0"/>
-		</xs:all>
-	</xs:complexType>
-	<xs:complexType name="PoiWithAccessPoint">
-		<xs:annotation>
-			<xs:documentation xml:lang="en">
-Point along line with access is a point location which is defined by a line, an offset value and a coordinate. The
-line will be referenced by two location reference points and the concrete position of the access point on that line is
-referenced using the positive offset. The point of interest is identified by the coordinate pair. Additionally information
-about the side of the road where the point is located and the orientation with respect to the direction of the line can
-be added.
-</xs:documentation>
-		</xs:annotation>
-		<xs:all>
-			<xs:element name="LocationReferencePoint" type="openlr:LocationReferencePoint"/>
-			<xs:element name="LastLocationReferencePoint" type="openlr:LastLocationReferencePoint"/>
-			<xs:element name="Offsets" type="openlr:Offsets" minOccurs="0"/>
-			<xs:element name="Coordinates" type="openlr:Coordinates"/>
-			<xs:element name="SideOfRoad" type="openlr:SideOfRoad_Type" default="ON_ROAD_OR_UNKNOWN" minOccurs="0"/>
-			<xs:element name="Orientation" type="openlr:Orientation_Type" default="NO_ORIENTATION_OR_UNKNOWN" minOccurs="0"/>
-		</xs:all>
-	</xs:complexType>
-	<xs:complexType name="PointLocationReference">
-		<xs:annotation>
-			<xs:documentation xml:lang="en">
-A PointLocationReference represents a point of interest. The point may be bound to the underlying network.
-</xs:documentation>
-		</xs:annotation>
-		<xs:choice>
-			<xs:element name="GeoCoordinate" type="openlr:GeoCoordinate"/>
-			<xs:element name="PointAlongLine" type="openlr:PointAlongLine"/>
-			<xs:element name="PoiWithAccessPoint" type="openlr:PoiWithAccessPoint"/>
-		</xs:choice>
-	</xs:complexType>
-	<xs:complexType name="BinaryLocationReferences">
-		<xs:annotation>
-			<xs:documentation xml:lang="en">
-It may exist several different formats for binary location references and all formats or a subset can be included.
-</xs:documentation>
-		</xs:annotation>
-		<xs:sequence>
-			<xs:element name="BinaryLocationReference" type="openlr:BinaryLocationReference" maxOccurs="unbounded"/>
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="XMLLocationReference">
-		<xs:annotation>
-			<xs:documentation xml:lang="en">
-A XMLLocationReference describes an OpenLR location reference. Currently only line and point locations are defined but other location types may follow.
-</xs:documentation>
-		</xs:annotation>
-		<xs:choice>
-			<xs:element name="LineLocationReference" type="openlr:LineLocationReference"/>
-			<xs:element name="PointLocationReference" type="openlr:PointLocationReference"/>
-		</xs:choice>
-	</xs:complexType>
-	<xs:element name="OpenLR">
-		<xs:annotation>
-			<xs:documentation xml:lang="en">
-An OpenLR location reference consists of a unique identifier and a location reference as a XMLLocationReference, BinaryLocationReference or both. The schema accepts OpenLR tags without any location reference but these tags will be ignored. The XMLLocationReference shall make use of the raw data for any type so that no compression techniques are used (e.g. use of intervals for the description of length values). The BinaryLocationReference shall represent the compressed format of the location reference. If both types are used the location reference must represent the same location. Additional information may be added if necessary.
-</xs:documentation>
-		</xs:annotation>
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element name="LocationID" type="xs:string"/>
-				<xs:element name="XMLLocationReference" type="openlr:XMLLocationReference" minOccurs="0"/>
-				<xs:element name="BinaryLocationReferences" type="openlr:BinaryLocationReferences" minOccurs="0"/>
-				<xs:element name="AdditionalInformation" type="openlr:AdditionalInformation" minOccurs="0"/>
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:openlr="http://www.openlr.org/openlr"
+           targetNamespace="http://www.openlr.org/openlr" elementFormDefault="qualified"
+           attributeFormDefault="unqualified">
+
+    <xs:annotation>
+        <xs:documentation xml:lang="en">
+            This schema describes the XML format for OpenLR location references. This format includes a
+            XMLLocationReference but also supports BinaryLocationReference. The XMLLocationReference shall make use of
+            the raw data for any type so that no compression techniques are used (e.g. use of intervals for the
+            description of length values). The BinaryLocationReference shall represent the compressed format of the
+            location reference. For further information on the relevant fields see the OpenLR white paper at
+            http://www.openlr.org. OpenLR is a trade mark of TomTom International B.V. author: TomTom International B.V.
+        </xs:documentation>
+    </xs:annotation>
+
+    <xs:simpleType name="FRC_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+                The functional road class is a road classification based on the importance of a road.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="FRC0"/>
+            <xs:enumeration value="FRC1"/>
+            <xs:enumeration value="FRC2"/>
+            <xs:enumeration value="FRC3"/>
+            <xs:enumeration value="FRC4"/>
+            <xs:enumeration value="FRC5"/>
+            <xs:enumeration value="FRC6"/>
+            <xs:enumeration value="FRC7"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="FOW_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+                The form of way describes the physical road type.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="UNDEFINED"/>
+            <xs:enumeration value="MOTORWAY"/>
+            <xs:enumeration value="MULTIPLE_CARRIAGEWAY"/>
+            <xs:enumeration value="SINGLE_CARRIAGEWAY"/>
+            <xs:enumeration value="ROUNDABOUT"/>
+            <xs:enumeration value="TRAFFICSQUARE"/>
+            <xs:enumeration value="SLIPROAD"/>
+            <xs:enumeration value="OTHER"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Bearing_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+                The bearing describes the angle between the true North and a line. The values range from 0 to 359 degree.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="0"/>
+            <xs:maxExclusive value="360"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SideOfRoad_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+                The side of the road is valid only for point locations and indicates on which side of the referenced
+                road the point location is located.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ON_ROAD_OR_UNKNOWN"/>
+            <xs:enumeration value="RIGHT"/>
+            <xs:enumeration value="LEFT"/>
+            <xs:enumeration value="BOTH"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Orientation_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+                The orientation is only valid for point locations and indicates for which direction the point
+                information is relevant.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="NO_ORIENTATION_OR_UNKNOWN"/>
+            <xs:enumeration value="WITH_LINE_DIRECTION"/>
+            <xs:enumeration value="AGAINST_LINE_DIRECTION"/>
+            <xs:enumeration value="BOTH"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="LineAttributes">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+                Line attributes describe features of a line in a network. The attributes the functional road class, form
+                of way and the bearing of a line.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:all>
+            <xs:element name="FRC" type="openlr:FRC_Type"/>
+            <xs:element name="FOW" type="openlr:FOW_Type"/>
+            <xs:element name="BEAR" type="openlr:Bearing_Type"/>
+        </xs:all>
+    </xs:complexType>
+    <xs:complexType name="PathAttributes">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+                Path attributes describes features of a path. The LFRCNP attribute is the lowest functional road class
+                value which appears in the path. The highest FRC value is FRC0 and the lowest possible FRC value is FRC7.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:all>
+            <xs:element name="LFRCNP" type="openlr:FRC_Type"/>
+            <xs:element name="DNP" type="xs:integer"/>
+        </xs:all>
+    </xs:complexType>
+    <xs:complexType name="Coordinates">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+                Coordinates stands for a pair of WGS84 longitude and latitude values. This coordinate pair specifies a
+                geometric point in a digital map.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:all>
+            <xs:element name="Longitude" type="xs:double"/>
+            <xs:element name="Latitude" type="xs:double"/>
+        </xs:all>
+    </xs:complexType>
+    <xs:complexType name="BoundingBox">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+                The bounding box describes a rectangle which covers the location completely. The rectangle is defined by
+                the coordinates of the lower left and upper right corners.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:all>
+            <xs:element name="LowerLeft" type="openlr:Coordinates"/>
+            <xs:element name="UpperRight" type="openlr:Coordinates"/>
+        </xs:all>
+    </xs:complexType>
+    <xs:complexType name="Offsets">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+                Offsets are used to shorten the location reference path at its start and end. The new positions along
+                the location reference path indicate the real start and end of the location. The positive offset is the
+                difference of the start point of the location reference and the start point of the desired location
+                along the location reference path. The negative offset is the difference of the end point of the desired
+                location and the end point of the location reference along the location reference path. Both values are
+                measured in meter.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:all>
+            <xs:element name="PosOff" type="xs:integer" minOccurs="0"/>
+            <xs:element name="NegOff" type="xs:integer" minOccurs="0"/>
+        </xs:all>
+    </xs:complexType>
+    <xs:complexType name="AdditionalData">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+                AdditionalData can be used to add any other kind of information needed like debug information or
+                additional encoder/decoder flags.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:any minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AdditionalInformation">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+                AdditionalInformation can be added if necessary. This includes the bounding box covering the location
+                and information on the map used for encoding. The AdditionalData section also provides the freedom to
+                add any other information needed.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:all>
+            <xs:element name="BoundingBox" type="openlr:BoundingBox" minOccurs="0"/>
+            <xs:element name="MapDatabase" type="xs:string" minOccurs="0"/>
+            <xs:element name="AdditionalData" type="openlr:AdditionalData" minOccurs="0"/>
+        </xs:all>
+    </xs:complexType>
+    <xs:complexType name="LocationReferencePoint">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+                The basis of a location reference is a sequence of location reference points (LRPs). Such a LRP contains
+                a coordinate pair, specified in WGS84 longitude and latitude values and additionally several line and
+                path attributes.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:all>
+            <xs:element name="Coordinates" type="openlr:Coordinates"/>
+            <xs:element name="LineAttributes" type="openlr:LineAttributes"/>
+            <xs:element name="PathAttributes" type="openlr:PathAttributes"/>
+        </xs:all>
+    </xs:complexType>
+    <xs:complexType name="LastLocationReferencePoint">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+                The sequence of location reference points is terminated by a last location reference point. This LRP
+                does not need to have any path attributes.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:all>
+            <xs:element name="Coordinates" type="openlr:Coordinates"/>
+            <xs:element name="LineAttributes" type="openlr:LineAttributes"/>
+        </xs:all>
+    </xs:complexType>
+    <xs:complexType name="BinaryLocationReference">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+                The BinaryLocationReference is the Base64-encoded binary representation of the location reference. Each
+                binary location reference needs to have an identifier and a version. The version is defined by the
+                version of the binary physical format.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="xs:base64Binary">
+                <xs:attribute name="id" type="xs:string" use="required"/>
+                <xs:attribute name="version" type="xs:string" use="required"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:complexType name="LineLocationReference">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+                A LineLocationReference is defined by an ordered sequence of location reference points and a terminating
+                last location reference point.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="LocationReferencePoint" type="openlr:LocationReferencePoint" maxOccurs="unbounded"/>
+            <xs:element name="LastLocationReferencePoint" type="openlr:LastLocationReferencePoint"/>
+            <xs:element name="Offsets" type="openlr:Offsets" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="GeoCoordinate">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+                GeoCoordinate is a point location which consists of exactly one oordinate pair.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:all>
+            <xs:element name="Coordinates" type="openlr:Coordinates"/>
+        </xs:all>
+    </xs:complexType>
+    <xs:complexType name="PointAlongLine">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+                Point along line is a point location which is defined by a line and an offset value. The line will be
+                referenced by two location reference points and the concrete position on that line is referenced using the positive
+                offset. Additionally information about the side of the road where the point is located and the orientation with
+                respect to the direction of the line can be added.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:all>
+            <xs:element name="LocationReferencePoint" type="openlr:LocationReferencePoint"/>
+            <xs:element name="LastLocationReferencePoint" type="openlr:LastLocationReferencePoint"/>
+            <xs:element name="Offsets" type="openlr:Offsets" minOccurs="0"/>
+            <xs:element name="SideOfRoad" type="openlr:SideOfRoad_Type" default="ON_ROAD_OR_UNKNOWN" minOccurs="0"/>
+            <xs:element name="Orientation" type="openlr:Orientation_Type" default="NO_ORIENTATION_OR_UNKNOWN"
+                        minOccurs="0"/>
+        </xs:all>
+    </xs:complexType>
+    <xs:complexType name="PoiWithAccessPoint">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+                Point along line with access is a point location which is defined by a line, an offset value and a
+                coordinate. The line will be referenced by two location reference points and the concrete position of
+                the access point on that line is referenced using the positive offset. The point of interest is identified
+                by the coordinate pair.
+                Additionally information about the side of the road where the point is located and the orientation with
+                respect to the direction of the line can be added.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:all>
+            <xs:element name="LocationReferencePoint" type="openlr:LocationReferencePoint"/>
+            <xs:element name="LastLocationReferencePoint" type="openlr:LastLocationReferencePoint"/>
+            <xs:element name="Offsets" type="openlr:Offsets" minOccurs="0"/>
+            <xs:element name="Coordinates" type="openlr:Coordinates"/>
+            <xs:element name="SideOfRoad" type="openlr:SideOfRoad_Type" default="ON_ROAD_OR_UNKNOWN" minOccurs="0"/>
+            <xs:element name="Orientation" type="openlr:Orientation_Type" default="NO_ORIENTATION_OR_UNKNOWN"
+                        minOccurs="0"/>
+        </xs:all>
+    </xs:complexType>
+    <xs:complexType name="PointLocationReference">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+                A PointLocationReference represents a point of interest. The point may be bound to the underlying
+                network.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:choice>
+            <xs:element name="GeoCoordinate" type="openlr:GeoCoordinate"/>
+            <xs:element name="PointAlongLine" type="openlr:PointAlongLine"/>
+            <xs:element name="PoiWithAccessPoint" type="openlr:PoiWithAccessPoint"/>
+        </xs:choice>
+    </xs:complexType>
+    <xs:complexType name="BinaryLocationReferences">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+                It may exist several different formats for binary location references and all formats or a subset can be
+                included.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="BinaryLocationReference" type="openlr:BinaryLocationReference" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="XMLLocationReference">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+                A XMLLocationReference describes an OpenLR location reference. Currently only line and point locations
+                are defined but other location types may follow.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:choice>
+            <xs:element name="LineLocationReference" type="openlr:LineLocationReference"/>
+            <xs:element name="PointLocationReference" type="openlr:PointLocationReference"/>
+        </xs:choice>
+    </xs:complexType>
+    <xs:element name="OpenLR">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+                An OpenLR location reference consists of a unique identifier and a location reference as a
+                XMLLocationReference, BinaryLocationReference or both. The schema accepts OpenLR tags without any
+                location reference but these tags will be ignored. The XMLLocationReference shall make use of the raw
+                data for any type so that no compression techniques are used (e.g. use of intervals for the description
+                of length values). The BinaryLocationReference shall represent the compressed format of the location
+                reference. If both types are used the location reference must represent the same location. Additional
+                information may be added if necessary.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="LocationID" type="xs:string"/>
+                <xs:element name="XMLLocationReference" type="openlr:XMLLocationReference" minOccurs="0"/>
+                <xs:element name="BinaryLocationReferences" type="openlr:BinaryLocationReferences" minOccurs="0"/>
+                <xs:element name="AdditionalInformation" type="openlr:AdditionalInformation" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
 </xs:schema>
