@@ -1,7 +1,6 @@
 package fi.liikennevirasto.digiroad2.tnits.api
 
 import java.net.URLDecoder
-import javax.servlet.http.HttpServletRequest
 import fi.liikennevirasto.digiroad2.tnits.aineistot.{RemoteDataset, RemoteNonStdDataset}
 import fi.liikennevirasto.digiroad2.tnits.rosatte.DatasetID
 import org.scalatra._
@@ -21,7 +20,7 @@ class Digiroad2TnItsApi extends ScalatraServlet with FutureSupport {
     val lastValidDatasetId = params.get("lastValidDatasetId")
     val dataSetIds = RemoteNonStdDataset.index
 
-    queryDataSets(dataSetIds, lastValidDatasetId)
+    queryDataSets(dataSetIds, lastValidDatasetId, true)
   }
 
   get("/download/queryDataSets") {
@@ -29,7 +28,7 @@ class Digiroad2TnItsApi extends ScalatraServlet with FutureSupport {
     val lastValidDatasetId = params.get("lastValidDatasetId")
     val dataSetIds = RemoteDataset.index
 
-    queryDataSets(dataSetIds, lastValidDatasetId)
+    queryDataSets(dataSetIds, lastValidDatasetId, false)
   }
 
   get("/download/readDataSet/nonstd") {
@@ -44,7 +43,7 @@ class Digiroad2TnItsApi extends ScalatraServlet with FutureSupport {
     RemoteDataset.get(id)
   }
 
-  def queryDataSets(dataSetIds: Seq[String], param: Option[String]): Elem = {
+  def queryDataSets(dataSetIds: Seq[String], param: Option[String], isNonStd: Boolean): Elem = {
     val decodedDataSetIds =
       dataSetIds
         .map { id => (id, DatasetID.decode(URLDecoder.decode(id, "UTF-8"))) }
@@ -64,20 +63,26 @@ class Digiroad2TnItsApi extends ScalatraServlet with FutureSupport {
     <rst:ROSATTERestDatasetRefList xmlns:xlink="http://www.w3.org/1999/xlink"
                                    xmlns:rst="http://www.ertico.com/en/subprojects/rosatte/rst"
                                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-      {wantedDataSetIds.map(dataSetElement)}
+      {wantedDataSetIds.map(dataSetElement(_, isNonStd))}
     </rst:ROSATTERestDatasetRefList>
   }
 
-  def dataSetElement(id: String) = {
+  def dataSetElement(id: String, isNonStd: Boolean) = {
     val scheme = "https"
     val port = serverPort
-    val url =
+    val baseUrl =
       port match {
         case 80 | 443 =>
-          s"$scheme://$serverHost/rosattedownload/download/readDataSet?dataSetID=" + id
+          s"$scheme://$serverHost/rosattedownload/download/readDataSet"
         case _ =>
-          s"$scheme://$serverHost:$port/rosattedownload/download/readDataSet?dataSetID=" + id
+          s"$scheme://$serverHost:$port/rosattedownload/download/readDataSet"
       }
+
+    val url = if (isNonStd)
+                s"$baseUrl/nonstd?dataSetID=$id"
+              else
+                s"$baseUrl?dataSetID=$id"
+
     <rst:ROSATTERestDatasetRef xlink:href={url}/>
   }
 
