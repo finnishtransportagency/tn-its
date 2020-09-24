@@ -3,19 +3,17 @@ package fi.liikennevirasto.digiroad2.tnits.aineistot
 import java.io.{InputStream, OutputStream}
 import java.net.{URLDecoder, URLEncoder, _}
 import java.time.Instant
-
 import com.jcraft.jsch._
 import fi.liikennevirasto.digiroad2.tnits.config
 import fi.liikennevirasto.digiroad2.tnits.rosatte.DatasetID
-import org.apache.commons.net.ftp.{FTP, FTPClient}
 import org.apache.http.auth.{AuthScope, UsernamePasswordCredentials}
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.{BasicCredentialsProvider, HttpClients}
 import org.apache.http.util.EntityUtils
 import org.jsoup.Jsoup
-
 import scala.collection.JavaConverters._
 import scala.language.reflectiveCalls
+
 
 case class RemoteDatasetsException(cause: Throwable) extends RuntimeException(cause)
 
