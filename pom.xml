@@ -15,7 +15,7 @@
         <geotools.version>14.3</geotools.version>
         <openlr.version>1.4.2</openlr.version>
         <specs2.version>3.7.2</specs2.version>
-        <jetty.version>9.3.8.v20160314</jetty.version>
+        <jetty.version>9.4.34.v20201102</jetty.version>
     </properties>
     <organization>
         <name>fi.liikennevirasto.digiroad2</name>
