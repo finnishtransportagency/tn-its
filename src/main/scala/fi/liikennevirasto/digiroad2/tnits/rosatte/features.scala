@@ -3,6 +3,8 @@ package fi.liikennevirasto.digiroad2.tnits.rosatte
 import fi.liikennevirasto.digiroad2.tnits.geojson
 import fi.liikennevirasto.digiroad2.tnits.rosatte.features.RoadLink
 
+import java.util.NoSuchElementException
+
 case class ValidityPeriodDayOfWeek(value: Int)
 case class ValidityPeriod(startHour: Int, endHour: Int, days: Int, startMinute: Int = 0, endMinute: Int = 0)
 case class ProhibitionValue(typeId: Int, validityPeriod: Set[ValidityPeriod], exceptions: Set[Int], additionalInfo: String = "")
@@ -146,7 +148,11 @@ object features {
         125 -> "Moose",
         126 -> "Reindeer"
       )
-      warningSignType(typeId)
+      try {
+        warningSignType(typeId)
+      } catch {
+        case e: NoSuchElementException =>  "Danger"
+      }
     }
   }
 
